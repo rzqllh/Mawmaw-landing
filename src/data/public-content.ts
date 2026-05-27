@@ -671,9 +671,18 @@ export const contactContent = {
     "Hospitality",
     "Konsultasi Awal",
   ],
-  submitLabel: "Kirim Permintaan",
-  successToast:
-    "Permintaan terkirim. Tim Mawmaw Interior akan menghubungi Anda kembali.",
+  submitLabels: {
+    whatsapp: "Kirim via WhatsApp",
+    email: "Kirim via Email",
+  },
+  loadingLabels: {
+    whatsapp: "Membuka WhatsApp...",
+    email: "Membuka Email...",
+  },
+  handoffToast: {
+    whatsapp: "Membuka WhatsApp dengan pesan konsultasi Anda.",
+    email: "Membuka email dengan pesan konsultasi Anda.",
+  },
   errorToast: "Mohon periksa kembali data yang Anda isi.",
 };
 
@@ -683,10 +692,7 @@ export const footerContent = {
   navTitle: "Navigasi",
   servicesTitle: "Layanan",
   contactTitle: "Hubungi Kami",
-  legal: [
-    { label: "Kebijakan Privasi", href: "#" },
-    { label: "Syarat & Ketentuan", href: "#" },
-  ],
+  legal: [] as { label: string; href: string }[],
   copyright: "© 2026 Mawmaw Interior. Semua hak dilindungi.",
 };
 

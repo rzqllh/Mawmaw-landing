@@ -97,17 +97,19 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-text-inverse/12 pt-6 text-xs text-text-inverse/58 md:flex-row md:items-center md:justify-between">
           <p>{footerContent.copyright}</p>
-          <div className="flex flex-wrap gap-4">
-            {footerContent.legal.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="transition hover:text-gold-300"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+          {footerContent.legal.length ? (
+            <div className="flex flex-wrap gap-4">
+              {footerContent.legal.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="transition hover:text-gold-300"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </footer>

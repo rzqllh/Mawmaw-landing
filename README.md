@@ -106,5 +106,5 @@ The app is a Next.js project and can be evaluated for deployment on any compatib
 ## Known Limitations
 
 - `docs/01_PROJECT_CONTEXT_TEMPLATE.md` still contains owner-confirmation fields for business, deployment, and operational context.
-- The contact form currently appears to submit locally with UI feedback; no backend persistence or email delivery should be assumed unless verified in source code.
+- The contact form is frontend-only and hands validated messages off to WhatsApp or the user's email client; no backend persistence should be assumed unless verified in source code.
 - `.env.example` lists possible integrations, but active integration behavior must be verified in code before use.

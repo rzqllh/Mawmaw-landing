@@ -105,7 +105,7 @@ Do not invent visual style outside this section or existing design tokens.
 - Tone: warm, clear, polished, and concrete.
 - Words to use: ruang, hangat, elegan, fungsional, personal, konsultasi, portfolio.
 - Words to avoid: Unknown - owner to confirm.
-- CTA style: clear action labels such as "Konsultasi via WhatsApp", "Lihat Portfolio", "Kirim Permintaan".
+- CTA style: clear action labels such as "Konsultasi via WhatsApp", "Lihat Portfolio", "Kirim via WhatsApp", and "Kirim via Email".
 - Error message style: Indonesian, specific, and actionable; examples live in `src/lib/validation.ts` and `src/data/public-content.ts`.
 
 ## Data Rules

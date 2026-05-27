@@ -1,8 +1,8 @@
 "use client";
 
-import { useId, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CaretDown, PaperPlaneTilt } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, EnvelopeSimple } from "@phosphor-icons/react/dist/ssr";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -11,7 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { contactContent } from "@/data/public-content";
+import { contactContent, siteConfig } from "@/data/public-content";
+import {
+  createContactActionHref,
+  type ContactChannel,
+} from "@/lib/contact-actions";
 import { IconGlyph } from "@/lib/icons";
 import {
   contactFormSchema,
@@ -28,20 +32,37 @@ const defaultValues: ContactFormValues = {
 
 export function ContactSection() {
   const formId = useId();
+  const [activeChannel, setActiveChannel] = useState<ContactChannel | null>(null);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues,
   });
 
-  async function onSubmit() {
-    await new Promise((resolve) => setTimeout(resolve, 650));
-    toast.success(contactContent.successToast);
-    reset(defaultValues);
+  function onSubmit(values: ContactFormValues, channel: ContactChannel) {
+    const href = createContactActionHref(channel, values, {
+      email: siteConfig.email,
+      phone: siteConfig.phone ?? "",
+    });
+
+    setActiveChannel(channel);
+
+    if (channel === "whatsapp") {
+      const opened = window.open(href, "_blank", "noopener,noreferrer");
+
+      if (!opened) {
+        window.location.assign(href);
+      }
+    } else {
+      window.location.assign(href);
+    }
+
+    toast.info(contactContent.handoffToast[channel]);
+
+    window.setTimeout(() => setActiveChannel(null), 800);
   }
 
   function onInvalid() {
@@ -81,7 +102,10 @@ export function ContactSection() {
           <Reveal delay={0.08}>
             <form
               noValidate
-              onSubmit={handleSubmit(onSubmit, onInvalid)}
+              onSubmit={handleSubmit(
+                (values) => onSubmit(values, "whatsapp"),
+                onInvalid
+              )}
               className="rounded-xl bg-surface p-5 text-forest-900 shadow-glass md:p-7"
             >
               <div className="grid gap-5 md:grid-cols-2">
@@ -188,10 +212,40 @@ export function ContactSection() {
                 </Field>
               </div>
 
-              <div className="mt-6 flex justify-end">
-                <Button type="submit" size="lg" disabled={isSubmitting}>
-                  <PaperPlaneTilt aria-hidden className="h-5 w-5" weight="duotone" />
-                  {isSubmitting ? "Mengirim..." : contactContent.submitLabel}
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSubmitting || Boolean(activeChannel)}
+                >
+                  <IconGlyph
+                    name="whatsapp"
+                    aria-hidden
+                    className="h-5 w-5"
+                    weight="duotone"
+                  />
+                  {activeChannel === "whatsapp"
+                    ? contactContent.loadingLabels.whatsapp
+                    : contactContent.submitLabels.whatsapp}
+                </Button>
+                <Button
+                  type="button"
+                  size="lg"
+                  variant="secondary"
+                  disabled={isSubmitting || Boolean(activeChannel)}
+                  onClick={handleSubmit(
+                    (values) => onSubmit(values, "email"),
+                    onInvalid
+                  )}
+                >
+                  <EnvelopeSimple
+                    aria-hidden
+                    className="h-5 w-5"
+                    weight="duotone"
+                  />
+                  {activeChannel === "email"
+                    ? contactContent.loadingLabels.email
+                    : contactContent.submitLabels.email}
                 </Button>
               </div>
             </form>
