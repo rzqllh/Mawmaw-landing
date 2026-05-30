@@ -10,7 +10,7 @@ export function FeaturedProjectsSection() {
   const [firstProject, secondProject, thirdProject] = featuredProjects;
 
   return (
-    <section id="proyek" className="section-y scroll-mt-28 bg-background-muted">
+    <section id="proyek" className="section-y surface-section-muted scroll-mt-28">
       <div className="section-container">
         <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_auto] lg:items-end">
           <div>

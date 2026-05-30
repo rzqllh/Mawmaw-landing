@@ -4,7 +4,7 @@ import { services, servicesSection } from "@/data/public-content";
 
 export function ServicesSection() {
   return (
-    <section id="layanan" className="section-y scroll-mt-28 bg-background">
+    <section id="layanan" className="section-y surface-section-clean scroll-mt-28">
       <div className="section-container">
         <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(20rem,0.55fr)] lg:items-start">
           <div>

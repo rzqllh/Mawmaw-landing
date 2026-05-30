@@ -16,7 +16,7 @@ export function FeaturedArticlesSection() {
   }
 
   return (
-    <section id="artikel" className="section-y scroll-mt-28 bg-background">
+    <section id="artikel" className="section-y surface-section-clean scroll-mt-28">
       <div className="section-container">
         <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_auto] lg:items-end">
           <div>

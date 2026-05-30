@@ -3,10 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  WhatsappLogo,
-} from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 import { HeroShader } from "@/components/effects/hero-shader";
@@ -27,29 +24,29 @@ export function HeroSection() {
   const imageY = useTransform(
     scrollY,
     [0, 1000],
-    shouldReduceMotion ? [0, 0] : [-44, 56]
+    shouldReduceMotion ? [0, 0] : [-40, 54]
   );
   const imageScale = useTransform(
     scrollY,
     [0, 1000],
-    shouldReduceMotion ? [1, 1] : [1.06, 1.02]
+    shouldReduceMotion ? [1, 1] : [1.055, 1.015]
   );
   const copyY = useTransform(
     scrollY,
     [0, 820],
-    shouldReduceMotion ? [0, 0] : [0, -24]
+    shouldReduceMotion ? [0, 0] : [0, -22]
   );
   const shadeOpacity = useTransform(
     scrollYProgress,
     [0, 1],
-    shouldReduceMotion ? [1, 1] : [0.72, 0.48]
+    shouldReduceMotion ? [1, 1] : [0.66, 0.42]
   );
 
   return (
     <section
       id="home-hero"
       ref={sectionRef}
-      className="relative isolate min-h-[94svh] overflow-hidden bg-background text-forest-900"
+      className="relative isolate min-h-[94svh] overflow-hidden bg-transparent text-forest-900"
     >
       <motion.div
         aria-hidden
@@ -62,20 +59,20 @@ export function HeroSection() {
           fill
           sizes="100vw"
           priority
-          className="object-cover opacity-[0.42] saturate-[0.82]"
+          className="object-cover opacity-[0.34] saturate-[0.76] contrast-[0.96]"
         />
       </motion.div>
       <HeroShader />
       <motion.div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,246,242,0.78)_0%,rgba(247,246,242,0.88)_58%,rgba(247,246,242,1)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,250,245,0.72)_0%,rgba(247,246,242,0.86)_60%,rgba(247,246,242,0.0)_100%)]"
         style={{ opacity: shadeOpacity }}
       />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-linear-to-b from-background via-background/72 to-transparent"
       />
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-background to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-56 bg-linear-to-t from-background/70 via-background/30 to-transparent" />
 
       <div className="section-container relative z-10 flex min-h-[94svh] items-center pb-14 pt-28 md:pb-16 md:pt-32">
         <motion.div
@@ -85,7 +82,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease }}
           className="liquid-panel mx-auto w-full max-w-6xl rounded-[2rem] px-5 py-12 text-center will-change-transform sm:px-8 md:rounded-[2.5rem] md:py-16 lg:px-14"
         >
-          <p className="mx-auto mb-7 inline-flex rounded-pill border border-forest-200/70 bg-surface/70 px-4 py-2 text-[0.7rem] font-extrabold uppercase tracking-[0.24em] text-forest-900 shadow-card">
+          <p className="mx-auto mb-7 inline-flex rounded-pill border border-forest-200/70 bg-surface/58 px-4 py-2 text-[0.7rem] font-extrabold uppercase tracking-[0.24em] text-forest-900 shadow-card backdrop-blur-xl">
             Studio Desain Interior
           </p>
           <h1 className="mx-auto max-w-5xl font-serif text-[clamp(2.65rem,6.2vw,5.9rem)] leading-[0.9] text-balance">

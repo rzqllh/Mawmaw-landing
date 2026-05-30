@@ -22,7 +22,7 @@ export function ProjectCard({
     return (
       <article
         className={cn(
-          "group overflow-hidden rounded-[1.85rem] bg-forest-900 shadow-card transition duration-300  hover:shadow-soft motion-reduce:hover:translate-y-0",
+          "group overflow-hidden rounded-[1.85rem] bg-forest-900 shadow-card ring-1 ring-white/30 transition duration-300 hover:shadow-soft motion-reduce:hover:translate-y-0",
           variant === "showcase" && "min-h-[31rem]",
           variant === "portrait" && "min-h-[31rem]",
           variant === "wide" && "min-h-[25rem]",
@@ -79,7 +79,7 @@ export function ProjectCard({
   }
 
   return (
-    <article className={cn("group overflow-hidden rounded-xl border border-forest-200/60 bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft motion-reduce:hover:translate-y-0", className)}>
+    <article className={cn("liquid-card group overflow-hidden rounded-xl transition duration-300 hover:-translate-y-1 hover:shadow-soft motion-reduce:hover:translate-y-0", className)}>
       <Link href={`/projects/${project.slug}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-background-muted">
           <Image

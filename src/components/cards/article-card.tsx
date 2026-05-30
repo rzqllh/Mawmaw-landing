@@ -25,7 +25,7 @@ export function ArticleCard({
   return (
     <article
       className={cn(
-        "group overflow-hidden rounded-[1.65rem] border border-forest-200/60 bg-surface shadow-card transition duration-300 hover:shadow-soft motion-reduce:hover:translate-y-0",
+        "group overflow-hidden rounded-[1.65rem] liquid-card transition duration-300 hover:shadow-soft motion-reduce:hover:translate-y-0",
         isSplitFeatured && "grid md:grid-cols-[1.05fr_0.95fr]",
         isCompact && "grid sm:grid-cols-[11rem_1fr]"
       )}

@@ -24,7 +24,11 @@ export function SectionWrapper({
   return (
     <section
       id={id}
-      className={cn("section-y scroll-mt-28", muted && "bg-background-muted", className)}
+      className={cn(
+        "section-y scroll-mt-28",
+        muted ? "surface-section-muted" : "surface-section",
+        className
+      )}
     >
       <div className="section-container">
         {(label || title || description) && (

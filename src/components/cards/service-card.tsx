@@ -12,7 +12,7 @@ type ServiceCardProps = {
 export function ServiceCard({ service, index = 0 }: ServiceCardProps) {
   if (service.image) {
     return (
-      <article className="group relative min-h-[27rem] overflow-hidden rounded-[1.85rem] bg-forest-900 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft motion-reduce:hover:translate-y-0">
+      <article className="group relative min-h-[27rem] overflow-hidden rounded-[1.85rem] bg-forest-900 shadow-card ring-1 ring-white/30 transition duration-300 hover:-translate-y-1 hover:shadow-soft motion-reduce:hover:translate-y-0">
         <Image
           src={service.image.src}
           alt={service.image.alt}
@@ -49,7 +49,7 @@ export function ServiceCard({ service, index = 0 }: ServiceCardProps) {
   }
 
   return (
-    <article className="group rounded-lg border border-forest-200/60 bg-surface p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-gold-500/35 hover:shadow-soft motion-reduce:hover:translate-y-0">
+    <article className="liquid-card group rounded-[1.65rem] p-6 transition duration-300 hover:-translate-y-1 hover:border-gold-500/35 hover:shadow-soft motion-reduce:hover:translate-y-0">
       <div
         className={cn(
           "mb-7 flex h-12 w-12 items-center justify-center rounded-md bg-forest-50 text-forest-800 ring-1 ring-forest-100 transition",

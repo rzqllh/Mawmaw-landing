@@ -8,11 +8,13 @@ import { ServicesSection } from "@/components/sections/services-section";
 export default function Home() {
   return (
     <>
-      <HeroSection />
-      <AboutSection />
-      <ServicesSection />
-      <FeaturedProjectsSection />
-      <FeaturedArticlesSection />
+      <main className="landing-page-shell">
+        <HeroSection />
+        <AboutSection />
+        <ServicesSection />
+        <FeaturedProjectsSection />
+        <FeaturedArticlesSection />
+      </main>
       <ContactSection />
     </>
   );

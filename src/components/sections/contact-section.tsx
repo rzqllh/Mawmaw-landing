@@ -194,11 +194,11 @@ export function ContactSection() {
                         </SelectTrigger>
 
                         <SelectContent
-  position="popper"
-  sideOffset={8}
-  collisionPadding={16}
-  className="contact-select-content"
->
+                          position="popper"
+                          sideOffset={8}
+                          collisionPadding={16}
+                          className="contact-select-content"
+                        >
                           {contactContent.projectTypes.map((type) => (
                             <SelectItem
                               key={type}

@@ -13,7 +13,7 @@ export function AboutSection() {
     <SectionWrapper id="tentang" muted className="!pt-10 md:!pt-12">
       <div className="grid items-center gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
         <div className="relative max-w-2xl">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-background shadow-soft md:aspect-[4/3] lg:aspect-[4/5]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 shadow-soft md:aspect-[4/3] lg:aspect-[4/5]">
             <Image
               src={aboutContent.image.src}
               alt={aboutContent.image.alt}
