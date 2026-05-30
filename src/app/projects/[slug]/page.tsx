@@ -68,7 +68,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <Button asChild variant="ghost" size="sm" className="mb-8">
             <Link href="/projects">
               <CaretLeft aria-hidden className="h-4 w-4" />
-              Kembali ke Portfolio
+              Kembali
             </Link>
           </Button>
           <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-end">
@@ -166,7 +166,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
           <Button asChild variant="secondary">
             <Link href="/#kontak">
-              Konsultasi Proyek
+              Konsultasi
               <ArrowRight aria-hidden className="h-4 w-4" />
             </Link>
           </Button>
@@ -179,7 +179,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
         ) : (
           <Button asChild variant="secondary">
-            <Link href="/projects">Lihat Semua Proyek</Link>
+            <Link href="/projects">Semua Proyek</Link>
           </Button>
         )}
       </section>

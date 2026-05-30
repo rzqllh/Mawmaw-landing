@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { MobileDock } from "@/components/layout/mobile-dock";
 import { siteConfig } from "@/data/public-content";
 
 import "./globals.css";
@@ -47,9 +48,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${jakarta.variable} ${cormorant.variable}`}>
-      <body>
+    <html
+      lang="id"
+      data-scroll-behavior="smooth"
+      className={`${jakarta.variable} ${cormorant.variable}`}
+    >
+      <body className="pb-16 lg:pb-0">
         <SiteHeader />
+        <MobileDock />
         <main id="main-content">{children}</main>
         <SiteFooter />
         <Toaster

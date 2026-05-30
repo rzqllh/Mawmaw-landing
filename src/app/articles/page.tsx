@@ -60,7 +60,7 @@ export default function ArticlesPage() {
             title="Belum ada artikel."
             description="Catatan desain sedang disiapkan. Silakan kembali lagi nanti atau hubungi kami untuk konsultasi ruang Anda."
             href="/#kontak"
-            action="Hubungi Kami"
+            action="Kontak"
           />
         )}
       </section>

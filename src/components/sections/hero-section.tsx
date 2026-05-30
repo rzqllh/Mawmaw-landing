@@ -9,11 +9,10 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
-import { GlassCard } from "@/components/cards/glass-card";
 import { HeroShader } from "@/components/effects/hero-shader";
 import { Button } from "@/components/ui/button";
+import { ConfirmWhatsappLink } from "@/components/ui/confirm-whatsapp-link";
 import { heroContent } from "@/data/public-content";
-import { IconGlyph } from "@/lib/icons";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -27,43 +26,34 @@ export function HeroSection() {
   });
   const imageY = useTransform(
     scrollY,
-    [0, 900],
-    shouldReduceMotion ? [0, 0] : [-48, 128]
+    [0, 1000],
+    shouldReduceMotion ? [0, 0] : [-44, 56]
   );
   const imageScale = useTransform(
     scrollY,
-    [0, 900],
-    shouldReduceMotion ? [1, 1] : [1.12, 1.02]
+    [0, 1000],
+    shouldReduceMotion ? [1, 1] : [1.06, 1.02]
   );
   const copyY = useTransform(
     scrollY,
-    [0, 760],
-    shouldReduceMotion ? [0, 0] : [0, -46]
-  );
-  const cardY = useTransform(
-    scrollY,
-    [0, 760],
-    shouldReduceMotion ? [0, 0] : [0, -132]
-  );
-  const cardScale = useTransform(
-    scrollY,
-    [0, 760],
-    shouldReduceMotion ? [1, 1] : [1, 0.96]
+    [0, 820],
+    shouldReduceMotion ? [0, 0] : [0, -24]
   );
   const shadeOpacity = useTransform(
     scrollYProgress,
     [0, 1],
-    shouldReduceMotion ? [1, 1] : [0.96, 0.72]
+    shouldReduceMotion ? [1, 1] : [0.72, 0.48]
   );
 
   return (
     <section
+      id="home-hero"
       ref={sectionRef}
-      className="relative isolate min-h-[84svh] overflow-hidden bg-forest-900 text-text-inverse md:min-h-[80svh]"
+      className="relative isolate min-h-[94svh] overflow-hidden bg-background text-forest-900"
     >
       <motion.div
         aria-hidden
-        className="absolute inset-x-0 -inset-y-20 will-change-transform"
+        className="absolute inset-x-0 -inset-y-16 will-change-transform"
         style={{ y: imageY, scale: imageScale }}
       >
         <Image
@@ -72,89 +62,60 @@ export function HeroSection() {
           fill
           sizes="100vw"
           priority
-          className="object-cover"
+          className="object-cover opacity-[0.42] saturate-[0.82]"
         />
       </motion.div>
       <HeroShader />
       <motion.div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(26,42,29,0.84)_0%,rgba(26,42,29,0.58)_44%,rgba(26,42,29,0.12)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,246,242,0.78)_0%,rgba(247,246,242,0.88)_58%,rgba(247,246,242,1)_100%)]"
         style={{ opacity: shadeOpacity }}
       />
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-forest-900/72 to-transparent" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-linear-to-b from-background via-background/72 to-transparent"
+      />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-background to-transparent" />
 
-      <div className="section-container relative z-10 flex min-h-[84svh] items-end pb-10 pt-32 md:min-h-[80svh] md:pb-14">
-        <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,0.98fr)_minmax(19rem,0.38fr)] lg:items-end">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
-            animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            style={{ y: copyY }}
-            transition={{ duration: 0.8, ease }}
-            className="max-w-4xl will-change-transform"
-          >
-            <h1 className="font-serif text-[clamp(2.6rem,6.2vw,5.8rem)] leading-[0.92] text-balance">
-              {heroContent.title}
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-text-inverse/82 md:text-lg">
-              {heroContent.description}
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" variant="inverse">
-                <Link href={heroContent.primaryCta.href}>
-                  <WhatsappLogo aria-hidden className="h-5 w-5" weight="duotone" />
-                  {heroContent.primaryCta.label}
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <Link href={heroContent.secondaryCta.href}>
-                  {heroContent.secondaryCta.label}
-                  <ArrowRight aria-hidden className="h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
+      <div className="section-container relative z-10 flex min-h-[94svh] items-center pb-14 pt-28 md:pb-16 md:pt-32">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
+          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          style={{ y: copyY }}
+          transition={{ duration: 0.8, ease }}
+          className="liquid-panel mx-auto w-full max-w-6xl rounded-[2rem] px-5 py-12 text-center will-change-transform sm:px-8 md:rounded-[2.5rem] md:py-16 lg:px-14"
+        >
+          <p className="mx-auto mb-7 inline-flex rounded-pill border border-forest-200/70 bg-surface/70 px-4 py-2 text-[0.7rem] font-extrabold uppercase tracking-[0.24em] text-forest-900 shadow-card">
+            Studio Desain Interior
+          </p>
+          <h1 className="mx-auto max-w-5xl font-serif text-[clamp(2.65rem,6.2vw,5.9rem)] leading-[0.9] text-balance">
+            {heroContent.title}
+          </h1>
+          <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-text-secondary md:text-lg">
+            {heroContent.description}
+          </p>
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg">
+              <ConfirmWhatsappLink href={heroContent.primaryCta.href}>
+                <WhatsappLogo aria-hidden className="h-5 w-5" weight="duotone" />
+                {heroContent.primaryCta.label}
+              </ConfirmWhatsappLink>
+            </Button>
+            <Button asChild size="lg" variant="secondary">
+              <Link href={heroContent.secondaryCta.href}>
+                {heroContent.secondaryCta.label}
+                <ArrowRight aria-hidden className="h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
 
-          <motion.div
-            className="grid max-w-sm gap-3 justify-self-start will-change-transform lg:justify-self-end"
-            style={{ y: cardY, scale: cardScale }}
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-            animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 0.12 }}
-          >
-            {heroContent.statCards.map((card, index) => (
-              <GlassCard
-                key={card.label}
-                className={
-                  index > 0
-                    ? "hidden p-5 text-forest-900 sm:block"
-                    : "flex items-center gap-4 p-4 text-forest-900 sm:block sm:p-5"
-                }
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-pill bg-forest-900 text-gold-300 sm:mb-4">
-                  <IconGlyph
-                    name={card.icon ?? "sparkle"}
-                    aria-hidden
-                    className="h-5 w-5"
-                    weight="duotone"
-                  />
-                </div>
-                <div>
-                  <p className="font-serif text-3xl leading-none sm:text-4xl">
-                    {card.value}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold sm:mt-2">
-                    {card.label}
-                  </p>
-                  {card.description ? (
-                    <p className="mt-1 text-xs leading-5 text-text-secondary">
-                      {card.description}
-                    </p>
-                  ) : null}
-                </div>
-              </GlassCard>
-            ))}
-          </motion.div>
-        </div>
+          <div className="mx-auto mt-9 flex w-px flex-col items-center">
+            <span className="mb-3 text-[0.62rem] font-extrabold uppercase tracking-[0.28em] text-forest-900/70">
+              Scroll
+            </span>
+            <span className="h-12 w-px bg-forest-900/22" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

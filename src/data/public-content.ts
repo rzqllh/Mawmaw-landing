@@ -69,6 +69,7 @@ export type Service = {
   title: string;
   description: string;
   icon: IconName;
+  image?: ImageAsset;
 };
 
 export type Project = {
@@ -134,7 +135,7 @@ export const heroContent: HeroContent = {
   description:
     "Mawmaw Interior membantu menciptakan ruang yang personal, fungsional, dan indah—untuk rumah maupun tempat usaha yang merefleksikan siapa Anda.",
   primaryCta: {
-    label: "Konsultasi via WhatsApp",
+    label: "Mulai Konsultasi",
     href: createWhatsappLink(
       siteConfig.phone ?? "",
       "Halo Mawmaw Interior, saya ingin konsultasi desain interior."
@@ -142,7 +143,7 @@ export const heroContent: HeroContent = {
   },
   secondaryCta: {
     label: "Lihat Portfolio",
-    href: "/projects",
+    href: "#proyek",
   },
   image: {
     src: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=2400&q=85",
@@ -218,30 +219,60 @@ export const services: Service[] = [
     title: "Desain Interior",
     description: "Perencanaan ruang menyeluruh sesuai gaya dan kebutuhan.",
     icon: "house",
+    image: {
+      src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85",
+      alt: "Dapur rumah modern dengan kabinet kayu dan permukaan terang.",
+      width: 1200,
+      height: 900,
+    },
   },
   {
     id: "styling-ruang",
     title: "Styling Ruang",
     description: "Penataan elemen dekor untuk hasil yang harmonis.",
     icon: "armchair",
+    image: {
+      src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=85",
+      alt: "Ruang duduk hangat dengan sofa netral dan dekor alami.",
+      width: 1200,
+      height: 900,
+    },
   },
   {
     id: "konsultasi-desain",
     title: "Konsultasi Desain",
     description: "Sesi konsultasi untuk membantu ide dan keputusan desain.",
     icon: "chat",
+    image: {
+      src: "https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1200&q=85",
+      alt: "Meja kerja dengan catatan desain dan suasana interior tenang.",
+      width: 1200,
+      height: 900,
+    },
   },
   {
     id: "visualisasi-3d",
     title: "Visualisasi 3D",
     description: "Gambaran realistis untuk memudahkan perencanaan.",
     icon: "cube",
+    image: {
+      src: "https://images.unsplash.com/photo-1618219740975-d40978bb7378?auto=format&fit=crop&w=1200&q=85",
+      alt: "Kamar tidur dengan dekor lembut dan pencahayaan natural.",
+      width: 1200,
+      height: 900,
+    },
   },
   {
     id: "residential",
     title: "Residential",
     description: "Solusi desain untuk rumah tinggal yang nyaman dan indah.",
     icon: "door",
+    image: {
+      src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+      alt: "Area duduk dengan karya seni dan pencahayaan alami.",
+      width: 1200,
+      height: 900,
+    },
   },
   {
     id: "commercial",
@@ -249,6 +280,12 @@ export const services: Service[] = [
     description:
       "Desain untuk kantor, retail, kafe, dan ruang komersial lainnya.",
     icon: "storefront",
+    image: {
+      src: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=85",
+      alt: "Interior kafe hangat dengan meja kayu dan kursi nyaman.",
+      width: 1200,
+      height: 900,
+    },
   },
 ];
 
@@ -257,7 +294,7 @@ export const projectsSection = {
   title: "Ruang-ruang yang kami banggakan.",
   description:
     "Pilihan proyek yang menunjukkan cara kami menyeimbangkan karakter, fungsi, dan rasa nyaman.",
-  cta: "Lihat Semua Proyek",
+  cta: "Semua Proyek",
 };
 
 export const projects: Project[] = [
@@ -319,7 +356,7 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?auto=format&fit=crop&w=1400&q=85",
+        src: "https://images.unsplash.com/photo-1600607688066-890987f18a86?auto=format&fit=crop&w=1400&q=85",
         alt: "Ruang apartemen terang dengan furnitur minimalis.",
         width: 1400,
         height: 1000,
@@ -490,7 +527,7 @@ export const articlesSection = {
   title: "Inspirasi dan wawasan desain.",
   description:
     "Catatan ringan untuk membantu Anda melihat rumah, usaha, dan ruang sehari-hari dengan lebih jernih.",
-  cta: "Lihat Semua Artikel",
+  cta: "Semua Artikel",
 };
 
 export const articles: Article[] = [
@@ -564,7 +601,7 @@ export const articles: Article[] = [
     excerpt:
       "Ide desain untuk memaksimalkan ruang apartemen tanpa kehilangan kenyamanan.",
     coverImage: {
-      src: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?auto=format&fit=crop&w=1600&q=85",
+      src: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1600&q=85",
       alt: "Apartemen kecil terang dengan meja makan ringkas dan sofa netral.",
       width: 1600,
       height: 1000,
@@ -672,8 +709,8 @@ export const contactContent = {
     "Konsultasi Awal",
   ],
   submitLabels: {
-    whatsapp: "Kirim via WhatsApp",
-    email: "Kirim via Email",
+    whatsapp: "WhatsApp",
+    email: "Email",
   },
   loadingLabels: {
     whatsapp: "Membuka WhatsApp...",
@@ -687,6 +724,7 @@ export const contactContent = {
 };
 
 export const footerContent = {
+  headline: "Ruang yang terasa personal, hangat, dan matang.",
   summary:
     "Studio desain interior yang menciptakan ruang hangat, fungsional, dan elegan untuk kehidupan yang lebih baik.",
   navTitle: "Navigasi",

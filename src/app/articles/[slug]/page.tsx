@@ -63,7 +63,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
           <Button asChild variant="ghost" size="sm" className="mb-8">
             <Link href="/articles">
               <CaretLeft aria-hidden className="h-4 w-4" />
-              Kembali ke Artikel
+              Kembali
             </Link>
           </Button>
           <div className="max-w-4xl">
@@ -116,7 +116,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
             </div>
             <Button asChild variant="secondary">
               <Link href="/#kontak">
-                Konsultasi Ruang
+                Konsultasi
                 <ArrowRight aria-hidden className="h-4 w-4" />
               </Link>
             </Button>
@@ -129,7 +129,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
             </div>
           ) : (
             <Button asChild variant="secondary">
-              <Link href="/articles">Lihat Semua Artikel</Link>
+              <Link href="/articles">Semua Artikel</Link>
             </Button>
           )}
         </div>

@@ -25,7 +25,7 @@ export function ArticleCard({
   return (
     <article
       className={cn(
-        "group overflow-hidden rounded-xl border border-forest-200/60 bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft motion-reduce:hover:translate-y-0",
+        "group overflow-hidden rounded-[1.65rem] border border-forest-200/60 bg-surface shadow-card transition duration-300 hover:shadow-soft motion-reduce:hover:translate-y-0",
         isSplitFeatured && "grid md:grid-cols-[1.05fr_0.95fr]",
         isCompact && "grid sm:grid-cols-[11rem_1fr]"
       )}
@@ -34,7 +34,7 @@ export function ArticleCard({
         <div
           className={cn(
             "relative overflow-hidden bg-background-muted",
-            isSplitFeatured && "min-h-[21rem]",
+            isSplitFeatured && "min-h-[24rem]",
             isFeatured && !isSplitFeatured && "aspect-[16/9]",
             isCompact && "min-h-[12rem] sm:min-h-0 sm:h-full",
             !isFeatured && !isCompact && "aspect-[16/10]"
@@ -56,12 +56,12 @@ export function ArticleCard({
         <div
           className={cn(
             "p-5 md:p-6",
-            isSplitFeatured && "md:p-8",
+            isSplitFeatured && "flex flex-col justify-center md:p-10",
             isFeatured && !isSplitFeatured && "md:p-7",
             isCompact && "md:p-5"
           )}
         >
-          <p className="text-xs font-semibold uppercase text-gold-700">
+          <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-gold-700">
             {article.category} · {formatDate(article.publishedAt)}
           </p>
           <h3

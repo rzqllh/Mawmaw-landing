@@ -28,14 +28,14 @@ export function SectionWrapper({
     >
       <div className="section-container">
         {(label || title || description) && (
-          <div className="mb-10 max-w-3xl md:mb-14">
+          <div className="mb-12 max-w-3xl md:mb-16">
             {label ? (
-              <p className="mb-4 text-sm font-semibold uppercase text-gold-700">
+              <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-700">
                 {label}
               </p>
             ) : null}
             {title ? (
-              <h2 className="font-serif text-[clamp(2.25rem,5vw,4.5rem)] leading-[0.95] text-forest-900 text-balance">
+              <h2 className="font-serif text-[clamp(2.35rem,5vw,4.8rem)] leading-[0.92] text-forest-900 text-balance">
                 {title}
               </h2>
             ) : null}

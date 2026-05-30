@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/layout/empty-state";
 import { PageHero } from "@/components/layout/page-hero";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
-import { contactContent, projects, projectsSection } from "@/data/public-content";
+import { contactContent, projects } from "@/data/public-content";
 
 export const metadata: Metadata = {
   title: "Portfolio Proyek",
@@ -51,7 +51,7 @@ export default function ProjectsPage() {
             title="Belum ada proyek."
             description="Portfolio sedang disiapkan. Anda tetap dapat menghubungi kami untuk berdiskusi tentang kebutuhan ruang Anda."
             href="/#kontak"
-            action="Hubungi Kami"
+            action="Kontak"
           />
         )}
       </section>
@@ -73,9 +73,7 @@ export default function ProjectsPage() {
             </div>
             <Button asChild variant="inverse" size="lg">
               <Link href="/#kontak">
-                {projectsSection.cta === "Lihat Semua Proyek"
-                  ? "Mulai Konsultasi"
-                  : "Hubungi Kami"}
+                Konsultasi
                 <ArrowRight aria-hidden className="h-5 w-5" />
               </Link>
             </Button>

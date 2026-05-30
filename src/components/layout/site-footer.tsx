@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import {
   footerContent,
@@ -15,14 +17,80 @@ const socialLinks = [
   { label: "Behance", href: siteConfig.socials.behance, icon: "behance" },
 ];
 
+function normalizeHref(href: string) {
+  if (href.startsWith("/")) return href;
+  if (href.startsWith("#")) return `/${href}`;
+  return `/${href}`;
+}
+
+function normalizeTelHref(phone?: string) {
+  if (!phone) return "#kontak";
+
+  const normalized = phone.replace(/[^\d+]/g, "");
+  return normalized ? `tel:${normalized}` : "#kontak";
+}
+
+function externalLinkProps(href?: string) {
+  if (!href?.startsWith("http")) return {};
+
+  return {
+    target: "_blank",
+    rel: "noopener noreferrer",
+  };
+}
+
 export function SiteFooter() {
   return (
-    <footer className="bg-forest-900 text-text-inverse">
-      <div className="section-container py-14 md:py-18">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.9fr_1fr]">
+    <footer className="relative isolate overflow-hidden bg-forest-900 text-text-inverse">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_10%,rgba(212,190,66,0.14),transparent_28rem),radial-gradient(circle_at_82%_28%,rgba(78,114,88,0.18),transparent_34rem),linear-gradient(180deg,#112019_0%,#0b1711_100%)]"
+      />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.28] [background-image:linear-gradient(90deg,rgba(250,248,241,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(250,248,241,0.06)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(180deg,transparent_0%,black_22%,black_72%,transparent_100%)]"
+      />
+
+      <div className="section-container relative py-16 md:py-20 lg:py-24">
+        <section className="glass-dark grid gap-8 rounded-[2rem] p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:p-10">
           <div>
+            <p className="mb-4 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-300">
+              Studio Interior & Furnitur
+            </p>
+
+            <h2 className="max-w-4xl font-serif text-[clamp(2.45rem,5.2vw,5.4rem)] leading-[0.9] tracking-[-0.045em] text-text-inverse text-balance">
+              {footerContent.headline}
+            </h2>
+
+            <p className="mt-5 max-w-2xl text-base leading-8 text-text-inverse/70">
+              {footerContent.summary}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/#kontak"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-gold-300 px-5 text-sm font-extrabold text-forest-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.42),0_18px_44px_rgba(4,12,8,0.22)] transition hover:-translate-y-0.5 hover:bg-gold-100"
+            >
+              Mulai Konsultasi
+              <ArrowRight aria-hidden className="h-4 w-4" weight="bold" />
+            </Link>
+
+            <Link
+              href="/#proyek"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-pill border border-text-inverse/16 bg-text-inverse/8 px-5 text-sm font-extrabold text-text-inverse transition hover:-translate-y-0.5 hover:border-gold-300/50 hover:text-gold-300"
+            >
+              Lihat Proyek
+              <ArrowRight aria-hidden className="h-4 w-4" weight="bold" />
+            </Link>
+          </div>
+        </section>
+
+        <div className="mt-12 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
+          <div className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-3">
-              <span className="relative flex h-12 w-12 overflow-hidden rounded-pill bg-gold-500/12">
+              <span className="relative flex h-12 w-12 overflow-hidden rounded-pill bg-gold-500/14 ring-1 ring-text-inverse/14 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(4,12,8,0.18)]">
                 <Image
                   src="/brand/mawmaw-icon.png"
                   alt=""
@@ -31,72 +99,90 @@ export function SiteFooter() {
                   className="object-contain p-2"
                 />
               </span>
-              <span className="font-serif text-3xl leading-none">
-                Mawmaw Interior
+
+              <span className="font-serif text-3xl leading-none tracking-[-0.035em] text-text-inverse">
+                Mawmaw.
               </span>
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-text-inverse/72">
-              {footerContent.summary}
+
+            <p className="mt-6 text-sm leading-7 text-text-inverse/68">
+              {siteConfig.description ?? footerContent.summary}
             </p>
-            <div className="mt-6 flex gap-3">
+
+            <div className="mt-6 flex flex-wrap gap-3">
               {socialLinks.map((item) =>
                 item.href ? (
                   <Link
                     key={item.label}
                     href={item.href}
                     aria-label={item.label}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-pill border border-text-inverse/15 text-text-inverse/78 transition hover:border-gold-500/60 hover:text-gold-300"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-pill border border-text-inverse/14 bg-text-inverse/6 text-text-inverse/76 transition hover:-translate-y-0.5 hover:border-gold-300/50 hover:bg-gold-300/12 hover:text-gold-300"
+                    {...externalLinkProps(item.href)}
                   >
-                    <IconGlyph name={item.icon} aria-hidden className="h-5 w-5" weight="duotone" />
+                    <IconGlyph
+                      name={item.icon}
+                      aria-hidden
+                      className="h-5 w-5"
+                      weight="duotone"
+                    />
                   </Link>
                 ) : null
               )}
             </div>
           </div>
 
-          <FooterColumn title={footerContent.navTitle}>
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={`/${item.href}`}
-                className="text-sm text-text-inverse/72 transition hover:text-gold-300"
-              >
-                {item.label === "Tentang" ? "Tentang Kami" : item.label}
-              </Link>
-            ))}
-          </FooterColumn>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <FooterColumn title={footerContent.navTitle}>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={normalizeHref(item.href)}
+                  className="w-fit text-sm leading-6 text-text-inverse/70 transition hover:translate-x-0.5 hover:text-gold-300"
+                >
+                  {item.label === "Tentang" ? "Tentang Kami" : item.label}
+                </Link>
+              ))}
+            </FooterColumn>
 
-          <FooterColumn title={footerContent.servicesTitle}>
-            {services.map((service) => (
-              <Link
-                key={service.id}
-                href="/#layanan"
-                className="text-sm text-text-inverse/72 transition hover:text-gold-300"
-              >
-                {service.title}
-              </Link>
-            ))}
-          </FooterColumn>
+            <FooterColumn title={footerContent.servicesTitle}>
+              {services.slice(0, 5).map((service) => (
+                <Link
+                  key={service.id}
+                  href="/#layanan"
+                  className="w-fit text-sm leading-6 text-text-inverse/70 transition hover:translate-x-0.5 hover:text-gold-300"
+                >
+                  {service.title}
+                </Link>
+              ))}
+            </FooterColumn>
 
-          <FooterColumn title={footerContent.contactTitle}>
-            <Link
-              href={`mailto:${siteConfig.email}`}
-              className="text-sm text-text-inverse/72 transition hover:text-gold-300"
-            >
-              {siteConfig.email}
-            </Link>
-            <Link
-              href="tel:+6281234567890"
-              className="text-sm text-text-inverse/72 transition hover:text-gold-300"
-            >
-              {siteConfig.phone}
-            </Link>
-            <p className="text-sm text-text-inverse/72">{siteConfig.address}</p>
-          </FooterColumn>
+            <FooterColumn title={footerContent.contactTitle}>
+              <Link
+                href={`mailto:${siteConfig.email}`}
+                className="break-words text-sm leading-6 text-text-inverse/70 transition hover:text-gold-300"
+              >
+                {siteConfig.email}
+              </Link>
+
+              {siteConfig.phone ? (
+                <Link
+                  href={normalizeTelHref(siteConfig.phone)}
+                  className="w-fit text-sm leading-6 text-text-inverse/70 transition hover:text-gold-300"
+                >
+                  {siteConfig.phone}
+                </Link>
+              ) : null}
+
+              <p className="text-sm leading-7 text-text-inverse/70">
+                {siteConfig.address}
+              </p>
+            </FooterColumn>
+          </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-text-inverse/12 pt-6 text-xs text-text-inverse/58 md:flex-row md:items-center md:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-text-inverse/12 pt-6 text-xs text-text-inverse/54 md:flex-row md:items-center md:justify-between">
           <p>{footerContent.copyright}</p>
+
           {footerContent.legal.length ? (
             <div className="flex flex-wrap gap-4">
               {footerContent.legal.map((item) => (
@@ -121,12 +207,15 @@ function FooterColumn({
   children,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <div>
-      <h2 className="text-sm font-semibold text-gold-300">{title}</h2>
+    <section className="rounded-[1.5rem] border border-text-inverse/10 bg-text-inverse/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+      <h2 className="text-xs font-extrabold uppercase tracking-[0.18em] text-gold-300">
+        {title}
+      </h2>
+
       <div className="mt-5 grid gap-3">{children}</div>
-    </div>
+    </section>
   );
 }
