@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String
+  location    String
+  excerpt     String
+  description String   @db.Text
+  coverSrc    String
+  coverAlt    String
+  coverBlur   String?  // Base64 blur placeholder
+  gallery     Json     // ImageAsset[]
+  featured    Boolean  @default(false)
+  year        String
+  scope       String[] // PostgreSQL array
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  coverSrc    String
+  coverAlt    String
+  coverBlur   String?  // Base64 blur placeholder
+  category    String
+  featured    Boolean  @default(false)
+  publishedAt DateTime
+  content     Json     // Fase 1: string[] (paragraphs). Fase 3: Tiptap JSON.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  RESPONDED
+}
+
+model ContactSubmission {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  projectType String
+  location    String
+  message     String        @db.Text
+  status      ContactStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+}
+
+model Service {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  description String  @db.Text
+  icon        String
+  imageSrc    String?
+  imageAlt    String?
+  imageBlur   String? // Base64 blur placeholder
+  sortOrder   Int     @default(0)
+}

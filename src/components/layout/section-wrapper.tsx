@@ -10,6 +10,7 @@ type SectionWrapperProps = {
   children: ReactNode;
   className?: string;
   muted?: boolean;
+  compact?: boolean;
 };
 
 export function SectionWrapper({
@@ -20,26 +21,28 @@ export function SectionWrapper({
   children,
   className,
   muted,
+  compact,
 }: SectionWrapperProps) {
   return (
     <section
       id={id}
       className={cn(
-        "section-y scroll-mt-28",
+        compact ? "section-y-compact" : "section-y",
+        "scroll-mt-0",
         muted ? "surface-section-muted" : "surface-section",
         className
       )}
     >
       <div className="section-container">
         {(label || title || description) && (
-          <div className="mb-12 max-w-3xl md:mb-16">
+          <div className="mb-14 max-w-3xl">
             {label ? (
-              <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-700">
+              <p className="section-eyebrow">
                 {label}
               </p>
             ) : null}
             {title ? (
-              <h2 className="font-serif text-[clamp(2.35rem,5vw,4.8rem)] leading-[0.92] text-forest-900 text-balance">
+              <h2 className="heading-section text-forest-900">
                 {title}
               </h2>
             ) : null}

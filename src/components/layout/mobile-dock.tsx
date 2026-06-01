@@ -173,14 +173,14 @@ export function MobileDock() {
     <nav
       aria-label="Dock navigasi seluler"
       className={cn(
-        "fixed inset-x-0 bottom-2 z-40 px-4 pb-[env(safe-area-inset-bottom)] transition duration-300 ease-out hover:translate-y-0 hover:opacity-100 focus-within:translate-y-0 focus-within:opacity-100 motion-reduce:transition-none lg:hidden",
+        "fixed inset-x-0 bottom-4 z-40 px-3 pb-[env(safe-area-inset-bottom)] transition duration-300 ease-out hover:translate-y-0 hover:opacity-100 focus-within:translate-y-0 focus-within:opacity-100 motion-reduce:transition-none md:hidden",
         isDockCompact && !shouldReduceMotion
-          ? "translate-y-7 opacity-60"
+          ? "translate-y-9 opacity-60"
           : "translate-y-0 opacity-100"
       )}
       onPointerDown={() => setIsDockCompact(false)}
     >
-      <div className="mx-auto grid h-14 max-w-[18rem] grid-cols-[1fr_1fr_3.25rem_1fr_1fr] items-center gap-0.5 rounded-pill border border-gold-500/15 bg-surface/76 px-1.5 shadow-card backdrop-blur-xl">
+      <div className="mx-auto grid h-16 max-w-[22rem] grid-cols-[1fr_1fr_3.5rem_1fr_1fr] items-center gap-1.5 rounded-[2.5rem] glass-nav shadow-glass px-2">
         {dockItems.slice(0, 2).map((item) => (
           item.scrollTop && pathname === "/" ? (
             <DockButton
@@ -202,12 +202,12 @@ export function MobileDock() {
         <ConfirmWhatsappLink
           href={heroContent.primaryCta.href}
           aria-label="Konsultasi via WhatsApp"
-          className="group grid h-12 w-12 place-items-center justify-self-center rounded-pill bg-forest-900 text-gold-300 shadow-card ring-2 ring-surface/90 transition duration-200 hover:-translate-y-0.5 hover:bg-forest-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500 motion-reduce:hover:translate-y-0"
+          className="group grid h-[3.25rem] w-[3.25rem] place-items-center justify-self-center rounded-full bg-forest-900 text-gold-300 shadow-xl shadow-forest-900/20 ring-2 ring-white/50 transition duration-300 hover:bg-forest-800 hover:shadow-forest-900/30 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
         >
           <IconGlyph
             name="whatsapp"
             aria-hidden
-            className="h-6 w-6 text-gold-300"
+            className="h-6 w-6 text-gold-300 transition-colors duration-300"
             weight="fill"
           />
         </ConfirmWhatsappLink>
@@ -245,7 +245,7 @@ function DockLink({
         name={item.icon}
         aria-hidden
         className={dockIconClassName(active)}
-        weight="duotone"
+        weight={active ? "fill" : "duotone"}
       />
       <span className={dockLabelClassName(active)}>
         {item.label}
@@ -275,7 +275,7 @@ function DockButton({
         name={item.icon}
         aria-hidden
         className={dockIconClassName(active)}
-        weight="duotone"
+        weight={active ? "fill" : "duotone"}
       />
       <span className={dockLabelClassName(active)}>
         {item.label}
@@ -289,8 +289,8 @@ function DockActiveMark({ active }: { active: boolean }) {
     <span
       aria-hidden
       className={cn(
-        "absolute top-1 h-1 w-4 rounded-pill bg-gold-500 transition duration-200",
-        active ? "opacity-100" : "opacity-0"
+        "absolute inset-x-3 -bottom-1 h-[2px] origin-center rounded-t-full bg-forest-900 transition-all duration-300 ease-out",
+        active ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
       )}
     />
   );
@@ -298,23 +298,23 @@ function DockActiveMark({ active }: { active: boolean }) {
 
 function dockIconClassName(active: boolean) {
   return cn(
-    "h-4 w-4 transition duration-200",
-    active ? "text-gold-700" : "text-forest-900/70"
+    "h-4 w-4 transition-all duration-300",
+    active ? "text-forest-900 scale-110" : "text-forest-900/60"
   );
 }
 
 function dockLabelClassName(active: boolean) {
   return cn(
-    "text-[0.6rem] font-bold leading-none transition duration-200",
-    active ? "text-forest-900" : "text-forest-900/74"
+    "text-[0.65rem] font-bold tracking-tight leading-none transition-all duration-300 mt-1",
+    active ? "text-forest-900" : "text-forest-900/60"
   );
 }
 
 function dockControlClassName(active: boolean) {
   return cn(
-    "relative flex min-h-11 min-w-0 flex-col items-center justify-center gap-0.5 rounded-pill px-1 text-forest-900/70 transition duration-200 hover:bg-forest-50 hover:text-forest-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500",
+    "relative flex min-h-12 min-w-0 flex-col items-center justify-center rounded-[1.25rem] px-1 py-1 transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500",
     active
-      ? "text-forest-900"
-      : "text-forest-900/70 hover:bg-forest-50 hover:text-forest-900"
+      ? "bg-surface/60"
+      : "hover:bg-surface/40"
   );
 }

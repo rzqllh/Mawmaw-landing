@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
-import { MobileDock } from "@/components/layout/mobile-dock";
 import { siteConfig } from "@/data/public-content";
 
 import "./globals.css";
@@ -53,11 +50,8 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${jakarta.variable} ${cormorant.variable}`}
     >
-      <body className="pb-16 lg:pb-0">
-        <SiteHeader />
-        <MobileDock />
-        <main id="main-content">{children}</main>
-        <SiteFooter />
+      <body className="antialiased">
+        {children}
         <Toaster
           richColors
           position="bottom-right"

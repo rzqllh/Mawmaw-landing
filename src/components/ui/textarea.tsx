@@ -2,13 +2,25 @@ import type { TextareaHTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
 
-type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  variant?: "default" | "inverse" | "admin";
+  inputSize?: "default" | "sm" | "compact"; // Using inputSize because Textarea doesn't have native size, but for consistency
+}
 
-export function Textarea({ className, ...props }: TextareaProps) {
+export function Textarea({ className, variant = "default", inputSize = "default", ...props }: TextareaProps) {
   return (
     <textarea
       className={cn(
-        "min-h-36 w-full resize-y rounded-sm border border-forest-200/70 bg-surface px-4 py-3 text-sm text-forest-900 shadow-[0_1px_0_rgba(26,42,29,0.03)] transition placeholder:text-text-muted/75 hover:border-forest-500/45 focus:border-gold-500 focus:outline-none focus:ring-4 focus:ring-gold-500/15",
+        "flex w-full transition-field focus:outline-none",
+        // Sizes
+        inputSize === "default" && "min-h-[9rem] px-4 py-3 text-sm",
+        inputSize === "sm" && "min-h-[7rem] px-3 py-2 text-[13px]",
+        inputSize === "compact" && "min-h-[5rem] px-3 py-2 text-[13px]",
+        // Variants
+        variant === "default" &&
+          "rounded-[var(--radius-sm)] border border-forest-200/70 bg-surface text-forest-900 shadow-[0_1px_0_rgba(26,42,29,0.03)] placeholder:text-text-muted/75 hover:border-forest-500/45 focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15",
+        variant === "inverse" && "field-dark rounded-[var(--radius-sm)] text-forest-900",
+        variant === "admin" && "rounded-lg bg-forest-900/5 border border-transparent text-forest-900 placeholder:text-forest-900/30 hover:bg-forest-900/10 focus:bg-white focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15",
         className
       )}
       {...props}

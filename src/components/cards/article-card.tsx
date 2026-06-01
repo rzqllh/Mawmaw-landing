@@ -25,7 +25,7 @@ export function ArticleCard({
   return (
     <article
       className={cn(
-        "group overflow-hidden rounded-[1.65rem] liquid-card transition duration-300 hover:shadow-soft motion-reduce:hover:translate-y-0",
+        "group overflow-hidden rounded-[var(--radius-card)] glass-surface card-lift",
         isSplitFeatured && "grid md:grid-cols-[1.05fr_0.95fr]",
         isCompact && "grid sm:grid-cols-[11rem_1fr]"
       )}
@@ -50,7 +50,7 @@ export function ArticleCard({
                 : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             }
             priority={priority}
-            className="object-cover transition duration-500 group-hover:scale-[1.035]"
+            className="object-cover img-zoom"
           />
         </div>
         <div
@@ -61,7 +61,7 @@ export function ArticleCard({
             isCompact && "md:p-5"
           )}
         >
-          <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-gold-700">
+          <p className="card-eyebrow">
             {article.category} · {formatDate(article.publishedAt)}
           </p>
           <h3
@@ -82,7 +82,7 @@ export function ArticleCard({
             Baca artikel
             <ArrowRight
               aria-hidden
-              className="h-4 w-4 transition group-hover:translate-x-1"
+              className="h-4 w-4 transition-transform group-hover:translate-x-1"
             />
           </span>
         </div>

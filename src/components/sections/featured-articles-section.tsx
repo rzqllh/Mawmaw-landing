@@ -4,26 +4,27 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { ArticleCard } from "@/components/cards/article-card";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
-import {
-  articlesSection,
-  featuredArticle,
-  supportingArticles,
-} from "@/data/public-content";
+import { getArticles } from "@/lib/queries";
+import { articlesSection } from "@/data/public-content";
 
-export function FeaturedArticlesSection() {
+export async function FeaturedArticlesSection() {
+  const articles = await getArticles();
+  const featuredArticle = articles.find((a) => a.featured) || articles[0];
+  const supportingArticles = articles.filter((a) => a.id !== featuredArticle?.id);
+
   if (!featuredArticle) {
     return null;
   }
 
   return (
-    <section id="artikel" className="section-y surface-section-clean scroll-mt-28">
+    <section id="artikel" className="section-y surface-section scroll-mt-0">
       <div className="section-container">
         <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_auto] lg:items-end">
           <div>
-            <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-forest-900">
+            <p className="section-eyebrow">
               {articlesSection.label}
             </p>
-            <h2 className="max-w-2xl font-serif text-[clamp(2.45rem,5vw,5rem)] leading-[0.92] text-forest-900 text-balance">
+            <h2 className="heading-section max-w-2xl text-forest-900">
               {articlesSection.title}
             </h2>
             <p className="mt-6 max-w-xl text-base leading-8 text-text-secondary md:text-lg">

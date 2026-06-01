@@ -9,6 +9,9 @@ import {
   type MouseEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
+
+import { Button } from "@/components/ui/button";
 
 type ConfirmWhatsappLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
@@ -45,6 +48,7 @@ export function ConfirmWhatsappLink({
   const titleId = useId();
   const descriptionId = useId();
   const cancelButtonRef = useRef<HTMLButtonElement | null>(null);
+  const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +57,9 @@ export function ConfirmWhatsappLink({
   const resolvedRel = rel ?? "noopener noreferrer";
 
   useEffect(() => {
+    // Hydration workaround: Mount state must be tracked to avoid hydration mismatch
+    // when rendering portals or browser-only APIs (like window.location).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMounted(true);
   }, []);
 
@@ -94,21 +101,44 @@ export function ConfirmWhatsappLink({
     openExternalLink(href, resolvedTarget);
   }
 
-  const modal = isOpen ? (
-    <div className="fixed inset-0 z-[1000] flex min-h-dvh items-center justify-center p-4">
+  const modalContent = isOpen ? (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-[1000] flex min-h-dvh items-center justify-center p-4"
+    >
       <button
         type="button"
         aria-label="Tutup dialog"
-        className="absolute inset-0 cursor-default bg-forest-900/72 backdrop-blur-md"
+        className="absolute inset-0 cursor-default bg-forest-900/40 backdrop-blur-sm"
         onClick={() => setIsOpen(false)}
       />
 
-      <div
+      <motion.div
+        initial={{ y: 16, scale: 0.96, opacity: 0 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        exit={{ y: 12, scale: 0.96, opacity: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         className="glass-dark relative w-full max-w-[30rem] overflow-hidden rounded-[2rem] p-6 text-text-inverse shadow-[0_32px_120px_rgba(4,12,8,0.42)] md:p-7"
+        onKeyDown={(e) => {
+          if (e.key === "Tab") {
+            const first = cancelButtonRef.current;
+            const last = confirmButtonRef.current;
+            if (e.shiftKey && document.activeElement === first) {
+              e.preventDefault();
+              last?.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              e.preventDefault();
+              first?.focus();
+            }
+          }
+        }}
       >
         <div
           aria-hidden
@@ -139,27 +169,32 @@ export function ConfirmWhatsappLink({
           </p>
 
           <div className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.15fr]">
-            <button
+            <Button
               ref={cancelButtonRef}
-              type="button"
-              className="dark-outline-button inline-flex h-12 items-center justify-center rounded-pill px-5 text-sm font-extrabold transition hover:scale-[1.01] active:scale-[0.99]"
+              variant="darkOutline"
               onClick={() => setIsOpen(false)}
             >
               {cancelLabel}
-            </button>
+            </Button>
 
-            <button
-              type="button"
-              className="inline-flex h-12 items-center justify-center rounded-pill bg-gold-300 px-5 text-sm font-extrabold text-forest-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.42),0_18px_42px_rgba(4,12,8,0.22)] transition hover:scale-[1.01] hover:bg-gold-100 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-300"
+            <Button
+              ref={confirmButtonRef}
+              variant="gold"
               onClick={handleConfirm}
             >
               {confirmLabel}
-            </button>
+            </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   ) : null;
+
+  const modal = (
+    <AnimatePresence>
+      {modalContent}
+    </AnimatePresence>
+  );
 
   return (
     <>

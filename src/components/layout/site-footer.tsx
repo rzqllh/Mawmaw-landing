@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 import {
   footerContent,
@@ -40,8 +46,14 @@ function externalLinkProps(href?: string) {
 }
 
 export function SiteFooter() {
+  const pathname = usePathname();
+  const isLanding = pathname === "/";
+
   return (
-    <footer className="relative isolate overflow-hidden bg-forest-900 text-text-inverse">
+    <footer className={cn(
+      "relative isolate overflow-hidden bg-forest-900 text-text-inverse",
+      !isLanding && "rounded-t-[2.5rem] mt-8 shadow-[0_-20px_40px_rgba(4,12,8,0.05)]"
+    )}>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_10%,rgba(212,190,66,0.14),transparent_28rem),radial-gradient(circle_at_82%_28%,rgba(78,114,88,0.18),transparent_34rem),linear-gradient(180deg,#112019_0%,#0b1711_100%)]"
@@ -49,48 +61,48 @@ export function SiteFooter() {
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.28] [background-image:linear-gradient(90deg,rgba(250,248,241,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(250,248,241,0.06)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(180deg,transparent_0%,black_22%,black_72%,transparent_100%)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(250,248,241,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(250,248,241,0.06)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(180deg,transparent_0%,black_22%,black_72%,transparent_100%)]"
       />
 
-      <div className="section-container relative py-16 md:py-20 lg:py-24">
-        <section className="glass-dark grid gap-8 rounded-[2rem] p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:p-10">
-          <div>
-            <p className="mb-4 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-300">
-              Studio Interior & Furnitur
-            </p>
+      <div className={cn("section-container relative pb-8 md:pb-10 lg:pb-12", isLanding ? "pt-16 md:pt-20 lg:pt-24" : "pt-12 md:pt-16")}>
+        {isLanding && (
+          <section className="glass-dark grid gap-8 rounded-[2rem] p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:p-10">
+            <div>
+              <p className="section-eyebrow-inverse !mb-4">
+                Studio Interior & Furnitur
+              </p>
 
-            <h2 className="max-w-4xl font-serif text-[clamp(2.45rem,5.2vw,5.4rem)] leading-[0.9] tracking-[-0.045em] text-text-inverse text-balance">
-              {footerContent.headline}
-            </h2>
+              <h2 className="heading-section max-w-4xl tracking-[-0.045em] text-text-inverse">
+                {footerContent.headline}
+              </h2>
 
-            <p className="mt-5 max-w-2xl text-base leading-8 text-text-inverse/70">
-              {footerContent.summary}
-            </p>
-          </div>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-text-inverse/80">
+                {footerContent.summary}
+              </p>
+            </div>
 
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/#kontak"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-gold-300 px-5 text-sm font-extrabold text-forest-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.42),0_18px_44px_rgba(4,12,8,0.22)] transition hover:-translate-y-0.5 hover:bg-gold-100"
-            >
-              Mulai Konsultasi
-              <ArrowRight aria-hidden className="h-4 w-4" weight="bold" />
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild variant="gold" className="h-12 px-5 text-sm font-extrabold">
+                <Link href="/#kontak" className="group">
+                  Mulai Konsultasi
+                  <ArrowRight aria-hidden className="h-4 w-4 transition-transform group-hover:translate-x-1" weight="bold" />
+                </Link>
+              </Button>
 
-            <Link
-              href="/#proyek"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-pill border border-text-inverse/16 bg-text-inverse/8 px-5 text-sm font-extrabold text-text-inverse transition hover:-translate-y-0.5 hover:border-gold-300/50 hover:text-gold-300"
-            >
-              Lihat Proyek
-              <ArrowRight aria-hidden className="h-4 w-4" weight="bold" />
-            </Link>
-          </div>
-        </section>
+              <Button asChild variant="darkOutline" className="h-12 px-5 text-sm font-extrabold hover:border-gold-300/50 hover:text-gold-300">
+                <Link href="/#proyek" className="group">
+                  Lihat Proyek
+                  <ArrowRight aria-hidden className="h-4 w-4 transition-transform group-hover:translate-x-1" weight="bold" />
+                </Link>
+              </Button>
+            </div>
+          </section>
+        )}
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
+        <div className={cn("grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16", isLanding ? "mt-12" : "mt-4")}>
           <div className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-3">
-              <span className="relative flex h-12 w-12 overflow-hidden rounded-pill bg-gold-500/14 ring-1 ring-text-inverse/14 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(4,12,8,0.18)]">
+              <span className="relative flex !bg-forest-700 h-12 w-12 overflow-hidden rounded-pill bg-gold-500/14 ring-1 ring-text-inverse/14 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(4,12,8,0.18)]">
                 <Image
                   src="/brand/mawmaw-icon.png"
                   alt=""
@@ -116,7 +128,7 @@ export function SiteFooter() {
                     key={item.label}
                     href={item.href}
                     aria-label={item.label}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-pill border border-text-inverse/14 bg-text-inverse/6 text-text-inverse/76 transition hover:-translate-y-0.5 hover:border-gold-300/50 hover:bg-gold-300/12 hover:text-gold-300"
+                    className="flex h-10 w-10 items-center justify-center rounded-pill bg-text-inverse/5 text-text-inverse transition-colors duration-200 hover:bg-gold-500/20 hover:text-gold-300"
                     {...externalLinkProps(item.href)}
                   >
                     <IconGlyph
@@ -137,7 +149,7 @@ export function SiteFooter() {
                 <Link
                   key={item.href}
                   href={normalizeHref(item.href)}
-                  className="w-fit text-sm leading-6 text-text-inverse/70 transition hover:translate-x-0.5 hover:text-gold-300"
+                  className="w-fit text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
                 >
                   {item.label === "Tentang" ? "Tentang Kami" : item.label}
                 </Link>
@@ -149,7 +161,7 @@ export function SiteFooter() {
                 <Link
                   key={service.id}
                   href="/#layanan"
-                  className="w-fit text-sm leading-6 text-text-inverse/70 transition hover:translate-x-0.5 hover:text-gold-300"
+                  className="w-fit text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
                 >
                   {service.title}
                 </Link>
@@ -159,7 +171,7 @@ export function SiteFooter() {
             <FooterColumn title={footerContent.contactTitle}>
               <Link
                 href={`mailto:${siteConfig.email}`}
-                className="break-words text-sm leading-6 text-text-inverse/70 transition hover:text-gold-300"
+                className="break-words text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
               >
                 {siteConfig.email}
               </Link>
@@ -167,13 +179,13 @@ export function SiteFooter() {
               {siteConfig.phone ? (
                 <Link
                   href={normalizeTelHref(siteConfig.phone)}
-                  className="w-fit text-sm leading-6 text-text-inverse/70 transition hover:text-gold-300"
+                  className="w-fit text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
                 >
                   {siteConfig.phone}
                 </Link>
               ) : null}
 
-              <p className="text-sm leading-7 text-text-inverse/70">
+              <p className="text-sm leading-7 text-text-inverse/80">
                 {siteConfig.address}
               </p>
             </FooterColumn>
@@ -210,8 +222,8 @@ function FooterColumn({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-[1.5rem] border border-text-inverse/10 bg-text-inverse/[0.045] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-      <h2 className="text-xs font-extrabold uppercase tracking-[0.18em] text-gold-300">
+    <section className="p-5">
+      <h2 className="section-eyebrow-inverse !mb-0">
         {title}
       </h2>
 

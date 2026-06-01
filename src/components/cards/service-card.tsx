@@ -12,17 +12,17 @@ type ServiceCardProps = {
 export function ServiceCard({ service, index = 0 }: ServiceCardProps) {
   if (service.image) {
     return (
-      <article className="group relative min-h-[27rem] overflow-hidden rounded-[1.85rem] bg-forest-900 shadow-card ring-1 ring-white/30 transition duration-300 hover:-translate-y-1 hover:shadow-soft motion-reduce:hover:translate-y-0">
+      <article className="group relative min-h-[27rem] overflow-hidden rounded-[var(--radius-card)] bg-forest-900 shadow-card ring-1 ring-white/30 card-lift">
         <Image
           src={service.image.src}
           alt={service.image.alt}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition duration-700 group-hover:scale-[1.04]"
+          className="object-cover img-zoom"
         />
         <div className="media-vignette absolute inset-0" />
         <div className="absolute inset-x-4 bottom-4">
-          <div className="glass-dark rounded-[1.45rem] p-5 text-text-inverse md:p-6">
+          <div className="glass-dark rounded-[var(--radius-card)] p-5 text-text-inverse md:p-6">
             <div className="mb-8 flex items-start justify-between gap-4">
               <span className="flex h-12 w-12 items-center justify-center rounded-pill bg-surface text-forest-900 shadow-card">
                 <IconGlyph
@@ -49,7 +49,7 @@ export function ServiceCard({ service, index = 0 }: ServiceCardProps) {
   }
 
   return (
-    <article className="liquid-card group rounded-[1.65rem] p-6 transition duration-300 hover:-translate-y-1 hover:border-gold-500/35 hover:shadow-soft motion-reduce:hover:translate-y-0">
+    <article className="glass-surface group rounded-[var(--radius-card)] p-6 hover:border-gold-500/35 card-lift">
       <div
         className={cn(
           "mb-7 flex h-12 w-12 items-center justify-center rounded-md bg-forest-50 text-forest-800 ring-1 ring-forest-100 transition",
@@ -58,7 +58,7 @@ export function ServiceCard({ service, index = 0 }: ServiceCardProps) {
       >
         <IconGlyph name={service.icon} aria-hidden className="h-6 w-6" weight="duotone" />
       </div>
-      <h3 className="text-lg font-semibold text-forest-900">{service.title}</h3>
+      <h3 className="font-serif text-2xl md:text-3xl leading-[1.1] text-forest-900">{service.title}</h3>
       <p className="mt-3 text-sm leading-7 text-text-secondary">
         {service.description}
       </p>

@@ -2,9 +2,11 @@
 
 import { useId, useState, type ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EnvelopeSimple } from "@phosphor-icons/react/dist/ssr";
+import { EnvelopeSimple, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { submitContactForm } from "@/app/actions/submit-contact";
 
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
@@ -18,11 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { contactContent, siteConfig } from "@/data/public-content";
-import {
-  createContactActionHref,
-  type ContactChannel,
-} from "@/lib/contact-actions";
-import { openConfirmedWhatsappLink } from "@/lib/external-links";
 import { IconGlyph } from "@/lib/icons";
 import {
   contactFormSchema,
@@ -39,9 +36,6 @@ const defaultValues: ContactFormValues = {
 
 export function ContactSection() {
   const formId = useId();
-  const [activeChannel, setActiveChannel] = useState<ContactChannel | null>(
-    null
-  );
 
   const {
     register,
@@ -53,43 +47,39 @@ export function ContactSection() {
     defaultValues,
   });
 
-  function onSubmit(values: ContactFormValues, channel: ContactChannel) {
-    const href = createContactActionHref(channel, values, {
-      email: siteConfig.email,
-      phone: siteConfig.phone ?? "",
-    });
-
-    setActiveChannel(channel);
-
-    if (channel === "whatsapp") {
-      if (!openConfirmedWhatsappLink(href)) {
-        setActiveChannel(null);
-        return;
-      }
-    } else {
-      window.location.assign(href);
+  async function onSubmit(values: ContactFormValues) {
+    const result = await submitContactForm(values);
+    if (!result.success) {
+      toast.error(result.error || "Gagal mengirim pesan.");
+      return;
     }
-
-    toast.info(contactContent.handoffToast[channel]);
-
-    window.setTimeout(() => setActiveChannel(null), 800);
+    toast.success("Pesan berhasil dikirim! Tim kami akan segera menghubungi Anda.");
   }
 
   function onInvalid() {
-    toast.error(contactContent.errorToast);
+    toast.error("Mohon periksa kembali data yang Anda isi.");
   }
 
   return (
-    <section id="kontak" className="section-y contact-section">
-      <div className="section-container relative">
+    <section id="kontak" className="relative isolate overflow-hidden bg-forest-900 text-text-inverse pt-24 pb-12">
+      {/* Soft transition gradient from the light section above */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-base to-transparent z-10" />
+      
+      {/* Dark atmospheric background shared conceptually with Footer */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_10%,rgba(212,190,66,0.08),transparent_28rem),radial-gradient(circle_at_82%_28%,rgba(78,114,88,0.12),transparent_34rem)]"
+      />
+
+      <div className="section-container relative z-20">
         <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
           <Reveal>
             <div className="lg:sticky lg:top-28">
-              <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-300">
+              <p className="section-eyebrow-inverse">
                 {contactContent.label}
               </p>
 
-              <h2 className="contact-copy-title">{contactContent.title}</h2>
+              <h2 className="heading-section max-w-[34rem] text-text-inverse tracking-[-0.015em]">{contactContent.title}</h2>
 
               <p className="contact-copy-description">
                 {contactContent.description}
@@ -117,10 +107,7 @@ export function ContactSection() {
           <Reveal delay={0.08}>
             <form
               noValidate
-              onSubmit={handleSubmit(
-                (values) => onSubmit(values, "whatsapp"),
-                onInvalid
-              )}
+              onSubmit={handleSubmit(onSubmit, onInvalid)}
               className="glass-dark contact-form-card"
             >
               <div className="grid gap-5 md:grid-cols-2">
@@ -132,7 +119,7 @@ export function ContactSection() {
                   <Input
                     id={`${formId}-name`}
                     placeholder={contactContent.fields.name.placeholder}
-                    className="contact-field-dark"
+                    variant="inverse"
                     aria-invalid={Boolean(errors.name)}
                     aria-describedby={
                       errors.name ? `${formId}-name-error` : undefined
@@ -151,7 +138,7 @@ export function ContactSection() {
                     id={`${formId}-email`}
                     type="email"
                     placeholder={contactContent.fields.email.placeholder}
-                    className="contact-field-dark"
+                    variant="inverse"
                     aria-invalid={Boolean(errors.email)}
                     aria-describedby={
                       errors.email ? `${formId}-email-error` : undefined
@@ -177,7 +164,8 @@ export function ContactSection() {
                       >
                         <SelectTrigger
                           id={`${formId}-projectType`}
-                          className="contact-field-dark contact-select-trigger"
+                          className="contact-select-trigger"
+                          variant="inverse"
                           aria-invalid={Boolean(errors.projectType)}
                           aria-describedby={
                             errors.projectType
@@ -197,13 +185,13 @@ export function ContactSection() {
                           position="popper"
                           sideOffset={8}
                           collisionPadding={16}
-                          className="contact-select-content"
+                          variant="inverse"
                         >
                           {contactContent.projectTypes.map((type) => (
                             <SelectItem
                               key={type}
                               value={type}
-                              className="contact-select-item"
+                              variant="inverse"
                             >
                               {type}
                             </SelectItem>
@@ -222,7 +210,7 @@ export function ContactSection() {
                   <Input
                     id={`${formId}-location`}
                     placeholder={contactContent.fields.location.placeholder}
-                    className="contact-field-dark"
+                    variant="inverse"
                     aria-invalid={Boolean(errors.location)}
                     aria-describedby={
                       errors.location ? `${formId}-location-error` : undefined
@@ -242,7 +230,7 @@ export function ContactSection() {
                   <Textarea
                     id={`${formId}-message`}
                     placeholder={contactContent.fields.message.placeholder}
-                    className="contact-field-dark"
+                    variant="inverse"
                     aria-invalid={Boolean(errors.message)}
                     aria-describedby={
                       errors.message ? `${formId}-message-error` : undefined
@@ -252,26 +240,15 @@ export function ContactSection() {
                 </Field>
               </div>
 
-              <div className="mt-6 grid gap-3">
+              <div className="mt-6">
                 <Button
-                  type="button"
+                  type="submit"
+                  variant="gold"
                   size="lg"
-                  className="dark-outline-button contact-submit-button"
-                  disabled={isSubmitting || Boolean(activeChannel)}
-                  onClick={handleSubmit(
-                    (values) => onSubmit(values, "email"),
-                    onInvalid
-                  )}
+                  className="contact-submit-button w-full"
+                  disabled={isSubmitting}
                 >
-                  <EnvelopeSimple
-                    aria-hidden
-                    className="h-5 w-5"
-                    weight="duotone"
-                  />
-
-                  {activeChannel === "email"
-                    ? contactContent.loadingLabels.email
-                    : contactContent.submitLabels.email}
+                  {isSubmitting ? "Mengirim..." : "Submit"}
                 </Button>
               </div>
             </form>

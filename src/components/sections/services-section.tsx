@@ -1,17 +1,19 @@
 import { ServiceCard } from "@/components/cards/service-card";
 import { Reveal } from "@/components/motion/reveal";
-import { services, servicesSection } from "@/data/public-content";
+import { getServices } from "@/lib/queries";
+import { servicesSection } from "@/data/public-content";
 
-export function ServicesSection() {
+export async function ServicesSection() {
+  const services = await getServices();
   return (
-    <section id="layanan" className="section-y surface-section-clean scroll-mt-28">
+    <section id="layanan" className="section-y surface-section scroll-mt-0">
       <div className="section-container">
         <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(20rem,0.55fr)] lg:items-start">
           <div>
-            <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-700">
+            <p className="section-eyebrow">
               {servicesSection.label}
             </p>
-            <h2 className="max-w-3xl font-serif text-[clamp(2.45rem,5vw,5rem)] leading-[0.92] text-forest-900 text-balance">
+            <h2 className="heading-section max-w-3xl text-forest-900">
               {servicesSection.title}
             </h2>
           </div>

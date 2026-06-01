@@ -4,54 +4,74 @@ import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "motion/react";
 
 import { HeroShader } from "@/components/effects/hero-shader";
 import { Button } from "@/components/ui/button";
 import { ConfirmWhatsappLink } from "@/components/ui/confirm-whatsapp-link";
 import { heroContent } from "@/data/public-content";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  const { scrollY } = useScroll();
+  
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const imageY = useTransform(
-    scrollY,
-    [0, 1000],
-    shouldReduceMotion ? [0, 0] : [-40, 54]
-  );
-  const imageScale = useTransform(
-    scrollY,
-    [0, 1000],
-    shouldReduceMotion ? [1, 1] : [1.055, 1.015]
-  );
-  const copyY = useTransform(
-    scrollY,
-    [0, 820],
-    shouldReduceMotion ? [0, 0] : [0, -22]
-  );
-  const shadeOpacity = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? [1, 1] : [0.66, 0.42]
-  );
+
+  // Smooth out the scroll progress for a more "liquid" parallax feel
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 40,
+    damping: 15,
+    restDelta: 0.001
+  });
+
+  // Background Image Parallax (Moves down slowly, scales down, fades out)
+  const imageY = useTransform(smoothProgress, [0, 1], shouldReduceMotion ? ["0%", "0%"] : ["0%", "25%"]);
+  const imageScale = useTransform(smoothProgress, [0, 1], shouldReduceMotion ? [1, 1] : [1.1, 1.0]);
+  const imageOpacity = useTransform(smoothProgress, [0, 0.8, 1], [0.45, 0.1, 0]);
+
+  // Copy Panel Parallax (Moves up faster to create depth)
+  const copyY = useTransform(smoothProgress, [0, 1], shouldReduceMotion ? ["0%", "0%"] : ["0%", "-15%"]);
+  
+  // Shader/Overlay fade
+  const shadeOpacity = useTransform(smoothProgress, [0, 1], shouldReduceMotion ? [1, 1] : [0.5, 0.2]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40, filter: shouldReduceMotion ? "blur(0px)" : "blur(12px)" },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 1.2, ease } 
+    }
+  };
 
   return (
     <section
       id="home-hero"
       ref={sectionRef}
-      className="relative isolate min-h-[94svh] overflow-hidden bg-transparent text-forest-900"
+      className="relative isolate min-h-svh overflow-hidden bg-background text-forest-900"
     >
+      {/* Background Layer */}
       <motion.div
         aria-hidden
-        className="absolute inset-x-0 -inset-y-16 will-change-transform"
-        style={{ y: imageY, scale: imageScale }}
+        className="absolute inset-0 will-change-transform transform-gpu"
+        style={{ y: imageY, scale: imageScale, opacity: imageOpacity }}
       >
         <Image
           src={heroContent.image.src}
@@ -59,61 +79,114 @@ export function HeroSection() {
           fill
           sizes="100vw"
           priority
-          className="object-cover opacity-[0.34] saturate-[0.76] contrast-[0.96]"
+          className="object-cover saturate-[0.85] contrast-[1.05]"
         />
       </motion.div>
+      
+      {/* Interactive Liquid Glass Shader Background */}
       <HeroShader />
+      
+      {/* Gradients for depth and blending */}
       <motion.div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,250,245,0.72)_0%,rgba(247,246,242,0.86)_60%,rgba(247,246,242,0.0)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,250,245,0.4)_0%,rgba(247,246,242,0.7)_60%,rgba(247,246,242,1.0)_100%)]"
         style={{ opacity: shadeOpacity }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-linear-to-b from-background via-background/72 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-b from-background/90 via-background/40 to-transparent"
       />
-      <div className="absolute inset-x-0 bottom-0 h-56 bg-linear-to-t from-background/70 via-background/30 to-transparent" />
+      <div 
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-linear-to-t from-background via-background/60 to-transparent" 
+      />
 
-      <div className="section-container relative z-10 flex min-h-[94svh] items-center pb-14 pt-28 md:pb-16 md:pt-32">
+      {/* Content Layer */}
+      <div className="section-container relative z-10 flex min-h-svh flex-col items-center justify-center px-4 pt-24 pb-20">
         <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
-          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           style={{ y: copyY }}
-          transition={{ duration: 0.8, ease }}
-          className="liquid-panel mx-auto w-full max-w-6xl rounded-[2rem] px-5 py-12 text-center will-change-transform sm:px-8 md:rounded-[2.5rem] md:py-16 lg:px-14"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 60, scale: 0.98 }}
+          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.4, ease }}
+          className="glass-panel group relative w-full max-w-[64rem] overflow-hidden rounded-[2.5rem] px-5 py-10 text-center will-change-transform sm:px-10 md:rounded-[3rem] md:py-14 lg:px-16 shadow-2xl shadow-forest-900/5"
         >
-          <p className="mx-auto mb-7 inline-flex rounded-pill border border-forest-200/70 bg-surface/58 px-4 py-2 text-[0.7rem] font-extrabold uppercase tracking-[0.24em] text-forest-900 shadow-card backdrop-blur-xl">
-            Studio Desain Interior
-          </p>
-          <h1 className="mx-auto max-w-5xl font-serif text-[clamp(2.65rem,6.2vw,5.9rem)] leading-[0.9] text-balance">
-            {heroContent.title}
-          </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-text-secondary md:text-lg">
-            {heroContent.description}
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button asChild size="lg">
-              <ConfirmWhatsappLink href={heroContent.primaryCta.href}>
-                <WhatsappLogo aria-hidden className="h-5 w-5" weight="duotone" />
-                {heroContent.primaryCta.label}
-              </ConfirmWhatsappLink>
-            </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href={heroContent.secondaryCta.href}>
-                {heroContent.secondaryCta.label}
-                <ArrowRight aria-hidden className="h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
+          {/* Liquid Glass Sweep Animation */}
+          <motion.div 
+            aria-hidden
+            className="absolute inset-0 -translate-x-[150%] bg-linear-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"
+            animate={{ translateX: ['-150%', '250%'] }}
+            transition={{ duration: 4, ease: 'easeInOut', repeat: Infinity, repeatDelay: 6 }}
+          />
 
-          <div className="mx-auto mt-9 flex w-px flex-col items-center">
-            <span className="mb-3 text-[0.62rem] font-extrabold uppercase tracking-[0.28em] text-forest-900/70">
-              Scroll
-            </span>
-            <span className="h-12 w-px bg-forest-900/22" />
-          </div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="relative z-10 flex flex-col items-center"
+          >
+            <motion.p 
+              variants={itemVariants}
+              className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-forest-900/10 bg-forest-900/5 px-4 py-2 text-[0.65rem] font-extrabold uppercase tracking-[0.24em] text-forest-900 backdrop-blur-md transition-colors hover:bg-forest-900/10 sm:text-[0.7rem]"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-forest-900/40 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-forest-900/60"></span>
+              </span>
+              Studio Desain Interior
+            </motion.p>
+            
+            <motion.h1 
+              variants={itemVariants}
+              className="heading-hero mx-auto max-w-4xl text-forest-900 tracking-tight"
+            >
+              {heroContent.title}
+            </motion.h1>
+            
+            <motion.p 
+              variants={itemVariants}
+              className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-text-secondary sm:text-base md:text-lg"
+            >
+              {heroContent.description}
+            </motion.p>
+            
+            <motion.div 
+              variants={itemVariants}
+              className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            >
+              <Button asChild size="lg" className="rounded-full px-8 shadow-xl shadow-forest-900/10 transition-all hover:shadow-forest-900/20">
+                <ConfirmWhatsappLink href={heroContent.primaryCta.href} className="group">
+                  <WhatsappLogo aria-hidden className="h-5 w-5 transition-transform group-hover:rotate-12 group-hover:scale-110" weight="duotone" />
+                  {heroContent.primaryCta.label}
+                </ConfirmWhatsappLink>
+              </Button>
+              <Button asChild size="lg" variant="secondary" className="rounded-full border-forest-900/10 bg-transparent px-8 transition-all hover:bg-forest-900/5">
+                <Link href={heroContent.secondaryCta.href} className="group">
+                  {heroContent.secondaryCta.label}
+                  <ArrowRight aria-hidden className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
+
+      {/* Scroll Indicator - Absolute Bottom */}
+      <motion.div 
+        aria-hidden
+        className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 w-px flex-col items-center opacity-70"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 1.5, ease }}
+      >
+        <span className="mb-3 text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-forest-900/60">
+          Scroll
+        </span>
+        <motion.span 
+          className="h-12 w-px origin-top bg-linear-to-b from-forest-900/40 to-transparent"
+          animate={{ scaleY: [0, 1, 1], opacity: [0, 1, 0] }}
+          transition={{ duration: 2, ease: "easeInOut", repeat: Infinity }}
+        />
+      </motion.div>
     </section>
   );
 }

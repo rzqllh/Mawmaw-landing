@@ -10,7 +10,7 @@ export function AboutSection() {
     featuredProjects[0]?.gallery[0] ?? featuredProjects[0]?.coverImage;
 
   return (
-    <SectionWrapper id="tentang" muted className="!pt-10 md:!pt-12">
+    <SectionWrapper id="tentang" muted compact>
       <div className="grid items-center gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
         <div className="relative max-w-2xl">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 shadow-soft md:aspect-[4/3] lg:aspect-[4/5]">
@@ -23,7 +23,7 @@ export function AboutSection() {
             />
           </div>
           {insetImage ? (
-            <div className="glass-strong absolute -bottom-6 right-4 w-[48%] overflow-hidden rounded-[1.65rem] p-2 shadow-glass md:right-8 lg:-bottom-8">
+            <div className="glass-surface absolute -bottom-6 right-4 w-[48%] rounded-[1.65rem] p-2 shadow-glass md:right-8 lg:-bottom-8">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[1.2rem]">
                 <Image
                   src={insetImage.src}
@@ -48,10 +48,10 @@ export function AboutSection() {
         </div>
 
         <div className="pt-8 lg:pt-0">
-          <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-700">
+          <p className="section-eyebrow">
             {aboutContent.label}
           </p>
-          <h2 className="max-w-3xl font-serif text-[clamp(2.45rem,5vw,5.2rem)] leading-[0.92] text-forest-900 text-balance">
+          <h2 className="heading-section max-w-3xl text-forest-900">
             {aboutContent.title}
           </h2>
           <div className="mt-7 h-px w-14 bg-gold-500" />

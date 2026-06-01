@@ -13,7 +13,7 @@ import { ConfirmWhatsappLink } from "@/components/ui/confirm-whatsapp-link";
 import { cn } from "@/lib/utils";
 import { resolveInPageHref } from "@/lib/navigation";
 
-const headerEase = [0.22, 1, 0.36, 1] as const;
+const headerEase = [0.16, 1, 0.3, 1] as const;
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function SiteHeader() {
       : activeSectionHref;
   const headerTransition = shouldReduceMotion
     ? { duration: 0 }
-    : { duration: 0.34, ease: headerEase };
+    : { duration: 0.4, ease: headerEase };
 
   const resolvedNav = useMemo(
     () =>
@@ -81,10 +81,14 @@ export function SiteHeader() {
         if (!section) return active;
 
         const rect = section.getBoundingClientRect();
-        const entersViewport = rect.top <= window.innerHeight * 0.45;
-        const stillVisible = rect.bottom >= window.innerHeight * 0.22;
+        const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
+        
+        // Section is active if its top edge has reached the header area (approx 112px from top)
+        // OR if we are at the bottom of the page and this is the last section in the array
+        const isActiveArea = (rect.top <= 120 && rect.bottom > 120) || 
+                             (isAtBottom && id === sectionIds[sectionIds.length - 1]);
 
-        return entersViewport && stillVisible ? `#${id}` : active;
+        return isActiveArea ? `#${id}` : active;
       }, null);
 
       setActiveSectionHref(activeSection);
@@ -115,16 +119,17 @@ export function SiteHeader() {
           layout
           data-header-state={showLiquidHeader ? "glass" : "hero"}
           className={cn(
-            "glass-nav mx-auto grid min-h-16 max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 rounded-pill px-3 py-2 text-forest-900 transition duration-300 ease-out md:px-4",
+            "glass-nav mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 text-forest-900 transition duration-300 ease-out md:px-4",
             hasScrolled && "shadow-glass"
           )}
           transition={headerTransition}
         >
+          {/* LEFT: BRAND */}
           <Link
             href="/"
             aria-label={`${siteConfig.name} beranda`}
             onClick={handleBrandClick}
-            className="col-start-1 row-start-1 flex min-w-0 items-center gap-3 justify-self-start rounded-pill pr-2 transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
+            className="flex min-w-0 shrink-0 items-center gap-3 rounded-pill pr-2 transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
           >
             <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-pill bg-forest-700">
               <Image
@@ -140,20 +145,16 @@ export function SiteHeader() {
             </span>
           </Link>
 
+          {/* CENTER: NAV */}
           <motion.nav
             layout
             aria-label="Navigasi utama"
-            className={cn(
-              "row-start-1 hidden min-w-0 lg:flex",
-              showHeaderActions
-                ? "col-start-2 justify-self-center"
-                : "col-span-2 col-start-2 justify-self-end"
-            )}
+            className="hidden flex-1 min-w-0 md:flex items-center justify-center px-4"
             transition={headerTransition}
           >
             <motion.ul
               layout
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 xl:gap-2"
               transition={headerTransition}
             >
               {resolvedNav.map((item) => {
@@ -167,7 +168,7 @@ export function SiteHeader() {
                       href={item.href}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
-                        "relative rounded-pill px-3 py-2 text-sm font-semibold text-text-secondary transition hover:bg-surface/75 hover:text-forest-900",
+                        "relative rounded-pill px-2 py-2 md:px-3 text-[0.8rem] lg:text-sm font-semibold text-text-secondary transition hover:bg-surface/75 hover:text-forest-900 whitespace-nowrap",
                         isActive && "text-forest-900"
                       )}
                     >
@@ -175,7 +176,7 @@ export function SiteHeader() {
                       <span
                         aria-hidden
                         className={cn(
-                          "absolute inset-x-3 -bottom-0.5 h-px origin-center rounded-pill bg-forest-900 transition duration-300",
+                          "absolute inset-x-3 -bottom-0.5 h-[2px] origin-center rounded-t-full bg-forest-900 transition-all duration-300 ease-out",
                           isActive
                             ? "scale-x-100 opacity-100"
                             : "scale-x-0 opacity-0"
@@ -188,44 +189,47 @@ export function SiteHeader() {
             </motion.ul>
           </motion.nav>
 
+          {/* RIGHT: ACTIONS */}
           <AnimatePresence initial={false} mode="popLayout">
             {showHeaderActions ? (
               <motion.div
                 key="header-actions"
                 data-header-actions
                 layout
-                className="col-start-3 row-start-1 hidden items-center gap-2 justify-self-end lg:flex"
+                className="hidden shrink-0 items-center gap-2 md:flex"
                 initial={
                   shouldReduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, x: 16, scale: 0.98 }
+                    : { opacity: 0, x: 16, filter: "blur(4px)" }
                 }
-                animate={{ opacity: 1, x: 0, scale: 1 }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 exit={
                   shouldReduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, x: 16, scale: 0.98 }
+                    : { opacity: 0, x: 16, filter: "blur(4px)" }
                 }
                 transition={headerTransition}
               >
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/projects">
-                    Portfolio
-                    <ArrowRight aria-hidden className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild size="sm">
-                  <ConfirmWhatsappLink href={heroContent.primaryCta.href}>
+
+                <Button asChild size="sm" className="rounded-pill shadow-xl shadow-forest-900/10 transition-all">
+                  <ConfirmWhatsappLink href={heroContent.primaryCta.href} className="group">
                     <WhatsappLogo
                       aria-hidden
-                      className="h-4 w-4"
+                      className="h-4 w-4 transition-transform group-hover:rotate-12 group-hover:scale-110"
                       weight="duotone"
                     />
                     Konsultasi
                   </ConfirmWhatsappLink>
                 </Button>
               </motion.div>
-            ) : null}
+            ) : (
+              <motion.div 
+                key="empty-actions" 
+                className="hidden w-[120px] md:block lg:w-[220px]" 
+                aria-hidden 
+                layout 
+              />
+            )}
           </AnimatePresence>
         </motion.div>
       </div>

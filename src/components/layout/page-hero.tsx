@@ -20,10 +20,10 @@ export function PageHero({
   return (
     <section className={cn("section-container pt-32 md:pt-40", className)}>
       <div className="max-w-4xl">
-        <p className="mb-4 text-sm font-semibold uppercase text-gold-700">
+        <p className="section-eyebrow">
           {label}
         </p>
-        <h1 className="font-serif text-[clamp(3rem,7vw,7rem)] leading-[0.9] text-forest-900 text-balance">
+        <h1 className="heading-page text-forest-900">
           {title}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-text-secondary md:text-lg">

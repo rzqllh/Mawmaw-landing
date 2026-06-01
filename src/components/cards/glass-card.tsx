@@ -10,7 +10,7 @@ export function GlassCard({ className, strong, ...props }: GlassCardProps) {
   return (
     <div
       className={cn(
-        strong ? "glass-strong" : "glass-surface",
+        strong ? "glass-panel" : "glass-surface",
         "rounded-xl",
         className
       )}

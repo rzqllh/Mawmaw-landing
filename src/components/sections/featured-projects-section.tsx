@@ -4,20 +4,22 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { ProjectCard } from "@/components/cards/project-card";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
-import { featuredProjects, projectsSection } from "@/data/public-content";
+import { getFeaturedProjects } from "@/lib/queries";
+import { projectsSection } from "@/data/public-content";
 
-export function FeaturedProjectsSection() {
+export async function FeaturedProjectsSection() {
+  const featuredProjects = await getFeaturedProjects();
   const [firstProject, secondProject, thirdProject] = featuredProjects;
 
   return (
-    <section id="proyek" className="section-y surface-section-muted scroll-mt-28">
+    <section id="proyek" className="section-y surface-section-muted scroll-mt-0">
       <div className="section-container">
         <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_auto] lg:items-end">
           <div>
-            <p className="mb-5 text-xs font-extrabold uppercase tracking-[0.24em] text-gold-700">
+            <p className="section-eyebrow">
               {projectsSection.label}
             </p>
-            <h2 className="max-w-2xl font-serif text-[clamp(2.45rem,5vw,5rem)] leading-[0.92] text-forest-900 text-balance">
+            <h2 className="heading-section max-w-2xl text-forest-900">
               {projectsSection.title}
             </h2>
             <p className="mt-6 max-w-xl text-base leading-8 text-text-secondary md:text-lg">

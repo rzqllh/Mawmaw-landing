@@ -68,16 +68,20 @@ Use this structure:
 
 ```md
 ## Summary
+
 - What changed.
 
 ## Files Changed
+
 - `path/file`: reason.
 
 ## Validation
+
 - Command/check run.
 - Result.
 
 ## Notes / Risks
+
 - Anything uncertain, skipped, or requiring owner decision.
 ```
 
