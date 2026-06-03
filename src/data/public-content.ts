@@ -109,6 +109,7 @@ export type ContactFormInput = {
 
 export const siteConfig: SiteConfig = {
   name: "Mawmaw Interior",
+  url: "https://mawmaw-interior.vercel.app",
   description:
     "Mawmaw Interior adalah studio desain interior yang membantu menciptakan ruang hangat, fungsional, dan elegan untuk rumah maupun tempat usaha.",
   email: "halo@mawmawinterior.com",
