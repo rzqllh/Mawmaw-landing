@@ -6,7 +6,7 @@ const AdminCard = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
     <div
       ref={ref}
       className={cn(
-        "admin-glass-panel text-forest-900",
+        "admin-solid-surface text-forest-900",
         className
       )}
       {...props}

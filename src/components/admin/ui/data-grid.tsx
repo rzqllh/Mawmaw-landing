@@ -35,7 +35,7 @@ export function DataGridItem({
   deleteAction
 }: DataGridItemProps) {
   return (
-    <div className="group admin-glass-panel flex flex-col sm:flex-row gap-6 p-5 transition-all hover:border-forest-900/20 hover:shadow-lg hover:-translate-y-0.5">
+    <div className="group admin-solid-surface flex flex-col sm:flex-row gap-6 p-5 transition-all hover:border-forest-900/20 hover:shadow-lg hover:-translate-y-0.5">
       {/* Thumbnail */}
       <div className="shrink-0 w-full sm:w-56 h-36 bg-forest-900/5 rounded-xl overflow-hidden border border-forest-900/10 relative flex items-center justify-center">
         {coverSrc ? (

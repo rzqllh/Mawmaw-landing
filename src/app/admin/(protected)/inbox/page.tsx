@@ -22,7 +22,7 @@ export default async function InboxPage() {
       
       <div className="w-full">
         {submissions.length === 0 ? (
-          <div className="admin-glass-panel flex flex-col items-center justify-center p-12 text-center">
+          <div className="admin-solid-surface flex flex-col items-center justify-center p-12 text-center">
             <p className="font-serif text-2xl text-forest-900 mb-2">Inbox Kosong</p>
             <p className="text-forest-900/60 text-sm">Belum ada pesan yang masuk.</p>
           </div>

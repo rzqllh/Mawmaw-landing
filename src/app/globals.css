@@ -41,7 +41,6 @@
   --radius-pill: 999px;
   --radius-card: 1.75rem;
   --radius-card-lg: 2rem;
-  --radius-sm: 0.75rem;
 
   /* Interaction Tokens */
   --duration-press: 100ms;
@@ -55,6 +54,15 @@
   --shadow-soft: 0 22px 70px rgba(17, 32, 25, 0.08);
   --shadow-card: 0 14px 38px rgba(17, 32, 25, 0.075);
   --shadow-glass: 0 22px 80px rgba(17, 32, 25, 0.14);
+}
+
+:root {
+  --navbar-height: 4.75rem; /* mobile (top-3 + min-h-16) */
+}
+@media (min-width: 768px) {
+  :root {
+    --navbar-height: 5.5rem; /* desktop (top-5 + min-h-16) */
+  }
 }
 
 :root {
@@ -78,10 +86,13 @@
 html {
   background: var(--background);
   scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  scroll-padding-top: var(--navbar-height);
   scrollbar-color: rgba(58, 82, 65, 0.78) rgba(244, 241, 232, 0.92);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
 }
 
 body {
@@ -90,6 +101,7 @@ body {
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  overscroll-behavior: none;
 }
 
 @supports not (overflow: clip) {
@@ -171,12 +183,13 @@ textarea {
 }
 
 .section-y {
-  min-height: 100svh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: clamp(7rem, 10vw, 9rem);
-  padding-bottom: clamp(4rem, 8vw, 6rem);
+  padding-top: clamp(4rem, 6vw, 6rem);
+  padding-bottom: clamp(3rem, 5vw, 5rem);
+  scroll-snap-align: start;
 }
 
 .section-y-compact {
@@ -224,6 +237,38 @@ textarea {
   backdrop-filter: blur(12px) saturate(1.6) contrast(1.04);
 }
 
+/* Material 3: Clear Liquid Control (Public Only) */
+.clear-liquid-nav {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05),
+    0 16px 40px rgba(17, 32, 25, 0.15);
+  backdrop-filter: blur(8px) saturate(1.1) brightness(1.05);
+  transition: all var(--duration-transition) var(--ease-standard);
+}
+.clear-liquid-nav:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.clear-liquid-control {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    0 4px 12px rgba(17, 32, 25, 0.12);
+  backdrop-filter: blur(6px) saturate(1.1);
+  transition: all var(--duration-hover) var(--ease-standard);
+}
+.clear-liquid-control:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.6),
+    0 8px 16px rgba(17, 32, 25, 0.12);
+}
+
 .glass-dark {
   border: 1px solid rgba(250, 248, 241, 0.15);
   background:
@@ -264,20 +309,21 @@ textarea {
   color: var(--text-primary);
 }
 
-.admin-glass-panel {
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border-glass);
-  box-shadow: 0 8px 32px rgba(17, 32, 25, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(20px) saturate(1.2);
+/* Material 1: Solid Editorial Surface */
+.admin-solid-surface {
+  background: var(--admin-surface-solid);
+  border: 1px solid var(--admin-border-strong);
+  box-shadow: 0 4px 12px rgba(17, 32, 25, 0.02);
   border-radius: var(--radius-xl);
   transition: all var(--duration-transition) var(--ease-standard);
 }
 
+/* Material 2: Regular Soft Glass */
 .admin-glass-sidebar {
-  background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%);
+  background: rgba(255, 255, 255, 0.65);
   border-right: 1px solid var(--admin-border);
   box-shadow: 1px 0 24px rgba(17, 32, 25, 0.02);
-  backdrop-filter: blur(24px);
+  backdrop-filter: blur(12px) saturate(1.05);
 }
 
 .admin-input-base {
@@ -556,12 +602,13 @@ textarea {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 100svh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: clamp(7rem, 10vw, 9rem);
-  padding-bottom: clamp(4rem, 8vw, 6rem);
+  padding-top: clamp(4rem, 6vw, 6rem);
+  padding-bottom: clamp(3rem, 5vw, 5rem);
+  scroll-snap-align: start;
   background:
     linear-gradient(180deg, #112019 0%, #0b1711 100%),
     radial-gradient(circle at 16% 34%, rgba(250, 248, 241, 0.08), transparent 28rem),

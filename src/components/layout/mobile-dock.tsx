@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import { useReducedMotion } from "motion/react";
 
 import { ConfirmWhatsappLink } from "@/components/ui/confirm-whatsapp-link";
-import { heroContent } from "@/data/public-content";
 import { IconGlyph, type IconName } from "@/lib/icons";
 import { resolveInPageHref } from "@/lib/navigation";
+import { SiteSetting } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
 type DockItem = {
@@ -32,7 +32,7 @@ const dockItems: DockItem[] = [
   { label: "Kontak", href: "#kontak", icon: "chat" },
 ];
 
-export function MobileDock() {
+export function MobileDock({ settings }: { settings: SiteSetting }) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
   const [activeSectionHref, setActiveSectionHref] = useState<string | null>(
@@ -180,7 +180,7 @@ export function MobileDock() {
       )}
       onPointerDown={() => setIsDockCompact(false)}
     >
-      <div className="mx-auto grid h-16 max-w-[22rem] grid-cols-[1fr_1fr_3.5rem_1fr_1fr] items-center gap-1.5 rounded-[2.5rem] glass-nav shadow-glass px-2">
+      <div className="mx-auto grid h-16 max-w-[22rem] grid-cols-[1fr_1fr_3.5rem_1fr_1fr] items-center gap-1.5 rounded-[2.5rem] clear-liquid-nav px-2">
         {dockItems.slice(0, 2).map((item) => (
           item.scrollTop && pathname === "/" ? (
             <DockButton
@@ -200,7 +200,7 @@ export function MobileDock() {
         ))}
 
         <ConfirmWhatsappLink
-          href={heroContent.primaryCta.href}
+          href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Halo Mawmaw Interior, saya ingin konsultasi desain interior.")}`}
           aria-label="Konsultasi via WhatsApp"
           className="group grid h-[3.25rem] w-[3.25rem] place-items-center justify-self-center rounded-full bg-forest-900 text-gold-300 shadow-xl shadow-forest-900/20 ring-2 ring-white/50 transition duration-300 hover:bg-forest-800 hover:shadow-forest-900/30 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
         >

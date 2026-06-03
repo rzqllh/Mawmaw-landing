@@ -76,66 +76,74 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
           })}
         </div>
 
-        {/* Right: Accordion List (Scrollable if needed, but designed to fit) */}
-        <div className="flex flex-col h-full justify-center pr-4 md:pr-12">
-          <div className="mb-10 lg:mb-16">
-            <p className="section-eyebrow mb-4">{settings.servicesLabel}</p>
-            <h2 className="text-5xl lg:text-6xl xl:text-7xl font-serif text-forest-900 leading-[1.1] mb-6">
-              {settings.servicesTitle}
-            </h2>
-            <p className="text-lg text-text-secondary leading-relaxed max-w-md">
-              {settings.servicesDesc}
-            </p>
+        {/* Right: Accordion List (Scrollable) */}
+        <div className="relative h-full flex flex-col justify-center pr-4 md:pr-12">
+          {/* Top fade indicator */}
+          <div className="absolute top-0 inset-x-0 h-12 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none opacity-80"></div>
+          
+          <div className="accordion-scroll-container h-full overflow-y-auto overscroll-contain py-8 pb-32 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="mb-10 lg:mb-16 mt-8">
+              <p className="section-eyebrow mb-4">{settings.servicesLabel}</p>
+              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-serif text-forest-900 leading-[1.1] mb-6">
+                {settings.servicesTitle}
+              </h2>
+              <p className="text-lg text-text-secondary leading-relaxed max-w-md">
+                {settings.servicesDesc}
+              </p>
+            </div>
+            
+            <div className="flex flex-col gap-2 relative">
+              {services.map((s, i) => {
+                const isActive = activeIndex === i;
+                return (
+                  <div 
+                    key={s.id}
+                    className={`group cursor-pointer border-b border-forest-900/10 py-5 transition-all duration-500 ease-out ${
+                      isActive ? 'opacity-100 pl-4' : 'opacity-50 hover:opacity-80 hover:pl-2'
+                    }`}
+                    onMouseEnter={() => setActiveIndex(i)}
+                    onClick={() => setActiveIndex(i)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <span className={`font-serif italic text-2xl transition-colors duration-500 ${
+                          isActive ? 'text-gold-700' : 'text-forest-900/20 group-hover:text-gold-700/50'
+                        }`}>
+                          0{i+1}
+                        </span>
+                        <h3 className={`font-serif transition-all duration-500 ${
+                          isActive ? 'text-3xl lg:text-4xl text-forest-900' : 'text-xl lg:text-2xl text-forest-900/70'
+                        }`}>
+                          {s.title}
+                        </h3>
+                      </div>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 shrink-0 ${
+                        isActive ? 'bg-gold-500 text-white shadow-md transform rotate-0' : 'bg-transparent text-text-muted transform -rotate-45'
+                      }`}>
+                        <IconGlyph name="ph-arrow-right" weight={isActive ? "bold" : "regular"} className="w-5 h-5" />
+                      </div>
+                    </div>
+                    
+                    {/* Accordion Content */}
+                    <div 
+                      className={`grid transition-all duration-[600ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                        isActive ? 'grid-rows-[1fr] opacity-100 mt-6' : 'grid-rows-[0fr] opacity-0 mt-0'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="text-base text-text-secondary max-w-md pr-8 pl-12 leading-relaxed">
+                          {s.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
           
-          <div className="flex flex-col gap-2">
-            {services.map((s, i) => {
-              const isActive = activeIndex === i;
-              return (
-                <div 
-                  key={s.id}
-                  className={`group cursor-pointer border-b border-forest-900/10 py-5 transition-all duration-500 ease-out ${
-                    isActive ? 'opacity-100 pl-4' : 'opacity-50 hover:opacity-80 hover:pl-2'
-                  }`}
-                  onMouseEnter={() => setActiveIndex(i)}
-                  onClick={() => setActiveIndex(i)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                      <span className={`font-serif italic text-2xl transition-colors duration-500 ${
-                        isActive ? 'text-gold-700' : 'text-forest-900/20 group-hover:text-gold-700/50'
-                      }`}>
-                        0{i+1}
-                      </span>
-                      <h3 className={`font-serif transition-all duration-500 ${
-                        isActive ? 'text-4xl lg:text-5xl text-forest-900' : 'text-2xl lg:text-3xl text-forest-900/70'
-                      }`}>
-                        {s.title}
-                      </h3>
-                    </div>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
-                      isActive ? 'bg-gold-500 text-white shadow-md transform rotate-0' : 'bg-transparent text-text-muted transform -rotate-45'
-                    }`}>
-                      <IconGlyph name="ph-arrow-right" weight={isActive ? "bold" : "regular"} className="w-5 h-5" />
-                    </div>
-                  </div>
-                  
-                  {/* Accordion Content */}
-                  <div 
-                    className={`grid transition-all duration-[600ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
-                      isActive ? 'grid-rows-[1fr] opacity-100 mt-6' : 'grid-rows-[0fr] opacity-0 mt-0'
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <p className="text-lg text-text-secondary max-w-md pr-8 pl-12 leading-relaxed">
-                        {s.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {/* Bottom fade indicator */}
+          <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent z-10 pointer-events-none"></div>
         </div>
       </div>
     </div>

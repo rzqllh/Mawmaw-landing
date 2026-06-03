@@ -16,7 +16,7 @@ export default async function PublicLayout({
         Langsung ke konten
       </a>
       <SiteHeader settings={settings} />
-      <MobileDock />
+      <MobileDock settings={settings} />
       <main id="main-content">{children}</main>
       <SiteFooter settings={settings} />
     </div>

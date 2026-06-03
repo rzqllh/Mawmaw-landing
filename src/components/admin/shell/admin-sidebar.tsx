@@ -33,34 +33,52 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
       {/* Primary Navigation */}
       <nav className="flex-1 px-4 py-2 flex flex-col gap-1.5 relative z-10" aria-label="Main Navigation">
         <div className="px-2 mb-2 text-[10px] font-bold text-forest-900/40 uppercase tracking-widest">
+          Utama
+        </div>
+
+        <Link 
+          href="/admin" 
+          className={cn(
+            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
+            pathname === "/admin"
+              ? "bg-forest-900 shadow-md shadow-forest-900/10 !text-white"
+              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5 hover:translate-x-1"
+          )}
+          aria-current={pathname === "/admin" ? "page" : undefined}
+        >
+          <House weight={pathname === "/admin" ? "fill" : "duotone"} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
+          Dashboard
+        </Link>
+
+        <div className="px-2 mt-4 mb-2 text-[10px] font-bold text-forest-900/40 uppercase tracking-widest">
           Manajemen Data
         </div>
         
         <Link 
           href="/admin/projects" 
           className={cn(
-            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
+            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
             pathname?.startsWith("/admin/projects")
-              ? "bg-forest-900 shadow-sm !text-white"
-              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5"
+              ? "bg-forest-900 shadow-md shadow-forest-900/10 !text-white"
+              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5 hover:translate-x-1"
           )}
           aria-current={pathname?.startsWith("/admin/projects") ? "page" : undefined}
         >
-          <FolderOpen weight={pathname?.startsWith("/admin/projects") ? "fill" : "duotone"} className="w-4 h-4" />
+          <FolderOpen weight={pathname?.startsWith("/admin/projects") ? "fill" : "duotone"} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
           Kelola Proyek
         </Link>
 
         <Link 
           href="/admin/articles" 
           className={cn(
-            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
+            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
             pathname?.startsWith("/admin/articles")
-              ? "bg-forest-900 shadow-sm !text-white"
-              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5"
+              ? "bg-forest-900 shadow-md shadow-forest-900/10 !text-white"
+              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5 hover:translate-x-1"
           )}
           aria-current={pathname?.startsWith("/admin/articles") ? "page" : undefined}
         >
-          <Article weight={pathname?.startsWith("/admin/articles") ? "fill" : "duotone"} className="w-4 h-4" />
+          <Article weight={pathname?.startsWith("/admin/articles") ? "fill" : "duotone"} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
           Kelola Artikel
         </Link>
 
@@ -71,42 +89,42 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
         <Link 
           href="/admin/inbox" 
           className={cn(
-            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
+            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
             pathname?.startsWith("/admin/inbox")
-              ? "bg-forest-900 shadow-sm !text-white"
-              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5"
+              ? "bg-forest-900 shadow-md shadow-forest-900/10 !text-white"
+              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5 hover:translate-x-1"
           )}
           aria-current={pathname?.startsWith("/admin/inbox") ? "page" : undefined}
         >
-          <Tray weight={pathname?.startsWith("/admin/inbox") ? "fill" : "duotone"} className="w-4 h-4" />
+          <Tray weight={pathname?.startsWith("/admin/inbox") ? "fill" : "duotone"} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
           Inbox Pesan
         </Link>
 
         <Link 
           href="/admin/services" 
           className={cn(
-            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
+            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
             pathname?.startsWith("/admin/services")
-              ? "bg-forest-900 shadow-sm !text-white"
-              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5"
+              ? "bg-forest-900 shadow-md shadow-forest-900/10 !text-white"
+              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5 hover:translate-x-1"
           )}
           aria-current={pathname?.startsWith("/admin/services") ? "page" : undefined}
         >
-          <Briefcase weight={pathname?.startsWith("/admin/services") ? "fill" : "duotone"} className="w-4 h-4" />
+          <Briefcase weight={pathname?.startsWith("/admin/services") ? "fill" : "duotone"} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
           Kelola Layanan
         </Link>
 
         <Link 
           href="/admin/settings" 
           className={cn(
-            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
+            "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50",
             pathname?.startsWith("/admin/settings")
-              ? "bg-forest-900 shadow-sm !text-white"
-              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5"
+              ? "bg-forest-900 shadow-md shadow-forest-900/10 !text-white"
+              : "text-forest-900/60 hover:text-forest-900 hover:bg-forest-900/5 hover:translate-x-1"
           )}
           aria-current={pathname?.startsWith("/admin/settings") ? "page" : undefined}
         >
-          <Gear weight={pathname?.startsWith("/admin/settings") ? "fill" : "duotone"} className="w-4 h-4" />
+          <Gear weight={pathname?.startsWith("/admin/settings") ? "fill" : "duotone"} className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
           Pengaturan Web
         </Link>
       </nav>

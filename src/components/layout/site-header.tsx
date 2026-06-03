@@ -120,7 +120,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
           layout
           data-header-state={showLiquidHeader ? "glass" : "hero"}
           className={cn(
-            "glass-nav mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 text-forest-900 transition duration-300 ease-out md:px-4",
+            "clear-liquid-nav mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 text-forest-900 transition duration-300 ease-out md:px-4",
             hasScrolled && "shadow-glass"
           )}
           transition={headerTransition}
