@@ -31,6 +31,11 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
     : pathname.startsWith("/articles")
       ? "#artikel"
       : activeSectionHref;
+      
+  // Hanya jadikan text terang/putih jika sedang di atas seksi Kontak (karena background kontak itu hijau gelap).
+  // Hero section ternyata terang, jadi kita biarkan teksnya gelap.
+  const isDarkSection = activeSectionHref === "#kontak";
+
   const headerTransition = shouldReduceMotion
     ? { duration: 0 }
     : { duration: 0.4, ease: headerEase };
@@ -120,8 +125,9 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
           layout
           data-header-state={showLiquidHeader ? "glass" : "hero"}
           className={cn(
-            "clear-liquid-nav mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 text-forest-900 transition duration-300 ease-out md:px-4",
-            hasScrolled && "shadow-glass"
+            "clear-liquid-nav mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 transition-colors duration-300 ease-out md:px-4",
+            hasScrolled && "shadow-glass",
+            isDarkSection ? "text-text-inverse" : "text-forest-900"
           )}
           transition={headerTransition}
         >
@@ -172,15 +178,17 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                       href={item.href}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
-                        "relative rounded-pill px-2 py-2 md:px-3 text-[0.8rem] lg:text-sm font-semibold text-text-secondary transition hover:bg-surface/75 hover:text-forest-900 whitespace-nowrap",
-                        isActive && "text-forest-900"
+                        "relative rounded-pill px-2 py-2 md:px-3 text-[0.8rem] lg:text-sm font-semibold transition-colors hover:bg-surface/75 hover:text-forest-900 whitespace-nowrap",
+                        isDarkSection ? "text-text-inverse/70" : "text-text-secondary",
+                        isActive && (isDarkSection ? "text-text-inverse" : "text-forest-900")
                       )}
                     >
                       {item.label}
                       <span
                         aria-hidden
                         className={cn(
-                          "absolute inset-x-3 -bottom-0.5 h-[2px] origin-center rounded-t-full bg-forest-900 transition-all duration-300 ease-out",
+                          "absolute inset-x-3 -bottom-0.5 h-[2px] origin-center rounded-t-full transition-all duration-300 ease-out",
+                          isDarkSection ? "bg-text-inverse" : "bg-forest-900",
                           isActive
                             ? "scale-x-100 opacity-100"
                             : "scale-x-0 opacity-0"

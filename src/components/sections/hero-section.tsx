@@ -66,7 +66,7 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
     <section
       id="home-hero"
       ref={sectionRef}
-      className="relative isolate min-h-svh overflow-hidden bg-background text-forest-900"
+      className="relative isolate min-h-svh overflow-hidden bg-black text-forest-900"
     >
       {/* Background Layer */}
       <motion.div

@@ -62,7 +62,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
   }
 
   return (
-    <section id="kontak" className="relative isolate overflow-hidden bg-forest-900 text-text-inverse pt-16 pb-12">
+    <section id="kontak" className="contact-section">
       {/* Soft transition gradient from the light section above */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-base to-transparent z-10" />
       

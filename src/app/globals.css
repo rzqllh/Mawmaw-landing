@@ -86,8 +86,6 @@
 html {
   background: var(--background);
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
-  scroll-padding-top: var(--navbar-height);
   scrollbar-color: rgba(58, 82, 65, 0.78) rgba(244, 241, 232, 0.92);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
@@ -187,13 +185,13 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: clamp(4rem, 6vw, 6rem);
+  padding-top: calc(var(--navbar-height) + clamp(2rem, 4vw, 4rem));
   padding-bottom: clamp(3rem, 5vw, 5rem);
-  scroll-snap-align: start;
 }
 
 .section-y-compact {
-  padding-block: clamp(3.5rem, 7vw, 6rem);
+  padding-top: calc(var(--navbar-height) + clamp(1.5rem, 2vw, 3rem));
+  padding-bottom: clamp(3.5rem, 2vw, 6rem);
 }
 
 .glass-surface {
@@ -314,7 +312,7 @@ textarea {
   background: var(--admin-surface-solid);
   border: 1px solid var(--admin-border-strong);
   box-shadow: 0 4px 12px rgba(17, 32, 25, 0.02);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   transition: all var(--duration-transition) var(--ease-standard);
 }
 
@@ -526,6 +524,63 @@ textarea {
   line-height: 1.85;
 }
 
+/* ── Prose Code & Table Styles ── */
+.prose-forest code:not(pre code) {
+  background: var(--ambient-sage);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-weight: 500;
+  color: var(--color-forest-800);
+}
+
+.prose-forest pre {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--color-forest-900);
+  color: var(--ambient-cream);
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.prose-forest pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.prose-forest table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.prose-forest thead th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--color-forest-200);
+}
+
+.prose-forest tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(17, 32, 25, 0.08);
+  color: var(--text-secondary);
+}
+
+.prose-forest tbody tr:last-child td {
+  border-bottom: none;
+}
+
 /* ── Component Overrides ── */
 
 
@@ -606,9 +661,8 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: clamp(4rem, 6vw, 6rem);
+  padding-top: calc(var(--navbar-height) + clamp(2rem, 4vw, 4rem));
   padding-bottom: clamp(3rem, 5vw, 5rem);
-  scroll-snap-align: start;
   background:
     linear-gradient(180deg, #112019 0%, #0b1711 100%),
     radial-gradient(circle at 16% 34%, rgba(250, 248, 241, 0.08), transparent 28rem),

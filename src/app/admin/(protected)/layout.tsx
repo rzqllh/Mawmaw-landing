@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/shell/admin-sidebar";
-import { AdminHeader } from "@/components/admin/shell/admin-header";
 import { AdminLayoutShell } from "@/components/admin/shell/admin-layout-shell";
 import { type ReactNode } from "react";
 
@@ -24,7 +23,6 @@ export default async function AdminLayout({
   return (
     <AdminLayoutShell
       sidebar={<AdminSidebar userEmail={user.email || ""} />}
-      header={<AdminHeader />}
     >
       {children}
       <AdminCommandPalette />

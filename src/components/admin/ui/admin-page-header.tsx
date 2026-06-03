@@ -21,7 +21,7 @@ export function AdminPageHeader({
       {backButton && <div className="mb-2">{backButton}</div>}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-serif font-semibold text-forest-900 tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-serif font-semibold text-forest-900 tracking-tight">
             {title}
           </h1>
           {description && (

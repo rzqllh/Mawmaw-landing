@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { ArticleCard } from "@/components/cards/article-card";
-import { SectionWrapper } from "@/components/layout/section-wrapper";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { getArticles, getSiteSettings } from "@/lib/queries";
@@ -19,8 +18,9 @@ export async function FeaturedArticlesSection() {
   }
 
   return (
-    <SectionWrapper id="artikel">
-      <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+    <section id="artikel" className="relative surface-section section-y">
+      <div className="section-container relative z-10">
+        <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
           <p className="section-eyebrow">
             {settings.articlesLabel}
@@ -59,6 +59,7 @@ export async function FeaturedArticlesSection() {
           ))}
         </div>
       </div>
-    </SectionWrapper>
+      </div>
+    </section>
   );
 }

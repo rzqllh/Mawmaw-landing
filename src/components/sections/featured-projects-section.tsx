@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { ProjectCard } from "@/components/cards/project-card";
-import { SectionWrapper } from "@/components/layout/section-wrapper";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { getFeaturedProjects, getSiteSettings } from "@/lib/queries";
@@ -13,8 +12,9 @@ export async function FeaturedProjectsSection() {
   const [firstProject, secondProject, thirdProject] = featuredProjects;
 
   return (
-    <SectionWrapper id="proyek" muted className="pb-32">
-      <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+    <section id="proyek" className="relative surface-section-muted section-y pb-32">
+      <div className="section-container relative z-10">
+        <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
           <p className="section-eyebrow">
             {settings.projectsLabel}
@@ -57,6 +57,7 @@ export async function FeaturedProjectsSection() {
             </Reveal>
           ) : null}
         </div>
-    </SectionWrapper>
+      </div>
+    </section>
   );
 }

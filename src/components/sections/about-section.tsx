@@ -1,20 +1,17 @@
 import Image from "next/image";
 
 import { GlassCard } from "@/components/cards/glass-card";
-import { SectionWrapper } from "@/components/layout/section-wrapper";
-import { featuredProjects } from "@/data/public-content";
 import { IconGlyph, IconName } from "@/lib/icons";
 import { getSiteSettings } from "@/lib/queries";
 
 export async function AboutSection() {
   const settings = await getSiteSettings();
   const aboutValues = settings.aboutValues as { title: string, description: string, icon: string }[];
-  const insetImage =
-    featuredProjects[0]?.gallery[0] ?? featuredProjects[0]?.coverImage;
 
   return (
-    <SectionWrapper id="tentang" muted compact>
-      <div className="grid items-center gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
+    <section id="tentang" className="relative surface-section-muted section-y">
+      <div className="section-container relative z-10">
+        <div className="grid items-center gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
         <div className="relative max-w-2xl">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 md:aspect-[4/3] lg:aspect-[1/1]">
             <Image
@@ -82,7 +79,8 @@ export async function AboutSection() {
             ))}
           </div>
         </div>
+        </div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }

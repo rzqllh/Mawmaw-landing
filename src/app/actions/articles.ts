@@ -28,21 +28,25 @@ export async function createArticle(formData: FormData) {
   const publishedAtRaw = formData.get("publishedAt") as string;
   const publishedAt = publishedAtRaw ? new Date(publishedAtRaw) : new Date();
 
-  // Content is parsed as a JSON array of strings
   const contentRaw = formData.get("content") as string;
   let content = [];
   if (contentRaw) {
     try { 
-      content = JSON.parse(contentRaw); 
+      // If it's already a valid JSON array, keep it
+      const parsed = JSON.parse(contentRaw); 
+      if (Array.isArray(parsed)) {
+        content = parsed;
+      } else {
+        content = [contentRaw];
+      }
     } catch (e) {
-      // Fallback: split by newline if not valid JSON
-      content = contentRaw.split('\n').map(p => p.trim()).filter(Boolean);
+      // Store the entire markdown as a single string inside the array
+      content = [contentRaw];
     }
   } else {
-    // Also fallback to a 'content' text area if we just use a regular textarea
     const plainText = formData.get("contentText") as string;
     if (plainText) {
-      content = plainText.split('\n').map(p => p.trim()).filter(Boolean);
+      content = [plainText];
     }
   }
 
@@ -87,14 +91,19 @@ export async function updateArticle(id: string, formData: FormData) {
   let content = [];
   if (contentRaw) {
     try { 
-      content = JSON.parse(contentRaw); 
+      const parsed = JSON.parse(contentRaw); 
+      if (Array.isArray(parsed)) {
+        content = parsed;
+      } else {
+        content = [contentRaw];
+      }
     } catch (e) {
-      content = contentRaw.split('\n').map(p => p.trim()).filter(Boolean);
+      content = [contentRaw];
     }
   } else {
     const plainText = formData.get("contentText") as string;
     if (plainText) {
-      content = plainText.split('\n').map(p => p.trim()).filter(Boolean);
+      content = [plainText];
     }
   }
 

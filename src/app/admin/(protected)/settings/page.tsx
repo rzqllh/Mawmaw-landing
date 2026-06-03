@@ -1,23 +1,16 @@
 import { getSiteSettings } from "@/lib/queries";
-import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
 import { SettingsForm } from "./components/settings-form";
 
 export const metadata = {
-  title: "Pengaturan Web | Mawmaw Admin",
+  title: "Pengaturan Website | Mawmaw Admin",
 };
 
 export default async function SettingsPage() {
   const settings = await getSiteSettings();
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <AdminPageHeader
-        title="Pengaturan Web"
-        description="Atur seluruh konten statis, teks landing page, dan info umum website."
-      />
-      <div className="mt-8">
-        <SettingsForm initialData={settings as any} />
-      </div>
+    <div className="mx-auto max-w-6xl animate-in fade-in duration-700 pb-12">
+      <SettingsForm initialData={settings as Parameters<typeof SettingsForm>[0]["initialData"]} />
     </div>
   );
 }
