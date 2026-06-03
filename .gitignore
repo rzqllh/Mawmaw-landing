@@ -26,7 +26,32 @@ pnpm-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Local agent and source asset folders
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# AI Agent tooling (local only, not project code)
+.agents/
 .codex/
-logo/
+.gemini/
+AGENTS.md
+MANIFEST.json
+skills-lock.json
+
+# Design experiment scratch files
+_temp/
+src/app/(public)/demo-services/
+
+# Source logo assets (not used by the app)
+Logo/
+
+# Internal agent validation reports & blueprint
+docs/03_VALIDATION_REPORT.md
+docs/MAWMAW_PRODUCT_UX_BLUEPRINT_FOR_ANTIGRAVITY.md
+
+# Vercel
+.vercel/

@@ -1,110 +1,160 @@
 # Mawmaw Interior
 
-Premium public portfolio website for Mawmaw Interior, a studio desain interior that presents services, selected projects, articles, and a consultation contact flow.
+Website portofolio premium untuk **Mawmaw Interior** — studio desain interior yang menghadirkan layanan, proyek pilihan, artikel, dan alur konsultasi.
 
-This repository uses the guideline pack in `AGENTS.md` and `docs/00_INDEX_SSOT.md`. Before making code changes, agents must follow those files and the project context in `docs/01_PROJECT_CONTEXT_TEMPLATE.md`.
+Dibangun dengan Next.js 16 App Router, TypeScript, Tailwind CSS v4, Prisma ORM, dan Supabase Auth. Website ini dilengkapi CMS admin lengkap untuk mengelola seluruh konten secara dinamis.
+
+---
 
 ## Tech Stack
 
-- Framework: Next.js 16 App Router
-- Language: TypeScript, React 19
-- Styling: Tailwind CSS v4 through `@tailwindcss/postcss`
-- UI patterns: local components with `class-variance-authority`, `clsx`, and `tailwind-merge`
-- Forms and validation: `react-hook-form`, `@hookform/resolvers`, `zod`
-- Feedback: `sonner`
-- Icons: `@phosphor-icons/react`
-- Motion and effects: `motion`, `shaders`
+| Layer | Technology |
+|-------|------------|
+| Framework | [Next.js 16](https://nextjs.org) — App Router, React 19 |
+| Language | TypeScript 6 |
+| Styling | Tailwind CSS v4 via `@tailwindcss/postcss` |
+| UI Components | Custom components + `class-variance-authority`, `clsx`, `tailwind-merge` |
+| Database | PostgreSQL via [Prisma ORM](https://www.prisma.io) |
+| Auth | [Supabase Auth](https://supabase.com) (email/password) |
+| Media | [Cloudinary](https://cloudinary.com) (upload & delivery) |
+| Forms | `react-hook-form` + `zod` validation |
+| Icons | `@phosphor-icons/react` |
+| Animation | `motion` (Framer Motion) |
+| Email | [Resend](https://resend.com) |
+| Toast | `sonner` |
 
-## Setup
+## Quick Start
+
+### Prerequisites
+
+- Node.js ≥ 20
+- PostgreSQL database (or Supabase project)
+- Cloudinary account (for media uploads)
+
+### Setup
 
 ```bash
+# 1. Clone & install
+git clone https://github.com/rzqllh/Mawmaw-landing.git
+cd Mawmaw-landing
 npm install
+
+# 2. Configure environment
+cp .env.example .env.local
+# Fill in your Supabase, Cloudinary, and Resend credentials
+
+# 3. Setup database
+npx prisma generate
+npx prisma db push   # or npx prisma migrate deploy
+
+# 4. Seed initial data (optional)
+npx prisma db seed
+
+# 5. Run dev server
 npm run dev
 ```
 
-The local development server defaults to `http://localhost:3000`.
+The app runs at `http://localhost:3000`.
 
 ## Scripts
 
-```bash
-npm run dev
-npm run lint
-npm run typecheck
-npm run build
-npm run start
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | ESLint check |
+| `npm run typecheck` | TypeScript type check |
+
+## Project Structure
+
 ```
-
-## Environment
-
-Use `.env.example` as the env variable reference. Do not commit `.env`, `.env.local`, or any file containing real secrets.
-
-Current env groups listed in `.env.example`:
-
-- Site public settings
-- Supabase
-- Cloudinary
-- Email / Resend
-- Bot protection
-- Auth / Admin
-- Logging
-- Environment
-
-Some listed integrations may be planned or unused until implementation verifies them in source code. Do not assume an integration exists only because an env variable is present.
+src/
+├── app/
+│   ├── (public)/           # Public routes (/, /articles, /projects)
+│   ├── admin/
+│   │   ├── login/          # Admin login page
+│   │   └── (protected)/    # Auth-guarded admin routes
+│   ├── actions/            # Server Actions
+│   ├── globals.css         # Design tokens & global styles
+│   └── layout.tsx          # Root layout
+├── components/
+│   ├── cards/              # Content cards (article, project)
+│   ├── effects/            # Visual effects (hero shader)
+│   ├── layout/             # Layout shells (admin, site header/footer)
+│   ├── motion/             # Scroll reveal animation
+│   ├── sections/           # Landing page sections
+│   └── ui/                 # Reusable UI primitives
+├── data/                   # Static content & navigation config
+├── lib/                    # Utilities, queries, validation, icons
+└── middleware.ts           # Supabase session + admin route guard
+prisma/
+├── schema.prisma           # Database schema
+└── seed.ts                 # Seed data
+```
 
 ## Routes
 
-- `/`: homepage with hero, about, services, featured projects, featured articles, and contact sections
-- `/projects`: project listing
-- `/projects/[slug]`: project detail pages generated from static project content
-- `/articles`: article listing
-- `/articles/[slug]`: article detail pages generated from static article content
+### Public
 
-## Folder Overview
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page — hero, tentang, layanan, proyek, artikel, kontak |
+| `/articles` | Daftar artikel |
+| `/articles/[slug]` | Detail artikel |
+| `/projects` | Daftar proyek |
+| `/projects/[slug]` | Detail proyek + galeri |
 
-- `src/app`: routes, layout, metadata, global styles, and not-found page
-- `src/components/ui`: reusable UI primitives
-- `src/components/layout`: shared layout components
-- `src/components/sections`: homepage sections
-- `src/components/cards`: repeated content cards
-- `src/components/motion`: shared reveal motion
-- `src/components/effects`: hero shader effect
-- `src/data/public-content.ts`: public site content, navigation, projects, articles, and contact copy
-- `src/lib`: utilities, icons, validation, and WhatsApp link helper
-- `public/brand`: brand assets used by the app
-- `Logo`: source or alternate logo assets
-- `docs`: AI project guidelines, source-of-truth index, project context, and templates
+### Admin (auth-guarded)
 
-## Source Of Truth
+| Route | Description |
+|-------|-------------|
+| `/admin/login` | Login page |
+| `/admin` | Dashboard |
+| `/admin/articles` | Kelola artikel |
+| `/admin/projects` | Kelola proyek |
+| `/admin/services` | Kelola layanan |
+| `/admin/settings` | Pengaturan global website |
+| `/admin/inbox` | Pesan masuk dari form kontak |
 
-- Project facts: `docs/01_PROJECT_CONTEXT_TEMPLATE.md`
-- Agent rules: `AGENTS.md`, `docs/00_INDEX_SSOT.md`, `docs/02_AGENT_OPERATING_RULES.md`
-- App routes: `src/app`
-- Public content: `src/data/public-content.ts`
-- Design tokens and global styles: `src/app/globals.css`
-- Reusable UI primitives: `src/components/ui`
-- Contact validation schema: `src/lib/validation.ts`
-- Env variable reference: `.env.example`
+## Environment Variables
 
-## Validation
+Lihat [`.env.example`](.env.example) untuk referensi lengkap. Variabel dikelompokkan menjadi:
 
-Run these checks before reporting code or documentation changes as complete:
+- **Site** — URL, nama, WhatsApp, Instagram
+- **Supabase** — Auth & database connection
+- **Cloudinary** — Media upload
+- **Resend** — Transactional email
+- **Bot Protection** — Turnstile/reCAPTCHA
+- **Admin** — Registration toggle, owner email
 
-```bash
-npm run lint
-npm run typecheck
-npm run build
-```
+> ⚠️ Jangan pernah commit file `.env.local` atau file yang berisi secret.
 
-Report the exact commands run and their results. Do not claim validation passed unless the commands were actually run.
+## Design System
+
+Website ini menggunakan *design token system* yang terdefinisi di `globals.css`:
+
+- **Palette**: Warm neutral canvas, forest green, muted gold
+- **Typography**: Plus Jakarta Sans (UI) + Cormorant Garamond (editorial display)
+- **Surfaces**: Solid editorial, regular glass, clear liquid glass (navbar)
+- **Layout**: 8px spacing rhythm, responsive section utilities
+- **Motion**: `prefers-reduced-motion` aware animations
 
 ## Deployment
 
-Deployment target is `Unknown - owner to confirm`.
+Deploy ke [Vercel](https://vercel.com) (direkomendasikan):
 
-The app is a Next.js project and can be evaluated for deployment on any compatible host after owner confirmation. Do not add deployment-specific configuration without explicit scope.
+1. Push repository ke GitHub
+2. Import project di Vercel dashboard
+3. Set environment variables di Vercel project settings
+4. Deploy — Vercel akan otomatis detect Next.js
 
-## Known Limitations
+Atau gunakan CLI:
 
-- `docs/01_PROJECT_CONTEXT_TEMPLATE.md` still contains owner-confirmation fields for business, deployment, and operational context.
-- The contact form is frontend-only and hands validated messages off to WhatsApp or the user's email client; no backend persistence should be assumed unless verified in source code.
-- `.env.example` lists possible integrations, but active integration behavior must be verified in code before use.
+```bash
+npx vercel
+```
+
+## License
+
+Private — All rights reserved.
