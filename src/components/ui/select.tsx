@@ -35,12 +35,11 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <span
+      <CaretDown
         aria-hidden
-        className="ml-2 inline-flex h-4 w-4 shrink-0 items-center justify-center opacity-70 transition-transform duration-200 group-data-[state=open]:-rotate-180"
-      >
-        <CaretDown weight="bold" />
-      </span>
+        className="ml-2 h-4 w-4 shrink-0 opacity-70 transition-transform duration-200 group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+        weight="bold"
+      />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));

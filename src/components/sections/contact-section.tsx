@@ -25,6 +25,7 @@ import {
   contactFormSchema,
   type ContactFormValues,
 } from "@/lib/validation";
+import { SiteSetting } from "@prisma/client";
 
 const defaultValues: ContactFormValues = {
   name: "",
@@ -34,7 +35,7 @@ const defaultValues: ContactFormValues = {
   message: "",
 };
 
-export function ContactSection() {
+export function ContactSection({ settings }: { settings: SiteSetting }) {
   const formId = useId();
 
   const {
@@ -61,7 +62,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="kontak" className="relative isolate overflow-hidden bg-forest-900 text-text-inverse pt-24 pb-12">
+    <section id="kontak" className="relative isolate overflow-hidden bg-forest-900 text-text-inverse pt-16 pb-12">
       {/* Soft transition gradient from the light section above */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-base to-transparent z-10" />
       
@@ -79,13 +80,13 @@ export function ContactSection() {
                 {contactContent.label}
               </p>
 
-              <h2 className="heading-section max-w-[34rem] text-text-inverse tracking-[-0.015em]">{contactContent.title}</h2>
+              <h2 className="heading-section max-w-[34rem] text-text-inverse tracking-[-0.015em]">{settings.contactTitle}</h2>
 
               <p className="contact-copy-description">
-                {contactContent.description}
+                {settings.contactDesc}
               </p>
 
-              <div className="mt-8 grid gap-3">
+              <div className="mt-6 grid gap-2.5">
                 {contactContent.trustBullets.map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
                     <span className="contact-trust-icon">

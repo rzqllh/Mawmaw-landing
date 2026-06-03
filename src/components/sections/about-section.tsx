@@ -2,10 +2,13 @@ import Image from "next/image";
 
 import { GlassCard } from "@/components/cards/glass-card";
 import { SectionWrapper } from "@/components/layout/section-wrapper";
-import { aboutContent, featuredProjects, heroContent } from "@/data/public-content";
-import { IconGlyph } from "@/lib/icons";
+import { featuredProjects } from "@/data/public-content";
+import { IconGlyph, IconName } from "@/lib/icons";
+import { getSiteSettings } from "@/lib/queries";
 
-export function AboutSection() {
+export async function AboutSection() {
+  const settings = await getSiteSettings();
+  const aboutValues = settings.aboutValues as { title: string, description: string, icon: string }[];
   const insetImage =
     featuredProjects[0]?.gallery[0] ?? featuredProjects[0]?.coverImage;
 
@@ -13,12 +16,14 @@ export function AboutSection() {
     <SectionWrapper id="tentang" muted compact>
       <div className="grid items-center gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
         <div className="relative max-w-2xl">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 shadow-soft md:aspect-[4/3] lg:aspect-[4/5]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 shadow-soft md:aspect-[4/3] lg:aspect-[1/1]">
             <Image
-              src={aboutContent.image.src}
-              alt={aboutContent.image.alt}
+              src={settings.aboutImageSrc}
+              alt={settings.aboutImageAlt}
               fill
               sizes="(min-width: 1024px) 42vw, 100vw"
+              placeholder={settings.aboutImageBlur ? "blur" : "empty"}
+              blurDataURL={settings.aboutImageBlur || undefined}
               className="object-cover"
             />
           </div>
@@ -35,34 +40,38 @@ export function AboutSection() {
               </div>
             </div>
           ) : null}
-          {aboutContent.badge ? (
+          {settings.aboutBadgeTitle || settings.aboutBadgeDesc ? (
             <GlassCard className="absolute left-4 top-4 max-w-[15rem] p-4 md:left-6 md:top-6">
-              <p className="text-sm font-semibold text-forest-900">
-                {aboutContent.badge.title}
-              </p>
-              <p className="mt-2 text-xs leading-6 text-text-secondary">
-                {aboutContent.badge.description}
-              </p>
+              {settings.aboutBadgeTitle && (
+                <p className="text-sm font-semibold text-forest-900">
+                  {settings.aboutBadgeTitle}
+                </p>
+              )}
+              {settings.aboutBadgeDesc && (
+                <p className="mt-2 text-xs leading-6 text-text-secondary">
+                  {settings.aboutBadgeDesc}
+                </p>
+              )}
             </GlassCard>
           ) : null}
         </div>
 
         <div className="pt-8 lg:pt-0">
           <p className="section-eyebrow">
-            {aboutContent.label}
+            {settings.aboutLabel}
           </p>
           <h2 className="heading-section max-w-3xl text-forest-900">
-            {aboutContent.title}
+            {settings.aboutTitle}
           </h2>
-          <div className="mt-7 h-px w-14 bg-gold-500" />
-          <p className="mt-7 max-w-2xl text-base leading-8 text-text-secondary md:text-lg">
-            {aboutContent.description}
+          <div className="mt-6 h-px w-14 bg-gold-500" />
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
+            {settings.aboutDescription}
           </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            {heroContent.statCards.map((card) => (
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {(settings.heroStatCards as { label: string; value: string; icon?: IconName }[]).map((card) => (
               <div
                 key={card.label}
-                className="glass-surface flex items-center gap-4 rounded-xl p-4"
+                className="glass-surface flex items-center gap-4 rounded-xl p-3 lg:p-4"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-pill bg-forest-900 text-gold-300">
                   <IconGlyph
@@ -83,17 +92,17 @@ export function AboutSection() {
               </div>
             ))}
           </div>
-          <div className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {aboutContent.values.map((value) => (
+          <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            {aboutValues.map((value) => (
               <div
                 key={value.title}
-                className="border-t border-forest-200/70 pt-5"
+                className="border-t border-forest-200/70 pt-4"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-pill bg-forest-50 text-forest-800 ring-1 ring-forest-100">
-                  <IconGlyph name={value.icon} aria-hidden className="h-5 w-5" weight="duotone" />
+                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-pill bg-forest-50 text-forest-800 ring-1 ring-forest-100">
+                  <IconGlyph name={(value.icon as IconName) || "heart"} aria-hidden className="h-4 w-4" weight="duotone" />
                 </div>
                 <h3 className="font-semibold text-forest-900">{value.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-text-secondary">
+                <p className="mt-1 text-sm leading-relaxed text-text-secondary">
                   {value.description}
                 </p>
               </div>

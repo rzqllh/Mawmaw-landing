@@ -2,44 +2,47 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { ArticleCard } from "@/components/cards/article-card";
+import { SectionWrapper } from "@/components/layout/section-wrapper";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
-import { getArticles } from "@/lib/queries";
-import { articlesSection } from "@/data/public-content";
+import { getArticles, getSiteSettings } from "@/lib/queries";
 
 export async function FeaturedArticlesSection() {
   const articles = await getArticles();
-  const featuredArticle = articles.find((a) => a.featured) || articles[0];
-  const supportingArticles = articles.filter((a) => a.id !== featuredArticle?.id);
+  const settings = await getSiteSettings();
+  const topArticles = articles.slice(0, 3);
+  const featuredArticle = topArticles[0];
+  const supportingArticles = topArticles.slice(1);
 
   if (!featuredArticle) {
     return null;
   }
 
   return (
-    <section id="artikel" className="section-y surface-section scroll-mt-0">
-      <div className="section-container">
-        <div className="mb-14 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_auto] lg:items-end">
-          <div>
-            <p className="section-eyebrow">
-              {articlesSection.label}
-            </p>
-            <h2 className="heading-section max-w-2xl text-forest-900">
-              {articlesSection.title}
-            </h2>
-            <p className="mt-6 max-w-xl text-base leading-8 text-text-secondary md:text-lg">
-              {articlesSection.description}
-            </p>
-          </div>
-          <Button asChild variant="secondary" size="lg" className="w-fit justify-self-start lg:justify-self-end">
-            <Link href="/articles">
-              {articlesSection.cta}
-              <ArrowRight aria-hidden className="h-5 w-5" />
+    <SectionWrapper id="artikel">
+      <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+        <div className="max-w-2xl">
+          <p className="section-eyebrow">
+            {settings.articlesLabel}
+          </p>
+          <h2 className="heading-section text-forest-900">
+            {settings.articlesTitle}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-text-secondary md:text-lg">
+            {settings.articlesDesc}
+          </p>
+        </div>
+        <div className="shrink-0">
+          <Button asChild variant="secondary" radius="pill">
+            <Link href="/articles" className="group">
+              Semua Artikel
+              <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
         </div>
-
-        <div className="grid items-start gap-8">
+      </div>
+      
+      <div className="grid items-start gap-8">
         <Reveal>
           <ArticleCard
             article={featuredArticle}
@@ -56,7 +59,6 @@ export async function FeaturedArticlesSection() {
           ))}
         </div>
       </div>
-      </div>
-    </section>
+    </SectionWrapper>
   );
 }

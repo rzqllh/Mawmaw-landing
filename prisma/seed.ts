@@ -20,6 +20,7 @@ async function main() {
         description: project.description,
         coverSrc: project.coverImage.src,
         coverAlt: project.coverImage.alt,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         gallery: project.gallery as any, // Json
         featured: project.featured ?? false,
         year: project.year,
@@ -51,6 +52,7 @@ async function main() {
 
   // Seed Services
   for (let i = 0; i < services.length; i++) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const service = services[i] as any; // Cast to any to bypass type check since id exists in data
     await prisma.service.upsert({
       where: { slug: service.id },

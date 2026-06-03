@@ -14,7 +14,7 @@ const initialState = {
 
 export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(
-    async (prevState: any, formData: FormData) => {
+    async (prevState: typeof initialState, formData: FormData) => {
       const res = await login(formData);
       if (res?.error) {
         return { error: res.error };
@@ -115,17 +115,17 @@ export default function LoginPage() {
           />
           
           {/* Liquid Glass Overlay matching the reference vibe */}
-          <div className="absolute inset-0 bg-forest-900/20 mix-blend-multiply"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-forest-900/80 via-forest-900/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-forest-900/10 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-forest-900/40 via-forest-900/10 to-transparent"></div>
 
           {/* Liquid Glass Element in the bottom corner */}
           <div className="absolute bottom-10 left-10 right-10 lg:left-12 lg:right-12">
-            <div className="admin-glass-panel rounded-3xl p-8 max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both border-white/20">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-4 backdrop-blur-md">
-                <ShieldCheck weight="fill" className="w-4 h-4 text-gold-300" />
+            <div className="admin-surface rounded-3xl p-8 max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-900/5 border border-forest-900/10 text-forest-900 text-xs font-bold uppercase tracking-widest mb-4">
+                <ShieldCheck weight="fill" className="w-4 h-4 text-gold-500" />
                 Secure Workspace
               </div>
-              <h2 className="text-2xl lg:text-3xl font-serif text-white leading-snug">
+              <h2 className="text-2xl lg:text-3xl font-serif text-forest-900 leading-snug">
                 Orchestrate your interior <br/> masterpieces from here.
               </h2>
             </div>

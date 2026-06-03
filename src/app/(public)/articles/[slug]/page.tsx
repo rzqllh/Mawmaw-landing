@@ -5,7 +5,10 @@ import { notFound } from "next/navigation";
 import { ArrowRight, CaretLeft } from "@phosphor-icons/react/dist/ssr";
 
 import { ArticleCard } from "@/components/cards/article-card";
+import { MarkdownContent } from "@/components/ui/markdown-content";
 import { Button } from "@/components/ui/button";
+import { ReadingProgressBar } from "@/components/ui/reading-progress-bar";
+import { ArticleShare } from "@/components/ui/article-share";
 import { formatDate } from "@/lib/utils";
 import { getArticleBySlug, getArticles } from "@/lib/queries";
 
@@ -62,6 +65,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 
   return (
     <>
+      <ReadingProgressBar />
       <article>
         <header className="section-container pt-32 md:pt-40">
           <Button asChild variant="ghost" size="sm" className="mb-8">
@@ -95,14 +99,10 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 
         <section className="section-container py-16 md:py-24">
           <div className="mx-auto max-w-3xl">
-            {article.content.map((paragraph) => (
-              <p
-                key={paragraph}
-                className="mb-7 text-lg leading-9 text-text-secondary"
-              >
-                {paragraph}
-              </p>
-            ))}
+            <MarkdownContent content={article.content} title={article.title} variant="article" />
+            <div className="mt-16 border-t border-forest-900/10 pt-8">
+              <ArticleShare title={article.title} />
+            </div>
           </div>
         </section>
       </article>

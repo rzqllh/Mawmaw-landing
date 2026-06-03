@@ -9,11 +9,12 @@ import { motion, useReducedMotion, useScroll, useTransform, useSpring } from "mo
 import { HeroShader } from "@/components/effects/hero-shader";
 import { Button } from "@/components/ui/button";
 import { ConfirmWhatsappLink } from "@/components/ui/confirm-whatsapp-link";
-import { heroContent } from "@/data/public-content";
+import { siteConfig } from "@/data/public-content"; // Only using siteConfig for WhatsApp fallback if needed
+import { SiteSetting } from "@prisma/client";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-export function HeroSection() {
+export function HeroSection({ settings }: { settings: SiteSetting }) {
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
   
@@ -74,11 +75,14 @@ export function HeroSection() {
         style={{ y: imageY, scale: imageScale, opacity: imageOpacity }}
       >
         <Image
-          src={heroContent.image.src}
-          alt={heroContent.image.alt}
+          src={settings.heroImageSrc}
+          alt={settings.heroImageAlt}
           fill
           sizes="100vw"
           priority
+          fetchPriority="high"
+          placeholder={settings.heroImageBlur ? "blur" : "empty"}
+          blurDataURL={settings.heroImageBlur || undefined}
           className="object-cover saturate-[0.85] contrast-[1.05]"
         />
       </motion.div>
@@ -139,30 +143,30 @@ export function HeroSection() {
               variants={itemVariants}
               className="heading-hero mx-auto max-w-4xl text-forest-900 tracking-tight"
             >
-              {heroContent.title}
+              {settings.heroTitle}
             </motion.h1>
             
             <motion.p 
               variants={itemVariants}
               className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-text-secondary sm:text-base md:text-lg"
             >
-              {heroContent.description}
+              {settings.heroDescription}
             </motion.p>
             
             <motion.div 
               variants={itemVariants}
               className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
             >
-              <Button asChild size="lg" className="rounded-full px-8 shadow-xl shadow-forest-900/10 transition-all hover:shadow-forest-900/20">
-                <ConfirmWhatsappLink href={heroContent.primaryCta.href} className="group">
-                  <WhatsappLogo aria-hidden className="h-5 w-5 transition-transform group-hover:rotate-12 group-hover:scale-110" weight="duotone" />
-                  {heroContent.primaryCta.label}
+              <Button asChild size="lg" variant="primary" radius="lg" className="px-8 transition-all">
+                <ConfirmWhatsappLink href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Halo Mawmaw Interior, saya ingin konsultasi desain interior.")}`} className="group">
+                  <WhatsappLogo aria-hidden className="h-5 w-5" weight="regular" />
+                  Mulai Konsultasi
                 </ConfirmWhatsappLink>
               </Button>
-              <Button asChild size="lg" variant="secondary" className="rounded-full border-forest-900/10 bg-transparent px-8 transition-all hover:bg-forest-900/5">
-                <Link href={heroContent.secondaryCta.href} className="group">
-                  {heroContent.secondaryCta.label}
-                  <ArrowRight aria-hidden className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <Button asChild size="lg" variant="secondary" radius="lg" className="px-8 transition-all">
+                <Link href="#proyek" className="group">
+                  Lihat Portfolio
+                  <ArrowRight aria-hidden className="h-5 w-5" weight="regular" />
                 </Link>
               </Button>
             </motion.div>

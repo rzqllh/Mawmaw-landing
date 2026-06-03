@@ -75,7 +75,7 @@ export default async function ProjectsPage() {
                 akan membantu memetakan langkah awal dengan tenang.
               </p>
             </div>
-            <Button asChild variant="inverse" size="lg">
+            <Button asChild variant="outline" size="lg">
               <Link href="/#kontak">
                 Konsultasi
                 <ArrowRight aria-hidden className="h-5 w-5" />

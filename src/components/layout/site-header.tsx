@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 import { ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { heroContent, navItems, siteConfig } from "@/data/public-content";
+import { navItems } from "@/data/public-content";
+import { SiteSetting } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { ConfirmWhatsappLink } from "@/components/ui/confirm-whatsapp-link";
 import { cn } from "@/lib/utils";
@@ -15,7 +16,7 @@ import { resolveInPageHref } from "@/lib/navigation";
 
 const headerEase = [0.16, 1, 0.3, 1] as const;
 
-export function SiteHeader() {
+export function SiteHeader({ settings }: { settings: SiteSetting }) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -127,7 +128,7 @@ export function SiteHeader() {
           {/* LEFT: BRAND */}
           <Link
             href="/"
-            aria-label={`${siteConfig.name} beranda`}
+            aria-label={`${settings.siteName} beranda`}
             onClick={handleBrandClick}
             className="flex min-w-0 shrink-0 items-center gap-3 rounded-pill pr-2 transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
           >
@@ -149,7 +150,10 @@ export function SiteHeader() {
           <motion.nav
             layout
             aria-label="Navigasi utama"
-            className="hidden flex-1 min-w-0 md:flex items-center justify-center px-4"
+            className={cn(
+              "hidden flex-1 min-w-0 md:flex items-center px-4",
+              showHeaderActions ? "justify-center" : "justify-end"
+            )}
             transition={headerTransition}
           >
             <motion.ul
@@ -210,26 +214,18 @@ export function SiteHeader() {
                 }
                 transition={headerTransition}
               >
-
-                <Button asChild size="sm" className="rounded-pill shadow-xl shadow-forest-900/10 transition-all">
-                  <ConfirmWhatsappLink href={heroContent.primaryCta.href} className="group">
+                <Button asChild size="sm" variant="primary" radius="md" className="transition-all">
+                  <ConfirmWhatsappLink href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Halo Mawmaw Interior, saya ingin konsultasi desain interior.")}`} className="group">
                     <WhatsappLogo
                       aria-hidden
-                      className="h-4 w-4 transition-transform group-hover:rotate-12 group-hover:scale-110"
-                      weight="duotone"
+                      className="h-4 w-4"
+                      weight="bold"
                     />
                     Konsultasi
                   </ConfirmWhatsappLink>
                 </Button>
               </motion.div>
-            ) : (
-              <motion.div 
-                key="empty-actions" 
-                className="hidden w-[120px] md:block lg:w-[220px]" 
-                aria-hidden 
-                layout 
-              />
-            )}
+            ) : null}
           </AnimatePresence>
         </motion.div>
       </div>

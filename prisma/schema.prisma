@@ -69,3 +69,56 @@ model Service {
   imageBlur   String? // Base64 blur placeholder
   sortOrder   Int     @default(0)
 }
+
+model SiteSetting {
+  id               String   @id @default("global") // We only ever have one record
+  
+  // SEO & General
+  siteName         String
+  siteDescription  String
+  email            String
+  phone            String
+  address          String
+  socials          Json     // { instagram, pinterest, behance }
+  
+  // Hero
+  heroTitle        String
+  heroDescription  String   @db.Text
+  heroImageSrc     String
+  heroImageAlt     String
+  heroImageBlur    String?
+  heroStatCards    Json     // Array of { label, value, description, icon }
+
+  // About
+  aboutLabel       String
+  aboutTitle       String
+  aboutDescription String   @db.Text
+  aboutImageSrc    String
+  aboutImageAlt    String
+  aboutImageBlur   String?
+  aboutBadgeTitle  String?
+  aboutBadgeDesc   String?
+  aboutValues      Json     // Array of { title, description, icon }
+
+  // Section Headers
+  servicesLabel    String
+  servicesTitle    String
+  servicesDesc     String   @db.Text
+  
+  projectsLabel    String
+  projectsTitle    String
+  projectsDesc     String   @db.Text
+  
+  articlesLabel    String
+  articlesTitle    String
+  articlesDesc     String   @db.Text
+
+  // Footer & Contact
+  contactTitle     String
+  contactDesc      String   @db.Text
+  footerHeadline   String
+  footerSummary    String   @db.Text
+  copyright        String
+
+  updatedAt        DateTime @updatedAt
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opsi 1: Asymmetrical Bento Grid</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: '#f7f6f2',
+            surface: '#fffefa',
+            'forest-50': '#eef3ef',
+            'forest-800': '#24392c',
+            'forest-900': '#112019',
+            'gold-300': '#edd96a',
+            'gold-500': '#d4be42',
+            'gold-700': '#a88f2a',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;600&display=swap');
+    body { background-color: #f7f6f2; color: #112019; }
+    .bento-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .bento-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(17, 32, 25, 0.1); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const services = [
+      { id: 1, title: "Konsultasi & Desain", desc: "Perencanaan tata ruang dan konsep visual.", icon: "ph-pen-nib", span: "col-span-1 md:col-span-2 row-span-2", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800" },
+      { id: 2, title: "Renovasi Total", desc: "Transformasi ruang dari awal hingga akhir.", icon: "ph-hammer", span: "col-span-1", bg: "bg-forest-900 text-white" },
+      { id: 3, title: "Custom Furniture", desc: "Perabot presisi yang dibuat khusus untuk Anda.", icon: "ph-armchair", span: "col-span-1", bg: "bg-surface" },
+      { id: 4, title: "Styling & Dekorasi", desc: "Sentuhan akhir yang menghidupkan suasana.", icon: "ph-plant", span: "col-span-1 md:col-span-2", bg: "bg-[#eef3ef]" },
+    ];
+
+    function BentoGrid() {
+      return (
+        <div className="min-h-screen py-24 px-6 md:px-16 max-w-7xl mx-auto font-sans">
+          <div className="mb-16 max-w-2xl">
+            <p className="text-xs font-bold uppercase tracking-widest text-gold-700 mb-4">Layanan Kami</p>
+            <h2 className="text-5xl md:text-7xl font-serif text-forest-900 leading-none">Eksplorasi Layanan</h2>
+            <p className="mt-6 text-lg text-gray-600">Pendekatan holistik kami memastikan setiap sudut ruang Anda dipikirkan dengan saksama, fungsional, dan estetis.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[220px]">
+            {services.map((s, i) => (
+              <div key={s.id} className={`bento-card relative overflow-hidden rounded-[2rem] p-8 flex flex-col justify-between ${s.span} ${s.bg || 'bg-surface'}`}>
+                {s.img && (
+                  <>
+                    <img src={s.img} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40"></div>
+                  </>
+                )}
+                
+                <div className="relative z-10">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 ${s.img ? 'bg-white/20 backdrop-blur-md text-white' : (s.bg === 'bg-forest-900' ? 'bg-white/10 text-gold-300' : 'bg-forest-50 text-forest-800')}`}>
+                    <i className={`${s.icon} text-2xl`}></i>
+                  </div>
+                </div>
+                
+                <div className="relative z-10 mt-auto">
+                  <h3 className={`font-serif text-3xl mb-2 ${s.img || s.bg === 'bg-forest-900' ? 'text-white' : 'text-forest-900'}`}>{s.title}</h3>
+                  <p className={s.img || s.bg === 'bg-forest-900' ? 'text-white/80' : 'text-gray-600'}>{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<BentoGrid />);
+  </script>
+</body>
+</html>

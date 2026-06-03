@@ -10,18 +10,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import {
-  footerContent,
   navItems,
   services,
-  siteConfig,
 } from "@/data/public-content";
 import { IconGlyph } from "@/lib/icons";
-
-const socialLinks = [
-  { label: "Instagram", href: siteConfig.socials.instagram, icon: "instagram" },
-  { label: "Pinterest", href: siteConfig.socials.pinterest, icon: "pinterest" },
-  { label: "Behance", href: siteConfig.socials.behance, icon: "behance" },
-];
+import { SiteSetting } from "@prisma/client";
 
 function normalizeHref(href: string) {
   if (href.startsWith("/")) return href;
@@ -45,9 +38,16 @@ function externalLinkProps(href?: string) {
   };
 }
 
-export function SiteFooter() {
+export function SiteFooter({ settings }: { settings: SiteSetting }) {
   const pathname = usePathname();
   const isLanding = pathname === "/";
+  
+  const socials = settings.socials as Record<string, string> | null;
+  const socialLinks = [
+    { label: "Instagram", href: socials?.instagram || "", icon: "instagram" },
+    { label: "Pinterest", href: socials?.pinterest || "", icon: "pinterest" },
+    { label: "Behance", href: socials?.behance || "", icon: "behance" },
+  ];
 
   return (
     <footer className={cn(
@@ -73,11 +73,11 @@ export function SiteFooter() {
               </p>
 
               <h2 className="heading-section max-w-4xl tracking-[-0.045em] text-text-inverse">
-                {footerContent.headline}
+                {settings.footerHeadline}
               </h2>
 
               <p className="mt-5 max-w-2xl text-base leading-8 text-text-inverse/80">
-                {footerContent.summary}
+                {settings.footerSummary}
               </p>
             </div>
 
@@ -118,7 +118,7 @@ export function SiteFooter() {
             </Link>
 
             <p className="mt-6 text-sm leading-7 text-text-inverse/68">
-              {siteConfig.description ?? footerContent.summary}
+              {settings.siteDescription || settings.footerSummary}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -144,7 +144,7 @@ export function SiteFooter() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <FooterColumn title={footerContent.navTitle}>
+            <FooterColumn title="Pintasan Navigasi">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -156,7 +156,7 @@ export function SiteFooter() {
               ))}
             </FooterColumn>
 
-            <FooterColumn title={footerContent.servicesTitle}>
+            <FooterColumn title="Layanan Kami">
               {services.slice(0, 5).map((service) => (
                 <Link
                   key={service.id}
@@ -168,46 +168,32 @@ export function SiteFooter() {
               ))}
             </FooterColumn>
 
-            <FooterColumn title={footerContent.contactTitle}>
+            <FooterColumn title="Hubungi Kami">
               <Link
-                href={`mailto:${siteConfig.email}`}
+                href={`mailto:${settings.email}`}
                 className="break-words text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
               >
-                {siteConfig.email}
+                {settings.email}
               </Link>
 
-              {siteConfig.phone ? (
+              {settings.phone ? (
                 <Link
-                  href={normalizeTelHref(siteConfig.phone)}
+                  href={normalizeTelHref(settings.phone)}
                   className="w-fit text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
                 >
-                  {siteConfig.phone}
+                  {settings.phone}
                 </Link>
               ) : null}
 
               <p className="text-sm leading-7 text-text-inverse/80">
-                {siteConfig.address}
+                {settings.address}
               </p>
             </FooterColumn>
           </div>
         </div>
 
         <div className="mt-10 flex flex-col gap-4 border-t border-text-inverse/12 pt-6 text-xs text-text-inverse/54 md:flex-row md:items-center md:justify-between">
-          <p>{footerContent.copyright}</p>
-
-          {footerContent.legal.length ? (
-            <div className="flex flex-wrap gap-4">
-              {footerContent.legal.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="transition hover:text-gold-300"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          ) : null}
+          <p>{settings.copyright}</p>
         </div>
       </div>
     </footer>

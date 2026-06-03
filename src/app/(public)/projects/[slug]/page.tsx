@@ -10,6 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 
 import { ProjectCard } from "@/components/cards/project-card";
+import { MarkdownContent } from "@/components/ui/markdown-content";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getProjectBySlug, getProjects } from "@/lib/queries";
@@ -123,9 +124,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </h2>
           </div>
           <div>
-            <p className="text-base leading-8 text-text-secondary md:text-lg">
-              {project.description}
-            </p>
+            <MarkdownContent content={project.description} title={project.title} variant="project" />
             <div className="mt-8 flex flex-wrap gap-2">
               {project.scope.map((scope) => (
                 <Badge key={scope}>{scope}</Badge>
@@ -143,18 +142,18 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 Detail ruang yang membentuk suasana.
               </h2>
             </div>
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
               {project.gallery.map((image) => (
                 <div
                   key={image.src}
-                  className="relative aspect-[4/3] overflow-hidden rounded-xl bg-background shadow-card"
+                  className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-background-muted shadow-card"
                 >
                   <Image
                     src={image.src}
                     alt={image.alt}
                     fill
                     sizes="(min-width: 1024px) 33vw, 100vw"
-                    className="object-cover"
+                    className="object-cover img-zoom"
                   />
                 </div>
               ))}
