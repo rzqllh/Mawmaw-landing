@@ -138,9 +138,10 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
                     </button>
 
                     {/* Accordion Content for Mobile */}
-                    <AnimatePresence>
+                    <AnimatePresence initial={false}>
                       {isActive && (
                         <motion.div
+                          key={`accordion-${s.id}`}
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
