@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
+import { Reveal } from "@/components/motion/reveal";
 import { IconGlyph } from "@/lib/icons";
 import type { Service } from "@/data/public-content";
 
@@ -24,7 +25,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
     <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-20 xl:gap-32 items-start">
         
         {/* Left: Interactive Image Area (Hidden on Mobile) */}
-        <div className="hidden lg:block relative h-[80vh] w-full rounded-[2.5rem] overflow-hidden shadow-2xl group sticky top-28">
+        <Reveal className="hidden lg:block relative h-[80vh] w-full rounded-[2.5rem] overflow-hidden shadow-2xl group sticky top-28">
           {/* Subtle frame border */}
           <div className="absolute inset-0 border border-white/20 rounded-[2.5rem] z-20 pointer-events-none"></div>
           
@@ -71,10 +72,10 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
               </div>
             );
           })}
-        </div>
+        </Reveal>
 
         {/* Right: Tabbed Layout */}
-        <div className="relative flex flex-col justify-center pr-4 md:pr-12">
+        <Reveal delay={0.1} className="relative flex flex-col justify-center pr-4 md:pr-12">
           <div className="py-8">
             <div className="mb-8 lg:mb-10 mt-2">
               <p className="section-eyebrow mb-4">{settings.servicesLabel}</p>
@@ -114,8 +115,10 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
                       className={`group cursor-pointer py-5 transition-all duration-300 ease-out flex items-center justify-between ${
                         isActive ? 'bg-forest-50/50 pl-4' : 'hover:pl-2 hover:bg-forest-50/30'
                       }`}
-                      onMouseEnter={() => setActiveIndex(i)}
-                      onClick={() => setActiveIndex(i)}
+                      onPointerEnter={(e) => {
+                        if (e.pointerType === 'mouse') setActiveIndex(i);
+                      }}
+                      onClick={() => setActiveIndex(isActive ? -1 : i)}
                     >
                       <div className="flex items-center gap-4 sm:gap-5 text-left">
                         <span className={`font-serif italic text-lg transition-colors duration-300 ${
@@ -171,7 +174,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
               })}
             </div>
           </div>
-        </div>
+        </Reveal>
     </div>
   );
 }

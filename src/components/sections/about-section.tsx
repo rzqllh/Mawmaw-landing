@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { GlassCard } from "@/components/cards/glass-card";
+import { Reveal } from "@/components/motion/reveal";
 import { IconGlyph, IconName } from "@/lib/icons";
 import { getSiteSettings } from "@/lib/queries";
 
@@ -12,7 +13,7 @@ export async function AboutSection() {
     <section id="tentang" className="relative surface-section-muted section-y">
       <div className="section-container relative z-10">
         <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
-        <div className="relative max-w-2xl">
+        <Reveal className="relative max-w-2xl">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 md:aspect-[4/3] lg:aspect-[1/1]">
             <Image
               src={settings.aboutImageSrc}
@@ -24,58 +25,63 @@ export async function AboutSection() {
               className="object-cover"
             />
           </div>
-        </div>
+        </Reveal>
 
         <div className="pt-8 lg:pt-0">
-          <p className="section-eyebrow">
-            {settings.aboutLabel}
-          </p>
-          <h2 className="heading-section max-w-3xl text-forest-900">
-            {settings.aboutTitle}
-          </h2>
-          <div className="mt-6 h-px w-14 bg-gold-500" />
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
-            {settings.aboutDescription}
-          </p>
+          <Reveal delay={0.1}>
+            <p className="section-eyebrow">
+              {settings.aboutLabel}
+            </p>
+            <h2 className="heading-section max-w-3xl text-forest-900">
+              {settings.aboutTitle}
+            </h2>
+            <div className="mt-6 h-px w-14 bg-gold-500" />
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
+              {settings.aboutDescription}
+            </p>
+          </Reveal>
+          
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {(settings.heroStatCards as { label: string; value: string; icon?: IconName }[]).map((card) => (
-              <div
-                key={card.label}
-                className="flex items-center gap-4 rounded-xl border border-forest-100 bg-surface p-3 lg:p-4"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-pill bg-forest-50 text-forest-800 ring-1 ring-forest-100">
-                  <IconGlyph
-                    name={card.icon ?? "sparkle"}
-                    aria-hidden
-                    className="h-5 w-5"
-                    weight="duotone"
-                  />
-                </span>
-                <span>
-                  <span className="block font-serif text-3xl leading-none text-forest-900">
-                    {card.value}
+            {(settings.heroStatCards as { label: string; value: string; icon?: IconName }[]).map((card, i) => (
+              <Reveal key={card.label} delay={0.2 + (i * 0.1)}>
+                <div
+                  className="flex items-center gap-4 rounded-xl border border-forest-100 bg-surface p-3 lg:p-4"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-pill bg-forest-50 text-forest-800 ring-1 ring-forest-100">
+                    <IconGlyph
+                      name={card.icon ?? "sparkle"}
+                      aria-hidden
+                      className="h-5 w-5"
+                      weight="duotone"
+                    />
                   </span>
-                  <span className="mt-1 block text-sm font-semibold text-forest-900">
-                    {card.label}
+                  <span>
+                    <span className="block font-serif text-3xl leading-none text-forest-900">
+                      {card.value}
+                    </span>
+                    <span className="mt-1 block text-sm font-semibold text-forest-900">
+                      {card.label}
+                    </span>
                   </span>
-                </span>
-              </div>
+                </div>
+              </Reveal>
             ))}
           </div>
           <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {aboutValues.map((value) => (
-              <div
-                key={value.title}
-                className="border-t border-forest-200/70 pt-4"
-              >
-                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-pill bg-forest-50 text-forest-800 ring-1 ring-forest-100">
-                  <IconGlyph name={(value.icon as IconName) || "heart"} aria-hidden className="h-4 w-4" weight="duotone" />
+            {aboutValues.map((value, i) => (
+              <Reveal key={value.title} delay={0.4 + (i * 0.1)}>
+                <div
+                  className="border-t border-forest-200/70 pt-4"
+                >
+                  <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-pill bg-forest-50 text-forest-800 ring-1 ring-forest-100">
+                    <IconGlyph name={(value.icon as IconName) || "heart"} aria-hidden className="h-4 w-4" weight="duotone" />
+                  </div>
+                  <h3 className="font-semibold text-forest-900">{value.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-text-secondary">
+                    {value.description}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-forest-900">{value.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                  {value.description}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

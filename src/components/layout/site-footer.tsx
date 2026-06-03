@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 
 import {
@@ -66,9 +67,10 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
 
       <div className={cn("section-container relative pb-8 md:pb-10 lg:pb-12", isLanding ? "pt-16 md:pt-20 lg:pt-24" : "pt-12 md:pt-16")}>
         {isLanding && (
-          <section className="glass-dark grid gap-8 rounded-[2rem] p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:p-10">
-            <div>
-              <p className="section-eyebrow-inverse !mb-4">
+          <Reveal>
+            <section className="glass-dark grid gap-8 rounded-[2rem] p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:p-10">
+              <div>
+                <p className="section-eyebrow-inverse !mb-4">
                 Studio Interior & Furnitur
               </p>
 
@@ -96,11 +98,12 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
                 </Link>
               </Button>
             </div>
-          </section>
+            </section>
+          </Reveal>
         )}
 
         <div className={cn("grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16", isLanding ? "mt-12" : "mt-4")}>
-          <div className="max-w-md">
+          <Reveal delay={0.1} className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-3">
               <span className="relative flex !bg-forest-700 h-12 w-12 overflow-hidden rounded-pill bg-gold-500/14 ring-1 ring-text-inverse/14 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(4,12,8,0.18)]">
                 <Image
@@ -141,9 +144,9 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
                 ) : null
               )}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="grid gap-4 sm:grid-cols-3">
+          <Reveal delay={0.2} className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
             <FooterColumn title="Pintasan Navigasi">
               {navItems.map((item) => (
                 <Link
@@ -179,8 +182,9 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
               {settings.phone ? (
                 <Link
                   href={normalizeTelHref(settings.phone)}
-                  className="w-fit text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
+                  className="mt-1 flex items-center gap-2 hover:text-gold-300"
                 >
+                  <IconGlyph name="whatsapp" className="h-4 w-4" />
                   {settings.phone}
                 </Link>
               ) : null}
@@ -189,7 +193,7 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
                 {settings.address}
               </p>
             </FooterColumn>
-          </div>
+          </Reveal>
         </div>
 
         <div className="mt-10 flex flex-col gap-4 border-t border-text-inverse/12 pt-6 text-xs text-text-inverse/54 md:flex-row md:items-center md:justify-between">
