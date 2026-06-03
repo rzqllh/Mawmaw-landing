@@ -22,7 +22,7 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const articles = await getArticles();
-  return articles.map((article) => ({
+  return articles.map((article: any) => ({
     slug: article.slug,
   }));
 }

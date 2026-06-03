@@ -25,7 +25,7 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const projects = await getProjects();
-  return projects.map((project) => ({
+  return projects.map((project: any) => ({
     slug: project.slug,
   }));
 }
