@@ -11,7 +11,7 @@ export async function AboutSection() {
   return (
     <section id="tentang" className="relative surface-section-muted section-y">
       <div className="section-container relative z-10">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
+        <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-[0.98fr_1.02fr] lg:gap-20">
         <div className="relative max-w-2xl">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-surface/60 md:aspect-[4/3] lg:aspect-[1/1]">
             <Image

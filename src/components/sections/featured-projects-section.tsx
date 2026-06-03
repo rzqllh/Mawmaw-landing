@@ -14,7 +14,7 @@ export async function FeaturedProjectsSection() {
   return (
     <section id="proyek" className="relative surface-section-muted section-y pb-32">
       <div className="section-container relative z-10">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+        <div className="mb-8 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
           <p className="section-eyebrow">
             {settings.projectsLabel}

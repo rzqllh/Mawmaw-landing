@@ -73,7 +73,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
       />
 
       <div className="section-container relative z-20">
-        <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+        <div className="grid gap-8 md:gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
           <Reveal>
             <div className="lg:sticky lg:top-28">
               <p className="section-eyebrow-inverse">

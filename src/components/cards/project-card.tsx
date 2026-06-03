@@ -24,9 +24,9 @@ export function ProjectCard({
       <article
         className={cn(
           "group overflow-hidden rounded-[var(--radius-card)] bg-forest-900 shadow-card ring-1 ring-white/30 card-lift",
-          variant === "showcase" && "min-h-[31rem]",
-          variant === "portrait" && "min-h-[31rem]",
-          variant === "wide" && "min-h-[25rem]",
+          variant === "showcase" && "min-h-[24rem] md:min-h-[31rem]",
+          variant === "portrait" && "min-h-[24rem] md:min-h-[31rem]",
+          variant === "wide" && "min-h-[22rem] md:min-h-[25rem]",
           className
         )}
       >

@@ -155,15 +155,15 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
             
             <motion.div 
               variants={itemVariants}
-              className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+              className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row"
             >
-              <Button asChild size="lg" variant="primary" radius="lg" className="px-8 transition-all">
+              <Button asChild size="lg" variant="primary" radius="lg" className="w-full sm:w-auto px-8 transition-all">
                 <ConfirmWhatsappLink href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Halo Mawmaw Interior, saya ingin konsultasi desain interior.")}`} className="group">
                   <WhatsappLogo aria-hidden className="h-5 w-5" weight="regular" />
                   Mulai Konsultasi
                 </ConfirmWhatsappLink>
               </Button>
-              <Button asChild size="lg" variant="secondary" radius="lg" className="px-8 transition-all">
+              <Button asChild size="lg" variant="secondary" radius="lg" className="w-full sm:w-auto px-8 transition-all">
                 <Link href="#proyek" className="group">
                   Lihat Portfolio
                   <ArrowRight aria-hidden className="h-5 w-5" weight="regular" />
