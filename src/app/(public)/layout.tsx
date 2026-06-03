@@ -1,6 +1,5 @@
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { MobileDock } from "@/components/layout/mobile-dock";
 import { getSiteSettings } from "@/lib/queries";
 
 export default async function PublicLayout({
@@ -16,7 +15,6 @@ export default async function PublicLayout({
         Langsung ke konten
       </a>
       <SiteHeader settings={settings} />
-      <MobileDock settings={settings} />
       <main id="main-content">{children}</main>
       <SiteFooter settings={settings} />
     </div>

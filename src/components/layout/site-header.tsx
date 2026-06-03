@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, WhatsappLogo, List, X } from "@phosphor-icons/react/dist/ssr";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { navItems } from "@/data/public-content";
@@ -24,6 +24,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
   const [activeSectionHref, setActiveSectionHref] = useState<string | null>(
     null
   );
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const showLiquidHeader = true;
   const showHeaderActions = pathname !== "/" || isPastHero;
   const activeNavHref = pathname.startsWith("/projects")
@@ -58,7 +59,25 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       behavior: shouldReduceMotion ? "auto" : "smooth",
     });
     window.history.replaceState(null, "", "/");
+    setIsMobileMenuOpen(false);
   }
+
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -234,9 +253,79 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                 </Button>
               </motion.div>
             ) : null}
+            
+            {/* MOBILE MENU TOGGLE */}
+            <motion.button
+              layout
+              key="mobile-toggle"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="flex items-center justify-center rounded-full p-2 md:hidden hover:bg-forest-900/5 transition-colors"
+              aria-label="Open menu"
+            >
+              <List className="h-6 w-6" />
+            </motion.button>
           </AnimatePresence>
         </motion.div>
       </div>
+
+      {/* FULLSCREEN MOBILE MENU OVERLAY */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: headerEase }}
+            className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-xl px-6 py-8 md:hidden"
+          >
+            <div className="flex items-center justify-between">
+              <Link href="/" onClick={handleBrandClick} className="flex items-center gap-3">
+                <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-pill bg-forest-700">
+                  <Image src="/brand/mawmaw-icon.png" alt="" fill sizes="40px" className="object-contain p-1.5" />
+                </span>
+                <span className="truncate text-lg font-extrabold tracking-[-0.01em] text-forest-900">
+                  Mawmaw.
+                </span>
+              </Link>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-center rounded-full p-2 bg-surface shadow-sm border border-black/5 hover:bg-surface-warm transition-colors text-forest-900"
+                aria-label="Close menu"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <nav className="mt-12 flex flex-col gap-6">
+              {resolvedNav.map((item) => {
+                const isActive = activeNavHref ? item.href.endsWith(activeNavHref) : false;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "text-3xl font-cormorant font-semibold tracking-tight transition-colors",
+                      isActive ? "text-forest-900" : "text-text-secondary"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="mt-auto pb-8">
+              <Button asChild size="lg" variant="primary" radius="md" className="w-full text-base">
+                <ConfirmWhatsappLink href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Halo Mawmaw Interior, saya ingin konsultasi desain interior.")}`} className="group justify-center">
+                  <WhatsappLogo aria-hidden className="h-5 w-5" weight="bold" />
+                  Mulai Konsultasi
+                </ConfirmWhatsappLink>
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
