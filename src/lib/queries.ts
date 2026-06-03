@@ -38,7 +38,7 @@ export const getProjects = unstable_cache(
   },
   ["projects"],
   { tags: ["projects"], revalidate: 3600 }
-);
+) as () => Promise<Project[]>;
 
 export const getFeaturedProjects = unstable_cache(
   async () => {
@@ -47,7 +47,7 @@ export const getFeaturedProjects = unstable_cache(
   },
   ["projects-featured"],
   { tags: ["projects"], revalidate: 3600 }
-);
+) as () => Promise<Project[]>;
 
 export function getProjectBySlug(slug: string) {
   return unstable_cache(
@@ -57,7 +57,7 @@ export function getProjectBySlug(slug: string) {
     },
     ["project", slug],
     { tags: ["projects", `project-${slug}`], revalidate: 3600 }
-  )();
+  )() as Promise<Project | null>;
 }
 
 // ARTICLES
@@ -68,7 +68,7 @@ export const getArticles = unstable_cache(
   },
   ["articles"],
   { tags: ["articles"], revalidate: 3600 }
-);
+) as () => Promise<Article[]>;
 
 export function getArticleBySlug(slug: string) {
   return unstable_cache(
@@ -78,7 +78,7 @@ export function getArticleBySlug(slug: string) {
     },
     ["article", slug],
     { tags: ["articles", `article-${slug}`], revalidate: 3600 }
-  )();
+  )() as Promise<Article | null>;
 }
 
 // SERVICES
@@ -89,7 +89,7 @@ export const getServices = unstable_cache(
   },
   ["services"],
   { tags: ["services"], revalidate: 3600 }
-);
+) as () => Promise<Service[]>;
 
 // SITE SETTINGS
 import { siteConfig, heroContent, aboutContent, servicesSection, projectsSection, articlesSection, contactContent, footerContent } from "@/data/public-content";
@@ -151,4 +151,4 @@ export const getSiteSettings = unstable_cache(
   },
   ["site-settings"],
   { tags: ["site-settings"], revalidate: 3600 }
-);
+) as () => Promise<any>;

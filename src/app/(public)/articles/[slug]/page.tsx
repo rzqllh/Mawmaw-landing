@@ -60,7 +60,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 
   const allArticles = await getArticles();
   const relatedArticles = allArticles
-    .filter((item) => item.slug !== article.slug && item.category === article.category)
+    .filter((item: any) => item.slug !== article.slug && item.category === article.category)
     .slice(0, 3);
 
   return (
@@ -126,7 +126,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
           </div>
           {relatedArticles.length ? (
             <div className="grid gap-5 md:grid-cols-3">
-              {relatedArticles.map((item) => (
+              {relatedArticles.map((item: any) => (
                 <ArticleCard key={item.id} article={item} />
               ))}
             </div>

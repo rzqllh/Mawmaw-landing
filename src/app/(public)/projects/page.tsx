@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const projects = await getProjects();
-  const categories = ["Semua", ...new Set(projects.map((project) => project.category))];
+  const categories = ["Semua", ...new Set(projects.map((project: any) => project.category))];
 
   return (
     <>
@@ -44,7 +44,7 @@ export default async function ProjectsPage() {
       <section className="section-container section-y">
         {projects.length ? (
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project, index) => (
+            {projects.map((project: any, index: number) => (
               <Reveal key={project.id} delay={index * 0.035}>
                 <ProjectCard project={project} priority={index < 2} />
               </Reveal>

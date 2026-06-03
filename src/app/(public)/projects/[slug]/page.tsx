@@ -63,12 +63,12 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   const allProjects = await getProjects();
   let relatedProjects = allProjects
-    .filter((item) => item.slug !== project.slug && item.category === project.category)
+    .filter((item: any) => item.slug !== project.slug && item.category === project.category)
     .slice(0, 3);
 
   if (relatedProjects.length === 0) {
     relatedProjects = allProjects
-      .filter((item) => item.slug !== project.slug)
+      .filter((item: any) => item.slug !== project.slug)
       .slice(0, 3);
   }
 
@@ -181,7 +181,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         
         {relatedProjects.length > 0 && (
           <div className="grid gap-5 md:grid-cols-3">
-            {relatedProjects.map((item) => (
+            {relatedProjects.map((item: any) => (
               <ProjectCard key={item.id} project={item} variant="compact" />
             ))}
           </div>

@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 
 export default async function ArticlesPage() {
   const articles = await getArticles();
-  const featuredArticle = articles.find((a) => a.featured) || articles[0];
-  const supportingArticles = articles.filter((a) => a.id !== featuredArticle?.id);
-  const categories = ["Semua", ...new Set(articles.map((article) => article.category))];
+  const featuredArticle = articles.find((a: any) => a.featured) || articles[0];
+  const supportingArticles = articles.filter((a: any) => a.id !== featuredArticle?.id);
+  const categories = ["Semua", ...new Set(articles.map((article: any) => article.category))];
 
   return (
     <>
@@ -51,7 +51,7 @@ export default async function ArticlesPage() {
               </Reveal>
             ) : null}
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {supportingArticles.map((article, index) => (
+              {supportingArticles.map((article: any, index: number) => (
                 <Reveal key={article.id} delay={index * 0.035}>
                   <ArticleCard article={article} priority={index < 2} />
                 </Reveal>
