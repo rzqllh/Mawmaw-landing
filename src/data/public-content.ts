@@ -112,14 +112,14 @@ export const siteConfig: SiteConfig = {
   url: "https://mawmaw-interior.vercel.app",
   description:
     "Mawmaw Interior adalah studio desain interior yang membantu menciptakan ruang hangat, fungsional, dan elegan untuk rumah maupun tempat usaha.",
-  email: "halo@mawmawinterior.com",
-  phone: "+62 812-3456-7890",
+  email: "hrizqullah484@gmail.com",
+  phone: "+6281294232755",
   address: "Jakarta Selatan, Indonesia",
   socials: {
-    instagram: "https://instagram.com/mawmawinterior",
-    pinterest: "https://pinterest.com/mawmawinterior",
-    behance: "https://behance.net/mawmawinterior",
-    email: "mailto:halo@mawmawinterior.com",
+    instagram: "https://www.instagram.com/mawmawinterior/",
+    pinterest: "",
+    behance: "",
+    email: "mailto:[EMAIL_ADDRESS]",
   },
 };
 
