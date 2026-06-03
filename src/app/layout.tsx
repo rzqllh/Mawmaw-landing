@@ -36,6 +36,8 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     type: "website",
     locale: "id_ID",
+    url: "/",
+    siteName: siteConfig.name,
   },
 };
 
