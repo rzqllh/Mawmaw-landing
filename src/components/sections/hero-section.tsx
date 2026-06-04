@@ -133,8 +133,8 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
               className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-forest-900/10 bg-forest-900/5 px-4 py-2 text-[0.65rem] font-extrabold uppercase tracking-[0.24em] text-forest-900 backdrop-blur-md transition-colors hover:bg-forest-900/10 sm:text-[0.7rem]"
             >
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-forest-900/40 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-forest-900/60"></span>
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-forest-500/80"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-500/50"></span>
               </span>
               Studio Desain Interior
             </motion.p>
