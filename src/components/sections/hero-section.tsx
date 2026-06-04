@@ -177,19 +177,25 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
       {/* Scroll Indicator - Absolute Bottom */}
       <motion.div 
         aria-hidden
-        className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 w-px flex-col items-center opacity-70"
+        className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center opacity-70"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.5, ease }}
       >
-        <span className="mb-3 text-[0.55rem] font-extrabold uppercase tracking-[0.3em] text-forest-900/60">
-          Scroll
-        </span>
-        <motion.span 
-          className="h-12 w-px origin-top bg-linear-to-b from-forest-900/40 to-transparent"
-          animate={{ scaleY: [0, 1, 1], opacity: [0, 1, 0] }}
-          transition={{ duration: 2, ease: "easeInOut", repeat: Infinity }}
-        />
+        <div className="flex h-[34px] w-[22px] justify-center rounded-full border-[1.5px] border-forest-900/30 p-1">
+          <motion.div 
+            className="h-1.5 w-1.5 rounded-full bg-forest-900/60"
+            animate={{ 
+              y: [0, 12, 0],
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{ 
+              duration: 1.5, 
+              ease: "easeInOut", 
+              repeat: Infinity 
+            }}
+          />
+        </div>
       </motion.div>
     </section>
   );

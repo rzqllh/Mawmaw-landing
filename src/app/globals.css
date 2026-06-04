@@ -431,6 +431,22 @@ textarea {
   @media (prefers-reduced-motion: reduce) {
     .group:hover .img-zoom { transform: none; }
   }
+
+  /* === IMAGE SKELETON === */
+  .img-skeleton {
+    background-image: linear-gradient(
+      90deg,
+      rgba(244, 241, 232, 0.4) 0%,
+      rgba(244, 241, 232, 0.8) 50%,
+      rgba(244, 241, 232, 0.4) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
 }
 
 /* ── Eyebrow label utilities ── */
@@ -793,6 +809,34 @@ button.field-dark[data-state="open"] {
 .contact-submit-button { min-height: 3rem; border-radius: var(--radius-pill); font-weight: 800; }
 
 /* ==========================================================================
+   LIGHTBOX COMPONENT
+   ========================================================================== */
+.lightbox-backdrop {
+  background: rgba(17, 32, 25, 0.96);
+  backdrop-filter: blur(24px) saturate(1.2);
+}
+
+.lightbox-control {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  transition: all var(--duration-hover) var(--ease-standard);
+}
+.lightbox-control:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+.lightbox-control:active {
+  transform: scale(0.95);
+}
+
+.lightbox-thumbnail-strip {
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 100%);
+}
+
+/* ==========================================================================
    VIEW TRANSITION RECIPES (React View Transitions API)
    ========================================================================== */
 
@@ -845,4 +889,12 @@ button.field-dark[data-state="open"] {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
   }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
 }

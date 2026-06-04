@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Plus, FolderOpen, Trash } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
-import { DataGrid, DataGridItem } from "@/components/admin/ui/data-grid";
+import { DataGridItem } from "@/components/admin/ui/data-grid";
+import { SortableList } from "@/components/admin/ui/sortable-list";
 
 export const metadata = {
   title: "Kelola Proyek - Admin",
@@ -11,17 +12,18 @@ export const metadata = {
 
 export default async function AdminProjectsPage() {
   const projects = await db.project.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: { sortOrder: "asc" },
     select: {
       id: true,
       title: true,
       category: true,
       featured: true,
-      createdAt: true,
       slug: true,
       excerpt: true,
       coverSrc: true,
       year: true,
+      status: true,
+      createdAt: true,
     },
   });
 
@@ -52,50 +54,69 @@ export default async function AdminProjectsPage() {
           </div>
         </div>
       ) : (
-        <DataGrid>
-          {projects.map((project) => (
-            <DataGridItem
-              key={project.id}
-              id={project.id}
-              title={project.title}
-              excerpt={project.excerpt || ""}
-              coverSrc={project.coverSrc}
-              editUrl={`/admin/projects/${project.id}/edit`}
-              viewUrl={`/projects/${project.slug}`}
-              subtitle={
-                <>
-                  <span>{project.category}</span>
-                  <span className="w-1 h-1 rounded-full bg-forest-900/20"></span>
-                  <span>{project.year || new Date(project.createdAt).getFullYear()}</span>
-                  {project.featured && (
-                    <>
-                      <span className="w-1 h-1 rounded-full bg-forest-900/20"></span>
-                      <span className="text-gold-600 bg-gold-500/10 px-2 py-0.5 rounded-md border border-gold-500/20">Featured</span>
-                    </>
-                  )}
-                </>
-              }
-              deleteAction={
-                <form
-                  action={async () => {
-                    "use server";
-                    const { deleteProject } = await import("@/app/actions/projects");
-                    await deleteProject(project.id);
-                  }}
-                >
-                  <button
-                    type="submit"
-                    title="Hapus proyek"
-                    className="text-[13px] font-bold text-red-600/70 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 flex items-center gap-1.5"
+        <SortableList
+          items={projects}
+          model="Project"
+          renderItem={(project, dragHandle) => (
+            <div className="relative">
+              <div className="absolute left-[-48px] top-1/2 -translate-y-1/2 z-10 hidden sm:block">
+                {dragHandle}
+              </div>
+              <DataGridItem
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                excerpt={project.excerpt || ""}
+                coverSrc={project.coverSrc}
+                editUrl={`/admin/projects/${project.id}/edit`}
+                viewUrl={project.status === "PUBLISHED" ? `/projects/${project.slug}` : undefined}
+                previewUrl={project.status === "DRAFT" ? `/api/draft?secret=dev_preview&slug=${project.slug}&type=project` : undefined}
+                statusBadge={
+                  project.status === "DRAFT" ? (
+                    <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase border border-gray-200">
+                      Draft
+                    </span>
+                  ) : (
+                    <span className="bg-green-50 text-green-700 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase border border-green-200">
+                      Published
+                    </span>
+                  )
+                }
+                subtitle={
+                  <>
+                    <span>{project.category}</span>
+                    <span className="w-1 h-1 rounded-full bg-forest-900/20"></span>
+                    <span>{project.year || new Date(project.createdAt).getFullYear()}</span>
+                    {project.featured && (
+                      <>
+                        <span className="w-1 h-1 rounded-full bg-forest-900/20"></span>
+                        <span className="text-gold-600 bg-gold-500/10 px-2 py-0.5 rounded-md border border-gold-500/20">Featured</span>
+                      </>
+                    )}
+                  </>
+                }
+                deleteAction={
+                  <form
+                    action={async () => {
+                      "use server";
+                      const { deleteProject } = await import("@/app/actions/projects");
+                      await deleteProject(project.id);
+                    }}
                   >
-                    <Trash weight="bold" className="w-4 h-4" />
-                    Hapus
-                  </button>
-                </form>
-              }
-            />
-          ))}
-        </DataGrid>
+                    <button
+                      type="submit"
+                      title="Hapus proyek"
+                      className="text-[13px] font-bold text-red-600/70 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 flex items-center gap-1.5"
+                    >
+                      <Trash weight="bold" className="w-4 h-4" />
+                      Hapus
+                    </button>
+                  </form>
+                }
+              />
+            </div>
+          )}
+        />
       )}
     </div>
   );

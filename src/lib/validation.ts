@@ -14,6 +14,14 @@ export const contactFormSchema = z.object({
     .string()
     .trim()
     .min(1, "Pilih jenis proyek."),
+  style: z
+    .string()
+    .trim()
+    .optional(),
+  estimatedArea: z
+    .string()
+    .trim()
+    .optional(),
   location: z
     .string()
     .trim()

@@ -1,9 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { ArrowRight, MapPin } from "@phosphor-icons/react/dist/ssr";
 
 import type { Project } from "@/data/public-content";
 import { Badge } from "@/components/ui/badge";
+import { BlurImage } from "@/components/ui/blur-image";
 import { cn } from "@/lib/utils";
 
 type ProjectCardProps = {
@@ -34,18 +35,22 @@ export function ProjectCard({
           href={`/projects/${project.slug}`}
           className="relative block h-full min-h-[inherit]"
         >
-          <Image
-            src={project.coverImage.src}
-            alt={project.coverImage.alt}
-            fill
-            sizes={
-              variant === "portrait"
-                ? "(min-width: 1024px) 32vw, 100vw"
-                : "(min-width: 1024px) 68vw, 100vw"
-            }
-            priority={priority}
-            className="object-cover img-zoom"
-          />
+          <ViewTransition name={`project-cover-${project.slug}`}>
+            <BlurImage
+              src={project.coverImage.src}
+              alt={project.coverImage.alt}
+              blurDataURL={project.coverImage.blurDataURL}
+              fill
+              sizes={
+                variant === "portrait"
+                  ? "(min-width: 1024px) 32vw, 100vw"
+                  : "(min-width: 1024px) 68vw, 100vw"
+              }
+              priority={priority}
+              className="object-cover img-zoom"
+              containerClassName="absolute inset-0"
+            />
+          </ViewTransition>
           <div className="media-vignette absolute inset-0" />
           <Badge variant="overlay" className="absolute left-5 top-5">
             {project.category}
@@ -83,14 +88,18 @@ export function ProjectCard({
     <article className={cn("glass-surface group overflow-hidden rounded-[var(--radius-card)] card-lift", className)}>
       <Link href={`/projects/${project.slug}`} className="block">
         <div className={cn("relative overflow-hidden bg-background-muted", variant === "compact" ? "aspect-video" : "aspect-[4/3]")}>
-          <Image
-            src={project.coverImage.src}
-            alt={project.coverImage.alt}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            priority={priority}
-            className="object-cover img-zoom"
-          />
+          <ViewTransition name={`project-cover-${project.slug}`}>
+            <BlurImage
+              src={project.coverImage.src}
+              alt={project.coverImage.alt}
+              blurDataURL={project.coverImage.blurDataURL}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              priority={priority}
+              className="object-cover img-zoom"
+              containerClassName="absolute inset-0"
+            />
+          </ViewTransition>
           <Badge className="absolute left-4 top-4 bg-surface/82 text-forest-900 ring-0 backdrop-blur-md hover:bg-surface/82 hover:text-forest-900">
             {project.category}
           </Badge>
@@ -100,7 +109,11 @@ export function ProjectCard({
             <MapPin aria-hidden className="h-4 w-4 text-gold-700" weight="duotone" />
             {project.location}
           </div>
-          <h3 className={cn("font-semibold text-forest-900", variant === "compact" ? "text-lg" : "text-xl")}>{project.title}</h3>
+          <h3 className={cn("font-semibold text-forest-900", variant === "compact" ? "text-lg" : "text-xl")}>
+            <ViewTransition name={`project-title-${project.slug}`}>
+              {project.title}
+            </ViewTransition>
+          </h3>
           {variant !== "compact" && (
             <p className="mt-3 text-sm leading-7 text-text-secondary">
               {project.excerpt}

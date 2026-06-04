@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { notFound } from "next/navigation";
 import {
   ArrowRight,
@@ -13,7 +13,10 @@ import { ProjectCard } from "@/components/cards/project-card";
 import { MarkdownContent } from "@/components/ui/markdown-content";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getProjectBySlug, getProjects } from "@/lib/queries";
+import { BlurImage } from "@/components/ui/blur-image";
+import { LightboxTrigger } from "@/components/ui/lightbox-trigger";
+import { AmbientGlow } from "@/components/effects/ambient-glow";
+import { getProjectBySlug, getProjects, getPublishedProjects } from "@/lib/queries";
 
 type ProjectPageProps = {
   params: Promise<{
@@ -24,7 +27,7 @@ type ProjectPageProps = {
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const projects = await getProjects();
+  const projects = await getPublishedProjects();
   return projects.map((project: any) => ({
     slug: project.slug,
   }));
@@ -75,7 +78,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   return (
     <>
       <article>
-        <section className="section-container pt-32 md:pt-40">
+        <header className="section-container relative pt-32 md:pt-40">
+          <AmbientGlow imageSrc={project.coverImage.src} opacity={0.12} />
           <Button asChild variant="ghost" size="sm" className="mb-8">
             <Link href="/projects">
               <CaretLeft aria-hidden className="h-4 w-4" />
@@ -84,11 +88,15 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </Button>
           <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-end">
             <div>
-              <Badge variant="gold">{project.category}</Badge>
+              <p className="text-sm font-semibold uppercase text-gold-700">
+              {project.category} · {project.year}
+            </p>
+            <ViewTransition name={`project-title-${project.slug}`}>
               <h1 className="mt-5 font-serif text-[clamp(3rem,7vw,7rem)] leading-[0.9] text-forest-900 text-balance">
                 {project.title}
               </h1>
-              <p className="mt-6 text-base leading-8 text-text-secondary md:text-lg">
+            </ViewTransition>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-text-secondary md:text-lg">
                 {project.excerpt}
               </p>
             </div>
@@ -103,16 +111,20 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </div>
           </div>
           <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-2xl bg-background-muted shadow-soft">
-            <Image
-              src={project.coverImage.src}
-              alt={project.coverImage.alt}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+            <ViewTransition name={`project-cover-${project.slug}`}>
+              <BlurImage
+                src={project.coverImage.src}
+                alt={project.coverImage.alt}
+                blurDataURL={project.coverImage.blurDataURL}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+                containerClassName="absolute inset-0"
+              />
+            </ViewTransition>
           </div>
-        </section>
+        </header>
 
         <section className="section-container grid gap-10 py-16 md:py-24 lg:grid-cols-[0.72fr_1fr]">
           <div>
@@ -143,20 +155,26 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               </h2>
             </div>
             <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
-              {project.gallery.map((image) => (
-                <div
-                  key={image.src}
-                  className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-background-muted shadow-card"
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, 100vw"
-                    className="object-cover img-zoom"
-                  />
-                </div>
-              ))}
+              {project.gallery && project.gallery.length > 0 ? (
+                project.gallery.map((image, idx) => (
+                  <LightboxTrigger
+                    key={`${image.src}-${idx}`}
+                    images={project.gallery}
+                    initialIndex={idx}
+                    className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-background-muted shadow-card"
+                  >
+                    <BlurImage
+                      src={image.src}
+                      alt={image.alt}
+                      blurDataURL={image.blurDataURL}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      className="object-cover img-zoom"
+                      containerClassName="absolute inset-0"
+                    />
+                  </LightboxTrigger>
+                ))
+              ) : null}
             </div>
         </section>
       </article>

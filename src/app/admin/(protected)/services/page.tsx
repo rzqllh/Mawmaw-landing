@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
-import { DataGrid, DataGridItem } from "@/components/admin/ui/data-grid";
+import { DataGridItem } from "@/components/admin/ui/data-grid";
+import { SortableList } from "@/components/admin/ui/sortable-list";
 import { getServices } from "@/app/actions/services";
 import { ServiceActions } from "./components/service-actions";
 
@@ -34,20 +35,27 @@ export default async function ServicesPage() {
             <p className="text-forest-900/60 text-sm">Buat layanan pertama Anda untuk menampilkannya di halaman publik.</p>
           </div>
         ) : (
-          <DataGrid>
-            {services.map((service) => (
-              <DataGridItem
-                key={service.id}
-                id={service.id}
-                title={service.title}
-                subtitle={`Urutan: ${service.sortOrder} • Icon: ${service.icon}`}
-                excerpt={service.description}
-                coverSrc={service.imageSrc}
-                editUrl={`/admin/services/${service.id}/edit`}
-                deleteAction={<ServiceActions id={service.id} />}
-              />
-            ))}
-          </DataGrid>
+          <SortableList
+            items={services}
+            model="Service"
+            renderItem={(service, dragHandle) => (
+              <div className="relative">
+                <div className="absolute left-[-48px] top-1/2 -translate-y-1/2 z-10 hidden sm:block">
+                  {dragHandle}
+                </div>
+                <DataGridItem
+                  key={service.id}
+                  id={service.id}
+                  title={service.title}
+                  subtitle={`Urutan: ${service.sortOrder} • Icon: ${service.icon}`}
+                  excerpt={service.description}
+                  coverSrc={service.imageSrc}
+                  editUrl={`/admin/services/${service.id}/edit`}
+                  deleteAction={<ServiceActions id={service.id} />}
+                />
+              </div>
+            )}
+          />
         )}
       </div>
     </div>

@@ -26,6 +26,7 @@ export type ImageAsset = {
   alt: string;
   width: number;
   height: number;
+  blurDataURL?: string;
 };
 
 export type HeroContent = {

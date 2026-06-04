@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { notFound } from "next/navigation";
 import { ArrowRight, CaretLeft } from "@phosphor-icons/react/dist/ssr";
 
@@ -9,8 +9,9 @@ import { MarkdownContent } from "@/components/ui/markdown-content";
 import { Button } from "@/components/ui/button";
 import { ReadingProgressBar } from "@/components/ui/reading-progress-bar";
 import { ArticleShare } from "@/components/ui/article-share";
+import { BlurImage } from "@/components/ui/blur-image";
 import { formatDate } from "@/lib/utils";
-import { getArticleBySlug, getArticles } from "@/lib/queries";
+import { getArticleBySlug, getArticles, getPublishedArticles } from "@/lib/queries";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -21,7 +22,7 @@ type ArticlePageProps = {
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const articles = await getArticles();
+  const articles = await getPublishedArticles();
   return articles.map((article: any) => ({
     slug: article.slug,
   }));
@@ -88,22 +89,28 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
             <p className="text-sm font-semibold uppercase text-gold-700">
               {article.category} · {formatDate(article.publishedAt)}
             </p>
-            <h1 className="mt-5 font-serif text-[clamp(3rem,7vw,7rem)] leading-[0.9] text-forest-900 text-balance">
-              {article.title}
-            </h1>
+            <ViewTransition name={`article-title-${article.slug}`}>
+              <h1 className="mt-5 font-serif text-[clamp(3rem,7vw,7rem)] leading-[0.9] text-forest-900 text-balance">
+                {article.title}
+              </h1>
+            </ViewTransition>
             <p className="mt-6 max-w-2xl text-base leading-8 text-text-secondary md:text-lg">
               {article.excerpt}
             </p>
           </div>
           <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-2xl bg-background-muted shadow-soft">
-            <Image
-              src={article.coverImage.src}
-              alt={article.coverImage.alt}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+            <ViewTransition name={`article-cover-${article.slug}`}>
+              <BlurImage
+                src={article.coverImage.src}
+                alt={article.coverImage.alt}
+                blurDataURL={article.coverImage.blurDataURL}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+                containerClassName="absolute inset-0"
+              />
+            </ViewTransition>
           </div>
         </header>
 

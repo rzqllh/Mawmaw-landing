@@ -21,11 +21,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { contactContent, siteConfig } from "@/data/public-content";
 import { IconGlyph } from "@/lib/icons";
+import { cn } from "@/lib/utils";
 import {
   contactFormSchema,
   type ContactFormValues,
 } from "@/lib/validation";
 import { SiteSetting } from "@prisma/client";
+import { ContactWizard } from "./contact-wizard";
+import { MagicWand, ListDashes } from "@phosphor-icons/react";
 
 const defaultValues: ContactFormValues = {
   name: "",
@@ -37,6 +40,7 @@ const defaultValues: ContactFormValues = {
 
 export function ContactSection({ settings }: { settings: SiteSetting }) {
   const formId = useId();
+  const [mode, setMode] = useState<"form" | "wizard">("wizard");
 
   const {
     register,
@@ -49,7 +53,12 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
   });
 
   async function onSubmit(values: ContactFormValues) {
-    const result = await submitContactForm(values);
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, val]) => {
+      if (val) formData.append(key, val);
+    });
+    
+    const result = await submitContactForm(formData);
     if (!result.success) {
       toast.error(result.error || "Gagal mengirim pesan.");
       return;
@@ -106,11 +115,39 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <form
-              noValidate
-              onSubmit={handleSubmit(onSubmit, onInvalid)}
-              className="glass-dark contact-form-card"
-            >
+            <div className="mb-6 flex justify-center lg:justify-start">
+              <div className="bg-white/10 p-1 rounded-pill flex backdrop-blur-md border border-white/10">
+                <button
+                  onClick={() => setMode("wizard")}
+                  className={cn(
+                    "flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-pill transition-all",
+                    mode === "wizard" ? "bg-white text-forest-900 shadow-sm" : "text-white/70 hover:text-white"
+                  )}
+                >
+                  <MagicWand weight={mode === "wizard" ? "fill" : "regular"} className="w-4 h-4" />
+                  Mode Interaktif
+                </button>
+                <button
+                  onClick={() => setMode("form")}
+                  className={cn(
+                    "flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-pill transition-all",
+                    mode === "form" ? "bg-white text-forest-900 shadow-sm" : "text-white/70 hover:text-white"
+                  )}
+                >
+                  <ListDashes weight={mode === "form" ? "fill" : "regular"} className="w-4 h-4" />
+                  Form Langsung
+                </button>
+              </div>
+            </div>
+
+            {mode === "wizard" ? (
+              <ContactWizard settings={settings} />
+            ) : (
+              <form
+                noValidate
+                onSubmit={handleSubmit(onSubmit, onInvalid)}
+                className="glass-dark contact-form-card"
+              >
               <div className="grid gap-5 md:grid-cols-2">
                 <Field
                   id={`${formId}-name`}
@@ -253,6 +290,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
                 </Button>
               </div>
             </form>
+            )}
           </Reveal>
         </div>
       </div>
