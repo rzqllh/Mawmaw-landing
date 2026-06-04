@@ -45,7 +45,14 @@ export async function generateMetadata({
     openGraph: {
       title: article.title,
       description: article.excerpt,
-      images: [article.coverImage.src],
+      images: [
+        {
+          url: article.coverImage.src.replace("w=1600", "w=800"),
+          width: 800,
+          height: 600,
+          alt: article.title,
+        },
+      ],
       url: `/articles/${article.slug}`,
       siteName: "Mawmaw Interior",
       type: "article",

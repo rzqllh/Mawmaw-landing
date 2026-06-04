@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 
-import { siteConfig } from "@/data/public-content";
+import { siteConfig, heroContent } from "@/data/public-content";
 
 import "./globals.css";
 
@@ -38,6 +38,14 @@ export const metadata: Metadata = {
     locale: "id_ID",
     url: "/",
     siteName: siteConfig.name,
+    images: [
+      {
+        url: heroContent.image.src.replace("w=2400", "w=1200"),
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
   },
 };
 
