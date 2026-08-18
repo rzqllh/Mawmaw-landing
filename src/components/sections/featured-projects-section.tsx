@@ -36,8 +36,8 @@ export async function FeaturedProjectsSection() {
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
-        {firstProject ? (
+      {firstProject ? (
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
           <Reveal>
             <ProjectCard
               project={firstProject}
@@ -45,7 +45,6 @@ export async function FeaturedProjectsSection() {
               variant="showcase"
             />
           </Reveal>
-        ) : null}
           {secondProject ? (
             <Reveal delay={0.05}>
               <ProjectCard project={secondProject} variant="portrait" />
@@ -57,6 +56,11 @@ export async function FeaturedProjectsSection() {
             </Reveal>
           ) : null}
         </div>
+      ) : (
+        <div className="border-y border-forest-900/15 py-10 text-text-secondary">
+          Portfolio pilihan sedang disiapkan.
+        </div>
+      )}
       </div>
     </section>
   );

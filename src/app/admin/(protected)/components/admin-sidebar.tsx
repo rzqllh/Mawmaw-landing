@@ -10,7 +10,7 @@ export function AdminSidebar({ userEmail }: { userEmail: string }) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-60 hidden md:flex flex-col p-4 h-screen sticky top-0 z-40">
+    <aside className="sticky top-0 z-40 hidden h-dvh w-60 flex-col p-4 md:flex">
       <div className="admin-glass-navigation flex-1 rounded-2xl flex flex-col overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
         

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Phone } from "@phosphor-icons/react/dist/ssr";
 
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
@@ -55,20 +55,10 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
       "relative isolate overflow-hidden bg-forest-900 text-text-inverse",
       !isLanding && "rounded-t-[2.5rem] mt-8 shadow-[0_-20px_40px_rgba(4,12,8,0.05)]"
     )}>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_10%,rgba(212,190,66,0.14),transparent_28rem),radial-gradient(circle_at_82%_28%,rgba(78,114,88,0.18),transparent_34rem),linear-gradient(180deg,#112019_0%,#0b1711_100%)]"
-      />
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(250,248,241,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(250,248,241,0.06)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(180deg,transparent_0%,black_22%,black_72%,transparent_100%)]"
-      />
-
       <div className={cn("section-container relative pb-8 md:pb-10 lg:pb-12", isLanding ? "pt-16 md:pt-20 lg:pt-24" : "pt-12 md:pt-16")}>
         {isLanding && (
           <Reveal>
-            <section className="glass-dark grid gap-8 rounded-[2rem] p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:p-10">
+            <section className="grid gap-8 border-y border-text-inverse/15 py-8 lg:grid-cols-[1fr_auto] lg:items-end lg:py-10">
               <div>
                 <p className="section-eyebrow-inverse !mb-4">
                 Studio Interior & Furnitur
@@ -86,7 +76,7 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
             <div className="flex flex-wrap gap-3">
               <Button asChild variant="gold" className="h-12 px-5 text-sm font-extrabold">
                 <Link href="/#kontak" className="group">
-                  Mulai Konsultasi
+                  Ceritakan Proyek Anda
                   <ArrowRight aria-hidden className="h-4 w-4 transition-transform group-hover:translate-x-1" weight="bold" />
                 </Link>
               </Button>
@@ -160,15 +150,17 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
             </FooterColumn>
 
             <FooterColumn title="Layanan Kami">
-              {services.slice(0, 5).map((service) => (
-                <Link
-                  key={service.id}
-                  href="/#layanan"
-                  className="w-fit text-sm leading-6 text-text-inverse/80 transition hover:text-gold-300"
-                >
-                  {service.title}
-                </Link>
-              ))}
+              <ul className="grid gap-2 text-sm leading-6 text-text-inverse/72">
+                {services.slice(0, 5).map((service) => (
+                  <li key={service.id}>{service.title}</li>
+                ))}
+              </ul>
+              <Link
+                href="/#layanan"
+                className="mt-1 w-fit text-sm font-semibold text-gold-300 transition hover:text-gold-200"
+              >
+                Lihat rincian layanan
+              </Link>
             </FooterColumn>
 
             <FooterColumn title="Hubungi Kami">
@@ -184,7 +176,7 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
                   href={normalizeTelHref(settings.phone)}
                   className="mt-1 flex items-center gap-2 hover:text-gold-300"
                 >
-                  <IconGlyph name="whatsapp" className="h-4 w-4" />
+                  <Phone aria-hidden="true" className="h-4 w-4" />
                   {settings.phone}
                 </Link>
               ) : null}

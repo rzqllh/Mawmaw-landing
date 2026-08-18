@@ -6,7 +6,6 @@ import { useForm, useFieldArray } from "react-hook-form";
 import Link from "next/link";
 import {
   ArrowSquareOut,
-  CheckCircle,
   FloppyDisk,
 } from "@phosphor-icons/react";
 import { AdminInput } from "@/components/admin/ui/admin-input";
@@ -251,7 +250,7 @@ export function SettingsForm({ initialData }: SettingsProps) {
                       <div className="flex-1 space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <FormInput label="Label (Cth: Proyek Selesai)" {...register(`heroStatCards.${index}.label`)} />
-                          <FormInput label="Value (Cth: 150+)" {...register(`heroStatCards.${index}.value`)} />
+                          <FormInput label="Nilai (gunakan data terverifikasi)" {...register(`heroStatCards.${index}.value`)} />
                         </div>
                         <FormInput label="Deskripsi Pendek" {...register(`heroStatCards.${index}.description`)} />
                       </div>

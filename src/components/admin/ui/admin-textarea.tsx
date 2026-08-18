@@ -14,7 +14,7 @@ const AdminTextarea = React.forwardRef<HTMLTextAreaElement, AdminTextareaProps>(
           "admin-input-base resize-y",
           error && "admin-input-error",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          "placeholder:text-forest-900/30",
+          "placeholder:text-forest-900/55",
           className
         )}
         ref={ref}

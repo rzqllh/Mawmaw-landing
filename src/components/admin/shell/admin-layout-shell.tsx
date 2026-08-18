@@ -8,12 +8,10 @@ import { AdminMobileDrawer } from "./admin-mobile-drawer";
 
 interface AdminLayoutShellProps extends React.HTMLAttributes<HTMLDivElement> {
   sidebar: React.ReactNode;
-  header?: React.ReactNode;
 }
 
 export function AdminLayoutShell({
   sidebar,
-  header,
   children,
   className,
   ...props
@@ -26,7 +24,7 @@ export function AdminLayoutShell({
   return (
     <div className={cn("admin-layout-shell flex w-full", className)} {...props}>
       {/* Desktop Sidebar — fixed full-height */}
-      <aside className="hidden md:flex flex-col w-64 h-screen sticky top-0 z-40 shrink-0">
+      <aside className="sticky top-0 z-40 hidden h-dvh w-64 shrink-0 flex-col md:flex">
         {sidebar}
       </aside>
 
@@ -38,7 +36,7 @@ export function AdminLayoutShell({
       </AdminMobileDrawer>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+      <div className="flex h-dvh min-w-0 flex-1 flex-col overflow-y-auto">
         {/* Mobile Header with Menu Trigger */}
         <header className="sticky top-0 z-30 w-full md:hidden">
           <div className="flex h-14 items-center gap-3 border-b border-forest-900/8 bg-white/80 backdrop-blur-xl px-4">

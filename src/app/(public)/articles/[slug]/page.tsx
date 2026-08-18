@@ -23,7 +23,7 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const articles = await getPublishedArticles();
-  return articles.map((article: any) => ({
+  return articles.map((article) => ({
     slug: article.slug,
   }));
 }
@@ -71,7 +71,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 
   const allArticles = await getArticles();
   const relatedArticles = allArticles
-    .filter((item: any) => item.slug !== article.slug && item.category === article.category)
+    .filter((item) => item.slug !== article.slug && item.category === article.category)
     .slice(0, 3);
 
   return (
@@ -137,13 +137,13 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
             </div>
             <Button asChild variant="secondary">
               <Link href="/#kontak">
-                Konsultasi
+                Tanyakan Kebutuhan Ruang
               </Link>
             </Button>
           </div>
           {relatedArticles.length ? (
             <div className="grid gap-5 md:grid-cols-3">
-              {relatedArticles.map((item: any) => (
+              {relatedArticles.map((item) => (
                 <ArticleCard key={item.id} article={item} />
               ))}
             </div>

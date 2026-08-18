@@ -27,7 +27,7 @@ export function InboxDetailForm({ submission }: { submission: ContactSubmission 
         await updateSubmissionStatus(submission.id, nextStatus);
         toast.success(`Status pesan diubah menjadi ${nextStatus}`);
         router.refresh();
-      } catch (error) {
+      } catch {
         toast.error("Gagal mengupdate status pesan");
       }
     });

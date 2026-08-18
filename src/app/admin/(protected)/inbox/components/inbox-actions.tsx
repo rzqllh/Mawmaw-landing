@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { Trash, EnvelopeOpen, CheckCircle } from "@phosphor-icons/react";
+import { Trash, EnvelopeOpen } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { deleteSubmission, updateSubmissionStatus } from "@/app/actions/inbox";
 import { ContactStatus } from "@prisma/client";
@@ -14,7 +14,7 @@ export function InboxActions({ id, status }: { id: string, status: ContactStatus
       try {
         await updateSubmissionStatus(id, "READ");
         toast.success("Pesan ditandai sudah dibaca");
-      } catch (e) {
+      } catch {
         toast.error("Gagal mengupdate pesan");
       }
     });
@@ -26,7 +26,7 @@ export function InboxActions({ id, status }: { id: string, status: ContactStatus
       try {
         await deleteSubmission(id);
         toast.success("Pesan berhasil dihapus");
-      } catch (e) {
+      } catch {
         toast.error("Gagal menghapus pesan");
       }
     });

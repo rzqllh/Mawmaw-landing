@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { type Article } from "@prisma/client";
-import { updateArticle } from "@/app/actions/articles";
+import { previewArticle, updateArticle } from "@/app/actions/articles";
 import { useRouter } from "next/navigation";
 import { ArticlePrimaryContent, ArticleSidebarContent } from "../../components/article-form";
 import { AdminEditorShell } from "@/components/admin/shell/admin-editor-shell";
@@ -39,7 +39,16 @@ export default function EditArticleForm({ article }: { article: Article }) {
         isPending={isPending}
         error={state?.error}
         submitLabel="Simpan Perubahan"
-        previewUrl={`/articles/${article.slug}`}
+        previewUrl={article.status === "PUBLISHED" ? `/articles/${article.slug}` : undefined}
+        previewAction={article.status === "DRAFT" ? (
+          <button
+            type="submit"
+            formAction={previewArticle.bind(null, article.slug)}
+            className="rounded-lg px-3 py-2 text-[13px] font-bold text-forest-900/60 transition-colors hover:bg-forest-900/5 hover:text-forest-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50"
+          >
+            Pratinjau
+          </button>
+        ) : undefined}
         primaryContent={<ArticlePrimaryContent article={article} />}
         sidebarContent={<ArticleSidebarContent article={article} />}
       />

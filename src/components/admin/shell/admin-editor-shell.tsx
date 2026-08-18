@@ -13,6 +13,7 @@ interface AdminEditorShellProps {
   submitLabel?: string;
   error?: string | null;
   previewUrl?: string;
+  previewAction?: React.ReactNode;
 }
 
 export function AdminEditorShell({
@@ -25,6 +26,7 @@ export function AdminEditorShell({
   submitLabel = "Simpan",
   error,
   previewUrl,
+  previewAction,
 }: AdminEditorShellProps) {
   return (
     <div className="mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out pb-24">
@@ -41,6 +43,7 @@ export function AdminEditorShell({
           <h1 className="text-xl md:text-2xl font-serif text-forest-900 font-bold leading-none">{title}</h1>
         </div>
         <div className="flex items-center gap-3">
+          {previewAction}
           {previewUrl && (
             <Link 
               href={previewUrl} 

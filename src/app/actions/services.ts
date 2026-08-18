@@ -45,7 +45,7 @@ export async function createService(formData: FormData) {
   const imageAlt = (formData.get("imageAlt") as string) || null;
   const sortOrder = parseInt(formData.get("sortOrder") as string) || 0;
   
-  const service = await prisma.service.create({
+  await prisma.service.create({
     data: {
       title,
       slug,
@@ -58,7 +58,7 @@ export async function createService(formData: FormData) {
   });
   
   revalidatePath("/admin/services");
-  revalidatePath("/(public)");
+  revalidatePath("/");
   redirect("/admin/services");
 }
 
@@ -87,7 +87,7 @@ export async function updateService(id: string, formData: FormData) {
   });
   
   revalidatePath("/admin/services");
-  revalidatePath("/(public)");
+  revalidatePath("/");
   redirect("/admin/services");
 }
 
@@ -99,5 +99,5 @@ export async function deleteService(id: string) {
   });
   
   revalidatePath("/admin/services");
-  revalidatePath("/(public)");
+  revalidatePath("/");
 }

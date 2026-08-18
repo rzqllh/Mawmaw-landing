@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { PencilSimple, Trash, ArrowUpRight, Image as ImageIcon } from "@phosphor-icons/react";
+import { PencilSimple, ArrowUpRight, Image as ImageIcon } from "@phosphor-icons/react";
 
 export interface DataGridItemProps {
   id: string;
@@ -13,7 +12,7 @@ export interface DataGridItemProps {
   coverSrc?: string | null;
   editUrl: string;
   viewUrl?: string;
-  previewUrl?: string;
+  previewAction?: React.ReactNode;
   statusBadge?: React.ReactNode;
   onDelete?: () => void;
   deleteAction?: React.ReactNode;
@@ -34,7 +33,7 @@ export function DataGridItem({
   coverSrc,
   editUrl,
   viewUrl,
-  previewUrl,
+  previewAction,
   statusBadge,
   deleteAction
 }: DataGridItemProps) {
@@ -86,17 +85,8 @@ export function DataGridItem({
             <PencilSimple weight="bold" className="w-4 h-4" />
             Edit
           </Link>
-          {previewUrl && (
-            <Link 
-              href={previewUrl}
-              target="_blank"
-              className="text-[13px] font-bold text-gold-700 hover:text-gold-800 hover:bg-gold-500/10 px-4 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50 flex items-center gap-2"
-            >
-              <ArrowUpRight weight="bold" className="w-4 h-4" />
-              Preview
-            </Link>
-          )}
-          {viewUrl && !previewUrl && (
+          {previewAction}
+          {viewUrl && !previewAction && (
             <Link 
               href={viewUrl}
               target="_blank"

@@ -1,7 +1,15 @@
 import { config } from "dotenv";
 config({ path: ".env.local" });
-import { db as prisma } from "../src/lib/db";
-import { projects, articles, services } from "../src/data/public-content";
+import { db as prisma } from "../src/lib/db.ts";
+import {
+  aboutContent,
+  articles,
+  footerContent,
+  heroContent,
+  projects,
+  services,
+  siteConfig,
+} from "../src/data/public-content.ts";
 
 async function main() {
   console.log("Starting seed...");
@@ -25,6 +33,7 @@ async function main() {
         featured: project.featured ?? false,
         year: project.year,
         scope: project.scope,
+        status: "PUBLISHED",
       },
     });
   }
@@ -45,6 +54,7 @@ async function main() {
         featured: article.featured ?? false,
         publishedAt: new Date(article.publishedAt),
         content: article.content, // Arrays of strings are valid JSON
+        status: "PUBLISHED",
       },
     });
   }
@@ -69,6 +79,52 @@ async function main() {
     });
   }
   console.log(`Seeded ${services.length} services.`);
+
+  await prisma.siteSetting.upsert({
+    where: { id: "global" },
+    update: {},
+    create: {
+      id: "global",
+      siteName: siteConfig.name,
+      siteDescription: siteConfig.description,
+      email: siteConfig.email,
+      phone: siteConfig.phone ?? "",
+      address: siteConfig.address ?? "",
+      socials: {
+        instagram: siteConfig.socials.instagram,
+        pinterest: siteConfig.socials.pinterest,
+        behance: siteConfig.socials.behance,
+      },
+      heroTitle: heroContent.title,
+      heroDescription: heroContent.description,
+      heroImageSrc: heroContent.image.src,
+      heroImageAlt: heroContent.image.alt,
+      heroStatCards: heroContent.statCards,
+      aboutLabel: aboutContent.label,
+      aboutTitle: aboutContent.title,
+      aboutDescription: aboutContent.description,
+      aboutImageSrc: aboutContent.image.src,
+      aboutImageAlt: aboutContent.image.alt,
+      aboutBadgeTitle: aboutContent.badge?.title ?? null,
+      aboutBadgeDesc: aboutContent.badge?.description ?? null,
+      aboutValues: aboutContent.values,
+      servicesLabel: "LAYANAN KAMI",
+      servicesTitle: "Eksplorasi Layanan",
+      servicesDesc: "Kami menawarkan berbagai layanan interior yang disesuaikan dengan kebutuhan ruang Anda.",
+      projectsLabel: "PROYEK KAMI",
+      projectsTitle: "Karya Unggulan",
+      projectsDesc: "Lihat pilihan proyek interior yang telah kami kerjakan.",
+      articlesLabel: "ARTIKEL KAMI",
+      articlesTitle: "Inspirasi & Tips",
+      articlesDesc: "Baca panduan praktis dan inspirasi seputar desain interior.",
+      contactTitle: "Mulai Konsultasi",
+      contactDesc: "Ceritakan kebutuhan ruang Anda dan kami akan membantu menentukan langkah awalnya.",
+      footerHeadline: footerContent.headline,
+      footerSummary: footerContent.summary,
+      copyright: footerContent.copyright,
+    },
+  });
+  console.log("Seeded site settings.");
 
   console.log("Seed completed.");
 }

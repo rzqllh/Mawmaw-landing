@@ -3,7 +3,6 @@
 import { useActionState } from "react";
 import { login } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ShieldCheck } from "@phosphor-icons/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -25,7 +24,7 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="min-h-screen flex bg-bg-base">
+    <div className="flex min-h-dvh bg-bg-base">
       
       {/* Left Column - Form */}
       <div className="w-full md:w-[45%] lg:w-[40%] flex flex-col justify-center px-8 sm:px-16 lg:px-24 relative z-10">
@@ -59,7 +58,7 @@ export default function LoginPage() {
                   placeholder="admin@mawmaw.com"
                   required
                   autoComplete="email"
-                  className="w-full min-h-12 rounded-xl bg-forest-900/5 border border-transparent px-4 py-3 text-sm text-forest-900 placeholder:text-forest-900/30 transition-all hover:bg-forest-900/10 focus:bg-white focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15 focus:outline-none"
+                  className="w-full min-h-12 rounded-xl bg-forest-900/5 border border-transparent px-4 py-3 text-sm text-forest-900 placeholder:text-forest-900/55 transition-all hover:bg-forest-900/10 focus:bg-white focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15 focus:outline-none"
                 />
               </div>
 
@@ -74,7 +73,7 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   required
                   autoComplete="current-password"
-                  className="w-full min-h-12 rounded-xl bg-forest-900/5 border border-transparent px-4 py-3 text-sm text-forest-900 placeholder:text-forest-900/30 transition-all hover:bg-forest-900/10 focus:bg-white focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15 focus:outline-none"
+                  className="w-full min-h-12 rounded-xl bg-forest-900/5 border border-transparent px-4 py-3 text-sm text-forest-900 placeholder:text-forest-900/55 transition-all hover:bg-forest-900/10 focus:bg-white focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15 focus:outline-none"
                 />
               </div>
             </div>

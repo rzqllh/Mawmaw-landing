@@ -18,7 +18,7 @@ export function ServicePrimaryContent({ service = {} }: { service?: Partial<Serv
             defaultValue={service.title} 
             required 
             placeholder="Nama Layanan"
-            className="w-full text-4xl md:text-5xl font-serif font-semibold text-forest-900 placeholder:text-forest-900/20 bg-transparent border-none focus:outline-none focus:ring-0 resize-none p-0 mb-6"
+            className="w-full text-4xl md:text-5xl font-serif font-semibold text-forest-900 placeholder:text-forest-900/55 bg-transparent border-none focus:outline-none focus:ring-0 resize-none p-0 mb-6"
           />
         </div>
 

@@ -14,7 +14,7 @@ export function ServiceActions({ id }: { id: string }) {
       try {
         await deleteService(id);
         toast.success("Layanan berhasil dihapus");
-      } catch (e) {
+      } catch {
         toast.error("Gagal menghapus layanan");
       }
     });

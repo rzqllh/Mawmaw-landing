@@ -6,7 +6,6 @@ import { ProjectCard } from "@/components/cards/project-card";
 import { EmptyState } from "@/components/layout/empty-state";
 import { PageHero } from "@/components/layout/page-hero";
 import { Reveal } from "@/components/motion/reveal";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { contactContent } from "@/data/public-content";
 import { getProjects } from "@/lib/queries";
@@ -17,9 +16,20 @@ export const metadata: Metadata = {
     "Jelajahi portfolio proyek desain interior Mawmaw Interior untuk hunian, apartemen, kantor, hospitality, dan ruang komersial.",
 };
 
-export default async function ProjectsPage() {
+type ProjectsPageProps = {
+  searchParams: Promise<{ category?: string }>;
+};
+
+export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const projects = await getProjects();
-  const categories = ["Semua", ...new Set(projects.map((project: any) => project.category))];
+  const categories = ["Semua", ...new Set(projects.map((project) => project.category))];
+  const requestedCategory = (await searchParams).category;
+  const activeCategory = categories.includes(requestedCategory ?? "")
+    ? requestedCategory ?? "Semua"
+    : "Semua";
+  const visibleProjects = activeCategory === "Semua"
+    ? projects
+    : projects.filter((project) => project.category === activeCategory);
 
   return (
     <>
@@ -30,21 +40,26 @@ export default async function ProjectsPage() {
       >
         <div className="flex flex-wrap gap-2" aria-label="Kategori proyek">
           {categories.map((category) => (
-            <Badge
+            <Link
               key={category}
-              variant="default"
-              className="px-4 py-2 text-sm shadow-[0_1px_0_rgba(26,42,29,0.03)]"
+              href={category === "Semua" ? "/projects" : `/projects?category=${encodeURIComponent(category)}`}
+              aria-current={category === activeCategory ? "page" : undefined}
+              className={`inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
+                category === activeCategory
+                  ? "border-forest-900 bg-forest-900 text-white"
+                  : "border-forest-200 bg-forest-50 text-forest-800 hover:border-forest-500"
+              }`}
             >
               {category}
-            </Badge>
+            </Link>
           ))}
         </div>
       </PageHero>
 
       <section className="section-container section-y">
-        {projects.length ? (
+        {visibleProjects.length ? (
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project: any, index: number) => (
+            {visibleProjects.map((project, index) => (
               <Reveal key={project.id} delay={index * 0.035}>
                 <ProjectCard project={project} priority={index < 2} />
               </Reveal>
@@ -52,10 +67,10 @@ export default async function ProjectsPage() {
           </div>
         ) : (
           <EmptyState
-            title="Belum ada proyek."
+            title={activeCategory === "Semua" ? "Belum ada proyek." : `Belum ada proyek ${activeCategory}.`}
             description="Portfolio sedang disiapkan. Anda tetap dapat menghubungi kami untuk berdiskusi tentang kebutuhan ruang Anda."
             href="/#kontak"
-            action="Kontak"
+            action="Ceritakan proyek Anda"
           />
         )}
       </section>
@@ -77,7 +92,7 @@ export default async function ProjectsPage() {
             </div>
             <Button asChild variant="outline" size="lg">
               <Link href="/#kontak">
-                Konsultasi
+                Ceritakan Proyek Anda
                 <ArrowRight aria-hidden className="h-5 w-5" />
               </Link>
             </Button>

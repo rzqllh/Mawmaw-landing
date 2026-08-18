@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
 import { DataGrid, DataGridItem } from "@/components/admin/ui/data-grid";
+import { previewArticle } from "@/app/actions/articles";
 
 export const metadata = {
   title: "Kelola Artikel - Admin",
@@ -22,6 +23,7 @@ export default async function AdminArticlesPage() {
       slug: true,
       excerpt: true,
       coverSrc: true,
+      status: true,
     },
   });
 
@@ -61,7 +63,28 @@ export default async function AdminArticlesPage() {
               excerpt={article.excerpt || ""}
               coverSrc={article.coverSrc}
               editUrl={`/admin/articles/${article.id}/edit`}
-              viewUrl={`/articles/${article.slug}`}
+              viewUrl={article.status === "PUBLISHED" ? `/articles/${article.slug}` : undefined}
+              previewAction={article.status === "DRAFT" ? (
+                <form action={previewArticle.bind(null, article.slug)}>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 rounded-lg px-4 py-2 text-[13px] font-bold text-gold-700 transition-colors hover:bg-gold-500/10 hover:text-gold-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50"
+                  >
+                    Preview
+                  </button>
+                </form>
+              ) : undefined}
+              statusBadge={
+                article.status === "DRAFT" ? (
+                  <span className="rounded-md border border-gray-200 bg-gray-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">
+                    Draft
+                  </span>
+                ) : (
+                  <span className="rounded-md border border-green-200 bg-green-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-700">
+                    Published
+                  </span>
+                )
+              }
               subtitle={
                 <>
                   <span>{article.category}</span>

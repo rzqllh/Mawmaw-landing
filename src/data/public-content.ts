@@ -1,5 +1,5 @@
-import { createWhatsappLink } from "@/lib/whatsapp";
-import type { IconName } from "@/lib/icons";
+import { createWhatsappLink } from "../lib/whatsapp.ts";
+import type { IconName } from "../lib/icons.ts";
 
 export type SiteConfig = {
   name: string;
@@ -135,9 +135,9 @@ export const navItems: NavItem[] = [
 export const heroContent: HeroContent = {
   title: "Ruang yang hangat, elegan, dan dirancang untuk kehidupan Anda.",
   description:
-    "Mawmaw Interior membantu menciptakan ruang yang personal, fungsional, dan indah—untuk rumah maupun tempat usaha yang merefleksikan siapa Anda.",
+    "Mawmaw Interior membantu menciptakan ruang yang personal, fungsional, dan indah untuk rumah maupun tempat usaha yang merefleksikan siapa Anda.",
   primaryCta: {
-    label: "Mulai Konsultasi",
+    label: "Ceritakan Proyek Anda",
     href: createWhatsappLink(
       siteConfig.phone ?? "",
       "Halo Mawmaw Interior, saya ingin konsultasi desain interior."
@@ -202,7 +202,7 @@ export const aboutContent: AboutContent = {
     },
     {
       title: "Elegan",
-      description: "Detail halus untuk hasil akhir yang timeless.",
+      description: "Detail halus untuk hasil akhir yang matang dan bertahan lama.",
       icon: "sparkle",
     },
   ],
@@ -559,7 +559,7 @@ export const articles: Article[] = [
     slug: "tren-warna-interior",
     title: "Tren Warna Interior yang Elegan",
     excerpt:
-      "Warna-warna yang membuat ruang terasa lebih hangat, segar, dan timeless.",
+      "Warna-warna yang membuat ruang terasa lebih hangat, segar, dan tidak cepat usang.",
     coverImage: {
       src: "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1600&q=85",
       alt: "Detail interior dengan palet hijau lembut dan tekstur natural.",

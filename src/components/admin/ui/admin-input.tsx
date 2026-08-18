@@ -16,7 +16,7 @@ const AdminInput = React.forwardRef<HTMLInputElement, AdminInputProps>(
           error && "admin-input-error",
           "disabled:cursor-not-allowed disabled:opacity-50",
           "file:border-0 file:bg-transparent file:text-sm file:font-medium",
-          "placeholder:text-forest-900/30",
+          "placeholder:text-forest-900/55",
           className
         )}
         ref={ref}

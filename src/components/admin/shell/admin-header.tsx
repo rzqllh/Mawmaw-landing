@@ -1,8 +1,3 @@
-"use client";
-
-import React from "react";
-import { cn } from "@/lib/utils";
-
 export function AdminHeader() {
   return (
     <div className="w-full h-16 border-b border-forest-900/5 bg-white/40 backdrop-blur-xl flex items-center justify-between px-6 md:px-8">

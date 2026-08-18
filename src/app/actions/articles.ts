@@ -3,6 +3,8 @@
 import { db } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
 
 // Helper for auth check
 async function requireAuth() {
@@ -24,6 +26,7 @@ export async function createArticle(formData: FormData) {
   const coverAlt = formData.get("coverAlt") as string;
   const coverBlur = formData.get("coverBlur") as string;
   const featured = formData.get("featured") === "on";
+  const status = formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
   
   const publishedAtRaw = formData.get("publishedAt") as string;
   const publishedAt = publishedAtRaw ? new Date(publishedAtRaw) : new Date();
@@ -39,7 +42,7 @@ export async function createArticle(formData: FormData) {
       } else {
         content = [contentRaw];
       }
-    } catch (e) {
+    } catch {
       // Store the entire markdown as a single string inside the array
       content = [contentRaw];
     }
@@ -62,6 +65,7 @@ export async function createArticle(formData: FormData) {
       featured,
       publishedAt,
       content,
+      status,
     }
   });
 
@@ -83,6 +87,7 @@ export async function updateArticle(id: string, formData: FormData) {
   const coverAlt = formData.get("coverAlt") as string;
   const coverBlur = formData.get("coverBlur") as string;
   const featured = formData.get("featured") === "on";
+  const status = formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
 
   const publishedAtRaw = formData.get("publishedAt") as string;
   const publishedAt = publishedAtRaw ? new Date(publishedAtRaw) : new Date();
@@ -97,7 +102,7 @@ export async function updateArticle(id: string, formData: FormData) {
       } else {
         content = [contentRaw];
       }
-    } catch (e) {
+    } catch {
       content = [contentRaw];
     }
   } else {
@@ -123,6 +128,7 @@ export async function updateArticle(id: string, formData: FormData) {
       featured,
       publishedAt,
       content,
+      status,
     }
   });
 
@@ -154,4 +160,20 @@ export async function deleteArticle(id: string) {
   }
 
   return { success: true };
+}
+
+export async function previewArticle(slug: string) {
+  await requireAuth();
+
+  const article = await db.article.findUnique({
+    where: { slug },
+    select: { slug: true },
+  });
+
+  if (!article) {
+    throw new Error("Article not found");
+  }
+
+  (await draftMode()).enable();
+  redirect(`/articles/${article.slug}`);
 }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
 import { DataGridItem } from "@/components/admin/ui/data-grid";
 import { SortableList } from "@/components/admin/ui/sortable-list";
+import { previewProject } from "@/app/actions/projects";
 
 export const metadata = {
   title: "Kelola Proyek - Admin",
@@ -70,7 +71,16 @@ export default async function AdminProjectsPage() {
                 coverSrc={project.coverSrc}
                 editUrl={`/admin/projects/${project.id}/edit`}
                 viewUrl={project.status === "PUBLISHED" ? `/projects/${project.slug}` : undefined}
-                previewUrl={project.status === "DRAFT" ? `/api/draft?secret=dev_preview&slug=${project.slug}&type=project` : undefined}
+                previewAction={project.status === "DRAFT" ? (
+                  <form action={previewProject.bind(null, project.slug)}>
+                    <button
+                      type="submit"
+                      className="flex items-center gap-2 rounded-lg px-4 py-2 text-[13px] font-bold text-gold-700 transition-colors hover:bg-gold-500/10 hover:text-gold-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50"
+                    >
+                      Preview
+                    </button>
+                  </form>
+                ) : undefined}
                 statusBadge={
                   project.status === "DRAFT" ? (
                     <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase border border-gray-200">

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, WhatsappLogo, List, X } from "@phosphor-icons/react/dist/ssr";
+import { WhatsappLogo, List, X } from "@phosphor-icons/react/dist/ssr";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { navItems } from "@/data/public-content";
@@ -25,6 +25,9 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
     null
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuCloseRef = useRef<HTMLButtonElement>(null);
   const showLiquidHeader = true;
   const showHeaderActions = pathname !== "/" || isPastHero;
   const activeNavHref = pathname.startsWith("/projects")
@@ -45,9 +48,9 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
     () =>
       navItems.map((item) => ({
         ...item,
-        href: resolveInPageHref(item.href, pathname),
+        href: resolveInPageHref(item.href),
       })),
-    [pathname]
+    []
   );
 
   function handleBrandClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -74,10 +77,41 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
     };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on route change
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+    if (!isMobileMenuOpen) return;
+
+    mobileMenuCloseRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setIsMobileMenuOpen(false);
+        mobileMenuTriggerRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusableElements = mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusableElements?.length) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -248,7 +282,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                       className="h-4 w-4"
                       weight="bold"
                     />
-                    Konsultasi
+                    Konsultasi Proyek
                   </ConfirmWhatsappLink>
                 </Button>
               </motion.div>
@@ -256,13 +290,16 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
             
             {/* MOBILE MENU TOGGLE */}
             <motion.button
+              ref={mobileMenuTriggerRef}
               layout
               key="mobile-toggle"
               onClick={() => setIsMobileMenuOpen(true)}
               className="flex items-center justify-center rounded-full p-2 md:hidden hover:bg-forest-900/5 transition-colors"
-              aria-label="Open menu"
+              aria-label="Buka menu"
+              aria-controls="mobile-navigation-dialog"
+              aria-expanded={isMobileMenuOpen}
             >
-              <List className="h-6 w-6" />
+              <List aria-hidden="true" className="h-6 w-6" />
             </motion.button>
           </AnimatePresence>
         </motion.div>
@@ -272,12 +309,18 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            ref={mobileMenuRef}
+            id="mobile-navigation-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-navigation-title"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: headerEase }}
             className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-xl px-6 py-8 md:hidden"
           >
+            <h2 id="mobile-navigation-title" className="sr-only">Menu navigasi</h2>
             <div className="flex items-center justify-between">
               <Link href="/" onClick={handleBrandClick} className="flex items-center gap-3">
                 <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-pill bg-forest-700">
@@ -288,11 +331,15 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                 </span>
               </Link>
               <button
-                onClick={() => setIsMobileMenuOpen(false)}
+                ref={mobileMenuCloseRef}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  mobileMenuTriggerRef.current?.focus();
+                }}
                 className="flex items-center justify-center rounded-full p-2 bg-surface shadow-sm border border-black/5 hover:bg-surface-warm transition-colors text-forest-900"
-                aria-label="Close menu"
+                aria-label="Tutup menu"
               >
-                <X className="h-6 w-6" />
+                <X aria-hidden="true" className="h-6 w-6" />
               </button>
             </div>
 
@@ -319,7 +366,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
               <Button asChild size="lg" variant="primary" radius="md" className="w-full text-base">
                 <ConfirmWhatsappLink href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Halo Mawmaw Interior, saya ingin konsultasi desain interior.")}`} className="group justify-center">
                   <WhatsappLogo aria-hidden className="h-5 w-5" weight="bold" />
-                  Mulai Konsultasi
+                  Ceritakan Proyek Anda
                 </ConfirmWhatsappLink>
               </Button>
             </div>

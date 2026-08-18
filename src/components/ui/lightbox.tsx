@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { X, CaretLeft, CaretRight, Download, MagnifyingGlassPlus, MagnifyingGlassMinus } from "@phosphor-icons/react";
@@ -18,7 +18,10 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [direction, setDirection] = useState(0);
   const [zoomLevel, setZoomLevel] = useState<1 | 2>(1);
-  const [bounds, setBounds] = useState({ width: 0, height: 0 });
+  const [bounds, setBounds] = useState(() => ({
+    width: typeof window === "undefined" ? 0 : window.innerWidth,
+    height: typeof window === "undefined" ? 0 : window.innerHeight,
+  }));
   const currentImage = images[currentIndex];
   
   // Handlers
@@ -40,7 +43,6 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
 
   // Window bounds for drag constraints
   useEffect(() => {
-    setBounds({ width: window.innerWidth, height: window.innerHeight });
     const handleResize = () => setBounds({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

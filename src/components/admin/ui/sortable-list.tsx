@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -18,7 +18,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { List, DotsSixVertical } from "@phosphor-icons/react";
+import { DotsSixVertical } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { reorderItems } from "@/app/actions/reorder";
 
@@ -74,11 +74,6 @@ export function SortableList<T extends { id: string }>({
 }: SortableListProps<T>) {
   const [items, setItems] = useState(initialItems);
   const [isSaving, setIsSaving] = useState(false);
-
-  // Sync with prop if it changes externally
-  useEffect(() => {
-    setItems(initialItems);
-  }, [initialItems]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),

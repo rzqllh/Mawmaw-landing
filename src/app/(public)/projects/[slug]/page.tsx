@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BlurImage } from "@/components/ui/blur-image";
 import { LightboxTrigger } from "@/components/ui/lightbox-trigger";
-import { AmbientGlow } from "@/components/effects/ambient-glow";
 import { getProjectBySlug, getProjects, getPublishedProjects } from "@/lib/queries";
 
 type ProjectPageProps = {
@@ -28,7 +27,7 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const projects = await getPublishedProjects();
-  return projects.map((project: any) => ({
+  return projects.map((project) => ({
     slug: project.slug,
   }));
 }
@@ -66,12 +65,12 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   const allProjects = await getProjects();
   let relatedProjects = allProjects
-    .filter((item: any) => item.slug !== project.slug && item.category === project.category)
+    .filter((item) => item.slug !== project.slug && item.category === project.category)
     .slice(0, 3);
 
   if (relatedProjects.length === 0) {
     relatedProjects = allProjects
-      .filter((item: any) => item.slug !== project.slug)
+      .filter((item) => item.slug !== project.slug)
       .slice(0, 3);
   }
 
@@ -79,7 +78,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     <>
       <article>
         <header className="section-container relative pt-32 md:pt-40">
-          <AmbientGlow imageSrc={project.coverImage.src} opacity={0.12} />
           <Button asChild variant="ghost" size="sm" className="mb-8">
             <Link href="/projects">
               <CaretLeft aria-hidden className="h-4 w-4" />
@@ -199,7 +197,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         
         {relatedProjects.length > 0 && (
           <div className="grid gap-5 md:grid-cols-3">
-            {relatedProjects.map((item: any) => (
+            {relatedProjects.map((item) => (
               <ProjectCard key={item.id} project={item} variant="compact" />
             ))}
           </div>

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { ArticleCard } from "@/components/cards/article-card";
 import { EmptyState } from "@/components/layout/empty-state";
 import { PageHero } from "@/components/layout/page-hero";
 import { Reveal } from "@/components/motion/reveal";
-import { Badge } from "@/components/ui/badge";
 import {
   articlesSection,
 } from "@/data/public-content";
@@ -16,11 +16,22 @@ export const metadata: Metadata = {
     "Inspirasi dan wawasan desain interior dari Mawmaw Interior untuk hunian, apartemen, dan ruang komersial.",
 };
 
-export default async function ArticlesPage() {
+type ArticlesPageProps = {
+  searchParams: Promise<{ category?: string }>;
+};
+
+export default async function ArticlesPage({ searchParams }: ArticlesPageProps) {
   const articles = await getArticles();
-  const featuredArticle = articles.find((a: any) => a.featured) || articles[0];
-  const supportingArticles = articles.filter((a: any) => a.id !== featuredArticle?.id);
-  const categories = ["Semua", ...new Set(articles.map((article: any) => article.category))];
+  const categories = ["Semua", ...new Set(articles.map((article) => article.category))];
+  const requestedCategory = (await searchParams).category;
+  const activeCategory = categories.includes(requestedCategory ?? "")
+    ? requestedCategory ?? "Semua"
+    : "Semua";
+  const visibleArticles = activeCategory === "Semua"
+    ? articles
+    : articles.filter((article) => article.category === activeCategory);
+  const featuredArticle = visibleArticles.find((article) => article.featured) || visibleArticles[0];
+  const supportingArticles = visibleArticles.filter((article) => article.id !== featuredArticle?.id);
 
   return (
     <>
@@ -31,19 +42,24 @@ export default async function ArticlesPage() {
       >
         <div className="flex flex-wrap gap-2" aria-label="Kategori artikel">
           {categories.map((category) => (
-            <Badge
+            <Link
               key={category}
-              variant="default"
-              className="px-4 py-2 text-sm shadow-[0_1px_0_rgba(26,42,29,0.03)]"
+              href={category === "Semua" ? "/articles" : `/articles?category=${encodeURIComponent(category)}`}
+              aria-current={category === activeCategory ? "page" : undefined}
+              className={`inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
+                category === activeCategory
+                  ? "border-forest-900 bg-forest-900 text-white"
+                  : "border-forest-200 bg-forest-50 text-forest-800 hover:border-forest-500"
+              }`}
             >
               {category}
-            </Badge>
+            </Link>
           ))}
         </div>
       </PageHero>
 
       <section className="section-container section-y">
-        {articles.length ? (
+        {visibleArticles.length ? (
           <div className="grid gap-8">
             {featuredArticle ? (
               <Reveal>
@@ -51,7 +67,7 @@ export default async function ArticlesPage() {
               </Reveal>
             ) : null}
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {supportingArticles.map((article: any, index: number) => (
+              {supportingArticles.map((article, index) => (
                 <Reveal key={article.id} delay={index * 0.035}>
                   <ArticleCard article={article} priority={index < 2} />
                 </Reveal>
@@ -60,10 +76,10 @@ export default async function ArticlesPage() {
           </div>
         ) : (
           <EmptyState
-            title="Belum ada artikel."
+            title={activeCategory === "Semua" ? "Belum ada artikel." : `Belum ada artikel ${activeCategory}.`}
             description="Catatan desain sedang disiapkan. Silakan kembali lagi nanti atau hubungi kami untuk konsultasi ruang Anda."
             href="/#kontak"
-            action="Kontak"
+            action="Tanyakan kebutuhan ruang"
           />
         )}
       </section>

@@ -10,7 +10,6 @@ import {
   Briefcase,
   Gear,
   ArrowSquareOut,
-  SignOut,
 } from "@phosphor-icons/react";
 import { SignOutButton } from "@/app/admin/components/sign-out-button";
 import { cn } from "@/lib/utils";

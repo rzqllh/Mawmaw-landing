@@ -2,7 +2,6 @@
 
 import { useDominantColor } from "@/hooks/use-dominant-color";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 
 type AmbientGlowProps = {
   imageSrc: string;
@@ -12,13 +11,6 @@ type AmbientGlowProps = {
 
 export function AmbientGlow({ imageSrc, className, opacity = 0.08 }: AmbientGlowProps) {
   const dominantColor = useDominantColor(imageSrc);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   const style = dominantColor 
     ? { 

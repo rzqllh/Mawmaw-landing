@@ -13,10 +13,6 @@ export async function FeaturedArticlesSection() {
   const featuredArticle = topArticles[0];
   const supportingArticles = topArticles.slice(1);
 
-  if (!featuredArticle) {
-    return null;
-  }
-
   return (
     <section id="artikel" className="relative surface-section section-y">
       <div className="section-container relative z-10">
@@ -42,23 +38,29 @@ export async function FeaturedArticlesSection() {
         </div>
       </div>
       
-      <div className="grid items-start gap-8">
-        <Reveal>
-          <ArticleCard
-            article={featuredArticle}
-            variant="featured"
-            featuredLayout="split"
-            priority
-          />
-        </Reveal>
-        <div className="grid gap-5 md:grid-cols-2">
-          {supportingArticles.slice(0, 2).map((article, index) => (
-            <Reveal key={article.id} delay={index * 0.05}>
-              <ArticleCard article={article} />
-            </Reveal>
-          ))}
+      {featuredArticle ? (
+        <div className="grid items-start gap-8">
+          <Reveal>
+            <ArticleCard
+              article={featuredArticle}
+              variant="featured"
+              featuredLayout="split"
+              priority
+            />
+          </Reveal>
+          <div className="grid gap-5 md:grid-cols-2">
+            {supportingArticles.slice(0, 2).map((article, index) => (
+              <Reveal key={article.id} delay={index * 0.05}>
+                <ArticleCard article={article} />
+              </Reveal>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="border-y border-forest-900/15 py-10 text-text-secondary">
+          Artikel terbaru sedang disiapkan.
+        </div>
+      )}
       </div>
     </section>
   );

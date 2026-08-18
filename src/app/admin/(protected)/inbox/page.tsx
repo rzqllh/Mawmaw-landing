@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
 import { DataGrid, DataGridItem } from "@/components/admin/ui/data-grid";
 import { getSubmissions } from "@/app/actions/inbox";

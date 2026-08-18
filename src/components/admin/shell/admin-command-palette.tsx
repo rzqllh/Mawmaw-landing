@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { Command } from "cmdk";
 import { useRouter } from "next/navigation";
 import { 
@@ -9,18 +9,15 @@ import {
   Article, 
   Plus, 
   House, 
-  SignOut,
   Tray,
   Briefcase
 } from "@phosphor-icons/react";
-import { cn } from "@/lib/utils";
-import { useTransition } from "react";
 
 export function AdminCommandPalette() {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -70,7 +67,7 @@ export function AdminCommandPalette() {
             value={inputValue}
             onValueChange={setInputValue}
             placeholder="Ketik perintah atau pencarian..." 
-            className="flex h-14 w-full bg-transparent py-3 text-sm font-medium text-forest-900 placeholder:text-forest-900/40 focus:outline-none"
+            className="flex h-14 w-full bg-transparent py-3 text-sm font-medium text-forest-900 placeholder:text-forest-900/55 focus:outline-none"
           />
         </div>
 

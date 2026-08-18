@@ -2,13 +2,26 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
+
+async function requireAuth() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+}
 
 export async function reorderItems(
   items: { id: string; sortOrder: number }[],
   model: "Project" | "Service"
 ) {
+  await requireAuth();
+
   try {
-    // We execute updates sequentially to keep it simple, or in a transaction.
     const updates = items.map((item) => {
       if (model === "Project") {
         return db.project.update({
@@ -27,11 +40,10 @@ export async function reorderItems(
 
     if (model === "Project") {
       revalidatePath("/projects");
-      revalidatePath("/admin/(protected)/projects");
+      revalidatePath("/admin/projects");
       revalidatePath("/");
     } else {
-      revalidatePath("/services");
-      revalidatePath("/admin/(protected)/services");
+      revalidatePath("/admin/services");
       revalidatePath("/");
     }
 

@@ -26,7 +26,7 @@ export function ArticlePrimaryContent({ article = {} }: { article?: Partial<Arti
             defaultValue={article.title} 
             required 
             placeholder="Judul Artikel..."
-            className="w-full text-4xl md:text-5xl font-serif font-semibold text-forest-900 placeholder:text-forest-900/20 bg-transparent border-none focus:outline-none focus:ring-0 resize-none p-0 mb-6"
+            className="w-full text-4xl md:text-5xl font-serif font-semibold text-forest-900 placeholder:text-forest-900/55 bg-transparent border-none focus:outline-none focus:ring-0 resize-none p-0 mb-6"
           />
         </div>
 
@@ -96,6 +96,19 @@ export function ArticleSidebarContent({ article = {} }: { article?: Partial<Arti
           <div>
             <AdminLabel htmlFor="publishedAt" className="text-[11px]" required>Tanggal Terbit</AdminLabel>
             <AdminInput type="datetime-local" id="publishedAt" name="publishedAt" defaultValue={initialPublishedAt} required />
+          </div>
+
+          <div>
+            <AdminLabel htmlFor="status" className="text-[11px]" required>Status</AdminLabel>
+            <select
+              id="status"
+              name="status"
+              defaultValue={article.status ?? "DRAFT"}
+              className="min-h-11 w-full rounded-lg border border-forest-900/15 bg-white px-3 text-sm text-forest-900 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20"
+            >
+              <option value="DRAFT">Draft</option>
+              <option value="PUBLISHED">Published</option>
+            </select>
           </div>
 
           <div className="pt-4 border-t border-forest-900/10">

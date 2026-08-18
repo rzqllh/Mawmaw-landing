@@ -2,7 +2,6 @@
 
 import { useId, useState, type ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EnvelopeSimple, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -19,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { contactContent, siteConfig } from "@/data/public-content";
+import { contactContent } from "@/data/public-content";
 import { IconGlyph } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import {
@@ -53,17 +52,21 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
   });
 
   async function onSubmit(values: ContactFormValues) {
-    const formData = new FormData();
-    Object.entries(values).forEach(([key, val]) => {
-      if (val) formData.append(key, val);
-    });
-    
-    const result = await submitContactForm(formData);
-    if (!result.success) {
-      toast.error(result.error || "Gagal mengirim pesan.");
-      return;
+    try {
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, val]) => {
+        if (val) formData.append(key, val);
+      });
+
+      const result = await submitContactForm(formData);
+      if (!result.success) {
+        toast.error(result.error || "Gagal mengirim detail proyek.");
+        return;
+      }
+      toast.success("Detail proyek terkirim. Tim kami akan segera menghubungi Anda.");
+    } catch {
+      toast.error("Detail proyek belum terkirim. Silakan coba lagi.");
     }
-    toast.success("Pesan berhasil dikirim! Tim kami akan segera menghubungi Anda.");
   }
 
   function onInvalid() {
@@ -71,54 +74,49 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
   }
 
   return (
-    <section id="kontak" className="contact-section">
-      {/* Soft transition gradient from the light section above */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-base to-transparent z-10" />
-      
-      {/* Dark atmospheric background shared conceptually with Footer */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_10%,rgba(212,190,66,0.08),transparent_28rem),radial-gradient(circle_at_82%_28%,rgba(78,114,88,0.12),transparent_34rem)]"
-      />
-
-      <div className="section-container relative z-20">
-        <div className="grid gap-8 md:gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+    <section id="kontak" className="contact-section min-h-dvh scroll-mt-24">
+      <div className="section-container relative z-10 flex flex-1 flex-col justify-center py-8 lg:py-12">
+        <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <Reveal>
-            <div className="lg:sticky lg:top-28">
-              <p className="section-eyebrow-inverse">
+            <div className="lg:sticky lg:top-0">
+              <p className="text-[0.65rem] lg:text-[0.7rem] font-bold tracking-[0.2em] uppercase text-gold-300 mb-2">
                 {contactContent.label}
               </p>
 
-              <h2 className="heading-section max-w-[34rem] text-text-inverse tracking-[-0.015em]">{settings.contactTitle}</h2>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-[3rem] xl:text-[3.5rem] leading-[1] text-text-inverse tracking-tight text-balance">
+                {settings.contactTitle}
+              </h2>
 
-              <p className="contact-copy-description">
+              <p className="mt-3 max-w-[28rem] text-sm text-text-inverse/70 leading-relaxed text-pretty">
                 {settings.contactDesc}
               </p>
 
               <div className="mt-6 grid gap-2.5">
                 {contactContent.trustBullets.map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
-                    <span className="contact-trust-icon">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-500/10 text-gold-300">
                       <IconGlyph
                         name={item.icon}
                         aria-hidden
-                        className="h-5 w-5"
+                        className="h-4 w-4"
                         weight="duotone"
                       />
                     </span>
 
-                    <span className="contact-trust-text">{item.label}</span>
+                    <span className="text-xs lg:text-sm font-medium text-text-inverse/90">{item.label}</span>
                   </div>
                 ))}
               </div>
             </div>
           </Reveal>
 
-          <Reveal delay={0.08}>
+          <Reveal delay={0.08} className="flex flex-col justify-center">
             <div className="mb-6 flex justify-center lg:justify-start">
-              <div className="bg-white/10 p-1 rounded-pill flex backdrop-blur-md border border-white/10">
+              <div className="flex rounded-pill border border-white/15 bg-white/[0.06] p-1" role="group" aria-label="Pilih cara mengirim detail proyek">
                 <button
+                  type="button"
                   onClick={() => setMode("wizard")}
+                  aria-pressed={mode === "wizard"}
                   className={cn(
                     "flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-pill transition-all",
                     mode === "wizard" ? "bg-white text-forest-900 shadow-sm" : "text-white/70 hover:text-white"
@@ -128,7 +126,9 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
                   Mode Interaktif
                 </button>
                 <button
+                  type="button"
                   onClick={() => setMode("form")}
+                  aria-pressed={mode === "form"}
                   className={cn(
                     "flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-pill transition-all",
                     mode === "form" ? "bg-white text-forest-900 shadow-sm" : "text-white/70 hover:text-white"
@@ -286,7 +286,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
                   className="contact-submit-button w-full"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Mengirim..." : "Submit"}
+                  {isSubmitting ? "Mengirim…" : "Kirim detail proyek"}
                 </Button>
               </div>
             </form>
@@ -318,7 +318,7 @@ function Field({
       {children}
 
       {error ? (
-        <p id={`${id}-error`} className="contact-field-error">
+        <p id={`${id}-error`} role="alert" className="contact-field-error">
           {error}
         </p>
       ) : null}

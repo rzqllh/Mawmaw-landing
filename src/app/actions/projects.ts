@@ -3,6 +3,8 @@
 import { db } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
 
 // Helper for auth check
 async function requireAuth() {
@@ -27,13 +29,14 @@ export async function createProject(formData: FormData) {
   const location = formData.get("location") as string;
   const year = formData.get("year") as string;
   const featured = formData.get("featured") === "on";
+  const status = formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
 
   // Note: For gallery, ideally you'd parse JSON or multiple inputs. 
   // For simplicity in this demo, we'll initialize an empty array or parse a JSON string.
   const galleryRaw = formData.get("gallery") as string;
   let gallery = [];
   if (galleryRaw) {
-    try { gallery = JSON.parse(galleryRaw); } catch (e) {}
+    try { gallery = JSON.parse(galleryRaw); } catch {}
   }
 
   await db.project.create({
@@ -50,6 +53,7 @@ export async function createProject(formData: FormData) {
       year,
       featured,
       gallery,
+      status,
     }
   });
 
@@ -73,11 +77,12 @@ export async function updateProject(id: string, formData: FormData) {
   const location = formData.get("location") as string;
   const year = formData.get("year") as string;
   const featured = formData.get("featured") === "on";
+  const status = formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
 
   const galleryRaw = formData.get("gallery") as string;
   let gallery = [];
   if (galleryRaw) {
-    try { gallery = JSON.parse(galleryRaw); } catch (e) {}
+    try { gallery = JSON.parse(galleryRaw); } catch {}
   }
 
   await db.project.update({
@@ -95,6 +100,7 @@ export async function updateProject(id: string, formData: FormData) {
       year,
       featured,
       gallery,
+      status,
     }
   });
 
@@ -116,4 +122,20 @@ export async function deleteProject(id: string) {
   revalidatePath("/projects", "page");
 
   return { success: true };
+}
+
+export async function previewProject(slug: string) {
+  await requireAuth();
+
+  const project = await db.project.findUnique({
+    where: { slug },
+    select: { slug: true },
+  });
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  (await draftMode()).enable();
+  redirect(`/projects/${project.slug}`);
 }
