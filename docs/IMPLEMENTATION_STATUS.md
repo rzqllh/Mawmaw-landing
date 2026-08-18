@@ -95,6 +95,11 @@ No source change should hide these infrastructure failures. Static verification 
 | 2026-08-18 | `npm run db:seed` after loader fix | BLOCKED | Seed starts, then PostgreSQL rejects the configured tenant/user before exact mock-row cleanup can execute |
 | 2026-08-18 | `npm run build` on `main` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/projects/[slug]` because the configured PostgreSQL tenant/user is not found |
 | 2026-08-18 | Post-merge `npm test` on `main` | PASS | 13 tests, 0 failures |
+| 2026-08-18 | Post-loader merge `npm test` on `main` | PASS | 14 tests, 0 failures |
+| 2026-08-18 | Post-loader merge `npm run lint` on `main` | PASS | Exit 0, no reported warnings |
+| 2026-08-18 | Post-loader merge `npm run typecheck` on `main` | PASS | Exit 0 |
+| 2026-08-18 | Post-loader merge `npx prisma validate` on `main` | PASS | Schema valid |
+| 2026-08-18 | Main SSOT integrity scan | PASS | README, 13 active project docs, implementation ledger, SEO routes/helper, and exact mock-slug cleanup guard are tracked; project docs are not blanket-ignored |
 
 ## Update protocol
 
