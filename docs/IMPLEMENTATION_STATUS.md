@@ -3,6 +3,7 @@
 **Last updated:** 2026-08-18
 **Integrated into:** `main`
 **Authority:** Current source, configuration, Prisma schema, and command output
+**Status:** Code implementation complete; release verification remains blocked by database environment.
 
 ## Decisions
 
@@ -90,7 +91,9 @@ No source change should hide these infrastructure failures. Static verification 
 | 2026-08-18 | Final `npx prisma validate` | PASS | Schema valid |
 | 2026-08-18 | Active documentation drift scan | PASS | 13 active project docs, 0 stale-stack/content matches |
 | 2026-08-18 | Forbidden live-copy scan | PASS | 0 matches outside regression/cleanup records |
-| 2026-08-18 | `npm run build` on `main` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/articles/[slug]` because the configured PostgreSQL tenant/user is not found |
+| 2026-08-18 | Seed loader regression `npm test` | PASS | 14 tests, 0 failures; ESM import loads `.env.local` without CommonJS `require` |
+| 2026-08-18 | `npm run db:seed` after loader fix | BLOCKED | Seed starts, then PostgreSQL rejects the configured tenant/user before exact mock-row cleanup can execute |
+| 2026-08-18 | `npm run build` on `main` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/projects/[slug]` because the configured PostgreSQL tenant/user is not found |
 | 2026-08-18 | Post-merge `npm test` on `main` | PASS | 13 tests, 0 failures |
 
 ## Update protocol

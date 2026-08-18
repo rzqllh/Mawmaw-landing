@@ -1,14 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { config } from "dotenv";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function getPrismaClient() {
   let connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require("dotenv").config({ path: ".env.local" });
+    config({ path: ".env.local" });
     connectionString = process.env.DATABASE_URL;
   }
   if (!connectionString) {
