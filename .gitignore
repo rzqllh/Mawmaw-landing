@@ -50,6 +50,7 @@ src/app/(public)/demo-services/
 Logo/
 
 # Internal agent validation reports & blueprint
+docs/internal/
 docs/03_VALIDATION_REPORT.md
 docs/MAWMAW_PRODUCT_UX_BLUEPRINT_FOR_ANTIGRAVITY.md
 
@@ -58,6 +59,5 @@ docs/MAWMAW_PRODUCT_UX_BLUEPRINT_FOR_ANTIGRAVITY.md
 
 .vercel
 anti-slop
-docs/
 AGENT.md
 .worktrees/
