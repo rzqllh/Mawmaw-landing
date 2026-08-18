@@ -4,7 +4,7 @@ import type { IconName } from "../lib/icons.ts";
 export type SiteConfig = {
   name: string;
   description: string;
-  url?: string;
+  url: string;
   email: string;
   phone?: string;
   address?: string;
