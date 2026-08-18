@@ -6,7 +6,7 @@ import {
   articles,
   footerContent,
   heroContent,
-  projects,
+  legacyMockProjectSlugs,
   services,
   siteConfig,
 } from "../src/data/public-content.ts";
@@ -14,30 +14,12 @@ import {
 async function main() {
   console.log("Starting seed...");
 
-  // Seed Projects
-  for (const project of projects) {
-    await prisma.project.upsert({
-      where: { slug: project.slug },
-      update: {},
-      create: {
-        slug: project.slug,
-        title: project.title,
-        category: project.category,
-        location: project.location,
-        excerpt: project.excerpt,
-        description: project.description,
-        coverSrc: project.coverImage.src,
-        coverAlt: project.coverImage.alt,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        gallery: project.gallery as any, // Json
-        featured: project.featured ?? false,
-        year: project.year,
-        scope: project.scope,
-        status: "PUBLISHED",
-      },
-    });
-  }
-  console.log(`Seeded ${projects.length} projects.`);
+  const { count: removedMockProjects } = await prisma.project.deleteMany({
+    where: {
+      slug: { in: [...legacyMockProjectSlugs] },
+    },
+  });
+  console.log(`Removed ${removedMockProjects} legacy mock projects.`);
 
   // Seed Articles
   for (const article of articles) {
@@ -82,7 +64,9 @@ async function main() {
 
   await prisma.siteSetting.upsert({
     where: { id: "global" },
-    update: {},
+    update: {
+      heroStatCards: heroContent.statCards,
+    },
     create: {
       id: "global",
       siteName: siteConfig.name,
