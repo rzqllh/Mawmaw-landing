@@ -84,8 +84,13 @@ No source change should hide these infrastructure failures. Static verification 
 | 2026-08-18 | SEO task `npm run lint` | PASS | Exit 0 |
 | 2026-08-18 | SEO task `npm run typecheck` | PASS | Exit 0 |
 | 2026-08-18 | Content task `npx prisma validate` | PASS | Schema valid |
-| 2026-08-18 | Final static suite | PENDING | Run after documentation scan |
-| 2026-08-18 | `npm run build` | PENDING | Run after final static suite; database may block page-data collection |
+| 2026-08-18 | Final `npm test` | PASS | 13 tests, 0 failures |
+| 2026-08-18 | Final `npm run lint` | PASS | Exit 0, no reported warnings |
+| 2026-08-18 | Final `npm run typecheck` | PASS | Exit 0 |
+| 2026-08-18 | Final `npx prisma validate` | PASS | Schema valid |
+| 2026-08-18 | Active documentation drift scan | PASS | 13 active project docs, 0 stale-stack/content matches |
+| 2026-08-18 | Forbidden live-copy scan | PASS | 0 matches outside regression/cleanup records |
+| 2026-08-18 | `npm run build` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/sitemap.xml` because this worktree has no database URL and Prisma cannot construct its PostgreSQL client |
 
 ## Update protocol
 

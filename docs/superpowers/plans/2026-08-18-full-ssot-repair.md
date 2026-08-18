@@ -30,7 +30,7 @@
 - Consumes: `heroContent.statCards`, `projects`, Prisma `project.deleteMany`, and `siteSetting.upsert`.
 - Produces: `legacyMockProjectSlugs` exact tuple and sanitized seed behavior.
 
-- [ ] **Step 1: Add failing regression tests**
+- [x] **Step 1: Add failing regression tests**
 
 ```ts
 import assert from "node:assert/strict";
@@ -56,21 +56,21 @@ test("seed cleanup is limited to the six approved mock project slugs", () => {
 });
 ```
 
-- [ ] **Step 2: Verify RED**
+- [x] **Step 2: Verify RED**
 
 Run: `npm test`
 Expected: fail because `legacyMockProjectSlugs` does not exist and current content includes six projects plus `150+`.
 
-- [ ] **Step 3: Sanitize defaults and seed**
+- [x] **Step 3: Sanitize defaults and seed**
 
 Implement exact tuple, replace `projects` with an empty typed array, remove only the `150+` stat card, delete exact legacy slugs during seed, and update only `heroStatCards` on the existing global settings row.
 
-- [ ] **Step 4: Verify GREEN**
+- [x] **Step 4: Verify GREEN**
 
 Run: `npm test && npm run typecheck && npx prisma validate`
 Expected: all tests pass, TypeScript exits 0, Prisma schema valid.
 
-- [ ] **Step 5: Commit task**
+- [x] **Step 5: Commit task**
 
 ```bash
 git add src/lib/content-integrity.test.ts src/data/public-content.ts prisma/seed.ts
@@ -90,7 +90,7 @@ git commit -m "fix: remove unverified portfolio seed content"
 - Consumes: `siteConfig.url`, `getPublishedProjects`, `getPublishedArticles`, and `getSiteSettings`.
 - Produces: `serializeJsonLd(value: unknown): string`, Next.js sitemap/robots metadata routes, and `ProfessionalService` JSON-LD.
 
-- [ ] **Step 1: Add failing serializer test**
+- [x] **Step 1: Add failing serializer test**
 
 ```ts
 import assert from "node:assert/strict";
@@ -104,12 +104,12 @@ test("serializeJsonLd cannot terminate its script element", () => {
 });
 ```
 
-- [ ] **Step 2: Verify RED**
+- [x] **Step 2: Verify RED**
 
 Run: `npm test`
 Expected: fail because `src/lib/seo.ts` does not exist.
 
-- [ ] **Step 3: Implement minimal serializer**
+- [x] **Step 3: Implement minimal serializer**
 
 ```ts
 export function serializeJsonLd(value: unknown) {
@@ -117,16 +117,16 @@ export function serializeJsonLd(value: unknown) {
 }
 ```
 
-- [ ] **Step 4: Add metadata routes and JSON-LD**
+- [x] **Step 4: Add metadata routes and JSON-LD**
 
 Use `MetadataRoute.Sitemap` and `MetadataRoute.Robots`. Construct JSON-LD from existing settings only, filter empty social URLs, and pass it through `serializeJsonLd` before `dangerouslySetInnerHTML`.
 
-- [ ] **Step 5: Verify SEO task**
+- [x] **Step 5: Verify SEO task**
 
 Run: `npm test && npm run lint && npm run typecheck`
 Expected: all commands exit 0.
 
-- [ ] **Step 6: Commit task**
+- [x] **Step 6: Commit task**
 
 ```bash
 git add src/lib/seo.ts src/lib/seo.test.ts src/app/sitemap.ts src/app/robots.ts "src/app/(public)/layout.tsx"
@@ -157,32 +157,32 @@ git commit -m "feat: add sitemap robots and structured data"
 - Consumes: current `package.json`, `.env.example`, Prisma schema, route tree, actions, queries, components, and validation scripts.
 - Produces: tracked project SSOT and remotely auditable implementation ledger.
 
-- [ ] **Step 1: Fix ignore boundary**
+- [x] **Step 1: Fix ignore boundary**
 
 Remove blanket `docs/`. Keep `AGENT.md`, `anti-slop/`, exact internal reports, and add `docs/internal/`.
 
-- [ ] **Step 2: Restore README from current evidence**
+- [x] **Step 2: Restore README from current evidence**
 
 Document exact stack, setup commands (`npm install`, `prisma generate`, database deployment, `npm run db:seed`, `npm run dev`), route inventory, scripts, environment categories, and current database requirement. Do not claim Cloudinary integration.
 
-- [ ] **Step 3: Rewrite runtime/data docs**
+- [x] **Step 3: Rewrite runtime/data docs**
 
 Rewrite `STACK.md`, `ARCHITECTURE.md`, `SCHEMA.md`, `API-SPEC.md`, `ENVIRONMENT.md`, `DEPLOYMENT.md`, and `PROJECT-STRUCTURE.md`. Every stack or route statement must map to current source. Mark database credentials and deployment verification as environment-dependent.
 
-- [ ] **Step 4: Rewrite product/engineering docs**
+- [x] **Step 4: Rewrite product/engineering docs**
 
 Rewrite `PRD.md`, `COMPONENTS.md`, `DESIGN-SYSTEM.md`, `RULES.md`, `TESTING.md`, and `MASTER_PROMPT.md`. Remove Payload, MongoDB, Cloudinary, Furniture, Testimonials, and other unimplemented scope claims unless explicitly labeled out of scope.
 
-- [ ] **Step 5: Add durable status ledger**
+- [x] **Step 5: Add durable status ledger**
 
 Create separate `Completed`, `Pending`, `Blocked`, and `Verification` sections. Record stack decision, mock-content removal, SEO state, database credential blocker, deploy/build state, commands with dates, and rules for future updates.
 
-- [ ] **Step 6: Scan documentation drift**
+- [x] **Step 6: Scan documentation drift**
 
 Run: `rg -n -i "Payload|MongoDB|Mongo Atlas|Cloudinary|Next\.js 15|Next 15|150\+|Kopi Ruang Tengah|Nala Suite" README.md docs --glob '!docs/superpowers/**' --glob '!docs/IMPLEMENTATION_STATUS.md'`
 Expected: no matches in active project documentation. Plan and status history may name removed technology or content when recording the decision.
 
-- [ ] **Step 7: Commit task**
+- [x] **Step 7: Commit task**
 
 ```bash
 git add .gitignore README.md docs
@@ -198,7 +198,7 @@ git commit -m "docs: restore current project source of truth"
 - Consumes: complete working tree and command outputs.
 - Produces: verified final status with honest database/build blocker.
 
-- [ ] **Step 1: Run static verification**
+- [x] **Step 1: Run static verification**
 
 Run: `npm test`
 Expected: all tests pass.
@@ -215,16 +215,16 @@ Expected: schema valid.
 Run: `git diff --check`
 Expected: exit 0.
 
-- [ ] **Step 2: Run production build**
+- [x] **Step 2: Run production build**
 
 Run: `npm run build`
 Expected with current environment: compilation and TypeScript may pass, then page-data collection may fail because worktree has no valid database credentials. Record actual output; never report build pass unless exit code is 0.
 
-- [ ] **Step 3: Update verification ledger**
+- [x] **Step 3: Update verification ledger**
 
 Record exact pass/fail counts and build stage in `docs/IMPLEMENTATION_STATUS.md`. Keep database execution and deployment under Blocked until credentials exist.
 
-- [ ] **Step 4: Verify clean documentation and diff**
+- [x] **Step 4: Verify clean documentation and diff**
 
 Run: `rg -n -i "Payload|MongoDB|Mongo Atlas|Cloudinary|Next\.js 15|Next 15|150\+|Kopi Ruang Tengah|Nala Suite" README.md docs src prisma`
 Expected: forbidden live claims absent. Allowed matches are exact mock-slug cleanup constants, regression tests, and explicit plan/status history.
@@ -232,7 +232,7 @@ Expected: forbidden live claims absent. Allowed matches are exact mock-slug clea
 Run: `git status --short`
 Expected: only final ledger update before commit.
 
-- [ ] **Step 5: Commit verification ledger**
+- [x] **Step 5: Commit verification ledger**
 
 ```bash
 git add docs/IMPLEMENTATION_STATUS.md
