@@ -87,9 +87,11 @@ Public site tersedia di `http://localhost:3000`. Admin login tersedia di `http:/
 - [Deployment](docs/DEPLOYMENT.md)
 - [Testing](docs/TESTING.md)
 
-## Known environment blocker
+## Production verification
 
-Application melakukan database reads saat rendering public pages dan dynamic route generation. Production build dan deployment membutuhkan PostgreSQL credentials yang valid serta seeded `SiteSetting` row. Lihat `docs/IMPLEMENTATION_STATUS.md` untuk evidence terbaru.
+Local database seed dan production build berhasil pada 2026-08-19. Seed menghapus enam legacy mock projects, mengisi enam articles, enam services, dan site settings. Build menyelesaikan page-data collection dan menghasilkan 27/27 static pages.
+
+Hasil lokal tersebut belum memverifikasi environment atau deployment Vercel. Sinkronkan database variables ke Vercel, deploy ulang, lalu smoke-test public dan admin routes. Lihat `docs/IMPLEMENTATION_STATUS.md` untuk evidence terbaru.
 
 ## License
 

@@ -1,9 +1,9 @@
 # Implementation Status
 
-**Last updated:** 2026-08-18
+**Last updated:** 2026-08-19
 **Integrated into:** `main`
 **Authority:** Current source, configuration, Prisma schema, and command output
-**Status:** Code implementation complete; release verification remains blocked by database environment.
+**Status:** Code implementation and local release verification complete; Vercel deployment verification remains pending.
 
 ## Decisions
 
@@ -38,6 +38,7 @@
 - `.env.example` matches variables read by source.
 - Static project fixtures are empty.
 - Seed cleanup is restricted to six exact legacy mock slugs.
+- Live seed cleanup removed the six legacy mock project records on 2026-08-19.
 - Default settings no longer contain the unverified project-count value.
 
 ### UI and resilience
@@ -57,6 +58,11 @@
 - README and 13 project docs reflect current implementation.
 - Project docs are no longer hidden by a blanket ignore rule.
 
+### Local release verification
+
+- Database seed completed against the configured PostgreSQL environment.
+- Production build completed, including page-data collection and 27 static pages.
+
 ## Pending
 
 - Publish only owner-verified project records through admin.
@@ -69,11 +75,9 @@
 
 | Item | Blocker | Unblock condition |
 | --- | --- | --- |
-| Execute exact mock-row cleanup | No valid live database credentials in current environment | Configure valid `DATABASE_URL` and `DIRECT_URL`, then run `npm run db:seed` |
-| Verify production build | Build-time public queries require reachable PostgreSQL and seeded settings | Supply valid credentials and `global` SiteSetting row, then run `npm run build` |
-| Verify Vercel deployment | Current deployment is failing and environment state is external | Correct Vercel database variables, redeploy, then smoke-test public/admin routes |
+| Verify Vercel deployment | Remote environment and deployment have not been reverified by the successful local checks | Sync the confirmed database variables to Vercel, redeploy, then smoke-test public/admin routes |
 
-No source change should hide these infrastructure failures. Static verification remains mandatory.
+The resolved local failures remain in the verification history below. A successful local build does not verify the Vercel environment.
 
 ## Verification
 
@@ -100,6 +104,8 @@ No source change should hide these infrastructure failures. Static verification 
 | 2026-08-18 | Post-loader merge `npm run typecheck` on `main` | PASS | Exit 0 |
 | 2026-08-18 | Post-loader merge `npx prisma validate` on `main` | PASS | Schema valid |
 | 2026-08-18 | Main SSOT integrity scan | PASS | README, 13 active project docs, implementation ledger, SEO routes/helper, and exact mock-slug cleanup guard are tracked; project docs are not blanket-ignored |
+| 2026-08-19 | `npm run db:seed` | PASS | Removed 6 legacy mock projects; seeded 6 articles, 6 services, and site settings |
+| 2026-08-19 | `npm run build` | PASS | Compiled, completed TypeScript and page-data collection, then generated 27/27 static pages |
 
 ## Update protocol
 
