@@ -90,7 +90,7 @@ No source change should hide these infrastructure failures. Static verification 
 | 2026-08-18 | Final `npx prisma validate` | PASS | Schema valid |
 | 2026-08-18 | Active documentation drift scan | PASS | 13 active project docs, 0 stale-stack/content matches |
 | 2026-08-18 | Forbidden live-copy scan | PASS | 0 matches outside regression/cleanup records |
-| 2026-08-18 | `npm run build` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/sitemap.xml` because this worktree has no database URL and Prisma cannot construct its PostgreSQL client |
+| 2026-08-18 | `npm run build` on `main` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/articles/[slug]` because the configured PostgreSQL tenant/user is not found |
 | 2026-08-18 | Post-merge `npm test` on `main` | PASS | 13 tests, 0 failures |
 
 ## Update protocol
