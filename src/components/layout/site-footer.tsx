@@ -64,7 +64,7 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
                 Studio Interior & Furnitur
               </p>
 
-              <h2 className="heading-section max-w-4xl tracking-[-0.045em] text-text-inverse">
+              <h2 className="heading-section max-w-4xl text-text-inverse">
                 {settings.footerHeadline}
               </h2>
 
