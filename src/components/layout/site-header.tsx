@@ -36,9 +36,9 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       ? "#artikel"
       : activeSectionHref;
       
-  // Hanya jadikan text terang/putih jika sedang di atas seksi Kontak (karena background kontak itu hijau gelap).
-  // Hero section ternyata terang, jadi kita biarkan teksnya gelap.
-  const isDarkSection = activeSectionHref === "#kontak";
+  // Ketika di hero section atau di seksi kontak, header bergaya dark frosted glass agar teks dan aksen terlihat kontras sempurna.
+  const isDarkHero = pathname === "/" && !isPastHero;
+  const isDarkSection = activeSectionHref === "#kontak" || isDarkHero;
 
   const headerTransition = shouldReduceMotion
     ? { duration: 0 }
@@ -178,9 +178,14 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
           layout
           data-header-state={showLiquidHeader ? "glass" : "hero"}
           className={cn(
-            "clear-liquid-nav mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 transition-colors duration-300 ease-out md:px-4",
-            hasScrolled && "shadow-glass",
-            isDarkSection ? "text-text-inverse" : "text-forest-900"
+            "mx-auto flex min-h-14 md:min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 transition-all duration-300 ease-out md:px-4",
+            isDarkHero
+              ? "bg-forest-900/35 border border-white/15 backdrop-blur-md text-[#FDFBF7]"
+              : hasScrolled
+                ? "bg-surface/85 border border-black/5 backdrop-blur-md shadow-glass text-forest-900"
+                : isDarkSection
+                  ? "bg-forest-900/80 border border-white/10 backdrop-blur-md text-text-inverse"
+                  : "bg-surface/60 border border-transparent backdrop-blur-sm text-forest-900"
           )}
           transition={headerTransition}
         >
@@ -189,9 +194,9 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
             href="/"
             aria-label={`${settings.siteName} beranda`}
             onClick={handleBrandClick}
-            className="flex min-w-0 shrink-0 items-center gap-3 rounded-pill pr-2 transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
+            className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 rounded-pill pr-2 transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-500"
           >
-            <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-pill bg-forest-700">
+            <span className="relative flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 overflow-hidden rounded-pill bg-forest-700/90 border border-white/20">
               <Image
                 src="/brand/mawmaw-icon.png"
                 alt=""
@@ -200,7 +205,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                 className="object-contain p-1.5"
               />
             </span>
-            <span className="truncate text-sm font-extrabold tracking-[-0.01em]">
+            <span className="truncate font-serif text-lg sm:text-xl font-semibold tracking-tight">
               Mawmaw.
             </span>
           </Link>
@@ -294,7 +299,10 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
               layout
               key="mobile-toggle"
               onClick={() => setIsMobileMenuOpen(true)}
-              className="flex items-center justify-center rounded-full p-2 md:hidden hover:bg-forest-900/5 transition-colors"
+              className={cn(
+                "flex items-center justify-center rounded-full p-2 md:hidden transition-colors min-h-[44px] min-w-[44px]",
+                isDarkSection ? "text-[#FDFBF7] hover:bg-white/10" : "text-forest-900 hover:bg-forest-900/5"
+              )}
               aria-label="Buka menu"
               aria-controls="mobile-navigation-dialog"
               aria-expanded={isMobileMenuOpen}
