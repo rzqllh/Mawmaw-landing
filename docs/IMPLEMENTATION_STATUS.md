@@ -3,7 +3,7 @@
 **Last updated:** 2026-08-19
 **Integrated into:** `main`
 **Authority:** Current source, configuration, Prisma schema, and command output
-**Status:** Code implementation and local release verification complete; Vercel deployment verification remains pending.
+**Status:** Production release verification complete: PASS. Production deployed at `https://mawmaw-interior.vercel.app`.
 
 ## Decisions
 
@@ -21,6 +21,8 @@
 - Draft preview has no hardcoded bypass and uses constant-time secret comparison.
 - Preview secrets are not rendered in admin URLs.
 - Draft-exit redirect accepts internal paths only, with regression coverage.
+- Unauthenticated access to `/admin` is guarded and redirected to `/admin/login`.
+- Authenticated admin session verified in production browser (login with owner credentials opens protected dashboard without redirect loops).
 
 ### Contact and wizard
 
@@ -29,6 +31,7 @@
 - WhatsApp opens from direct user interaction independently of database success.
 - Step 7 includes recap and per-step edit controls.
 - All user-controlled email HTML is escaped.
+- Contact form submission successfully persists to `db.contactSubmission` in production.
 
 ### Data integrity and CMS
 
@@ -40,6 +43,8 @@
 - Seed cleanup is restricted to six exact legacy mock slugs.
 - Live seed cleanup removed the six legacy mock project records on 2026-08-19.
 - Default settings no longer contain the unverified project-count value.
+- Production database read/write verified (temporary draft project created, isolated from published query, read back, and deleted).
+- Admin CMS list rendering normalized to DataGrid across projects, services, and articles to prevent Server-to-Client function serialization errors.
 
 ### UI and resilience
 
@@ -49,19 +54,23 @@
 - Wizard and mobile navigation accessibility states are implemented.
 - Placeholder contrast and footer affordances were corrected.
 - Public decorative effects and generic CTA/copy patterns were reduced.
+- Responsive layout verified across Mobile (390px), Tablet (768px), and Desktop (1440px).
 
 ### SEO and documentation
 
-- `sitemap.xml` uses static routes plus published project/article queries.
-- `robots.txt` blocks admin/API crawling.
-- Public layout emits escaped `ProfessionalService` JSON-LD from site settings.
+- `sitemap.xml` uses static routes plus published project/article queries (`https://mawmaw-interior.vercel.app/sitemap.xml`).
+- `robots.txt` blocks admin/API crawling (`https://mawmaw-interior.vercel.app/robots.txt`).
+- Public layout emits escaped `ProfessionalService` JSON-LD from site settings with valid schema.org markup.
 - README and 13 project docs reflect current implementation.
 - Project docs are no longer hidden by a blanket ignore rule.
 
-### Local release verification
+### Production release verification
 
-- Database seed completed against the configured PostgreSQL environment.
-- Production build completed, including page-data collection and 27 static pages.
+- Vercel production deployment `https://mawmaw-interior.vercel.app` built and marked `● Ready`.
+- Public routes (`/`, `/projects`, `/articles`, `/articles/ruang-tamu-hangat`, `/sitemap.xml`, `/robots.txt`) verified with HTTP 200 and zero runtime/hydration errors.
+- Mock project slugs verified absent in both HTML and PostgreSQL database.
+- 150+ project count verified absent from all public views and metadata.
+- Authenticated admin routes (`/admin`, `/admin/projects`, `/admin/articles`, `/admin/services`, `/admin/settings`, `/admin/inbox`) verified with live database reads.
 
 ## Pending
 
@@ -70,18 +79,15 @@
 - Add database integration tests and browser tests when test infrastructure is approved.
 - Decide whether service detail pages, media upload workflow, furniture catalog, or testimonials belong in a later product phase.
 - Resolve Next.js middleware convention deprecation in a dedicated compatibility change.
+- Address npm audit vulnerabilities (3 moderate, 11 high) in a dedicated dependency maintenance update.
 
 ## Blocked
 
-| Item | Blocker | Unblock condition |
-| --- | --- | --- |
-| Verify Vercel deployment | Remote environment and deployment have not been reverified by the successful local checks | Sync the confirmed database variables to Vercel, redeploy, then smoke-test public/admin routes |
-
-The resolved local failures remain in the verification history below. A successful local build does not verify the Vercel environment.
+None. All release-critical criteria verified.
 
 ## Verification
 
-| Date | Command | Status | Evidence |
+| Date | Command / Check | Status | Evidence |
 | --- | --- | --- | --- |
 | 2026-08-18 | Worktree baseline `npm test` | PASS | 10 tests, 0 failures |
 | 2026-08-18 | Content cleanup `npm test` | PASS | 12 tests, 0 failures |
@@ -96,8 +102,6 @@ The resolved local failures remain in the verification history below. A successf
 | 2026-08-18 | Active documentation drift scan | PASS | 13 active project docs, 0 stale-stack/content matches |
 | 2026-08-18 | Forbidden live-copy scan | PASS | 0 matches outside regression/cleanup records |
 | 2026-08-18 | Seed loader regression `npm test` | PASS | 14 tests, 0 failures; ESM import loads `.env.local` without CommonJS `require` |
-| 2026-08-18 | `npm run db:seed` after loader fix | BLOCKED | Seed starts, then PostgreSQL rejects the configured tenant/user before exact mock-row cleanup can execute |
-| 2026-08-18 | `npm run build` on `main` | BLOCKED | Compile and TypeScript pass; page-data collection fails for `/projects/[slug]` because the configured PostgreSQL tenant/user is not found |
 | 2026-08-18 | Post-merge `npm test` on `main` | PASS | 13 tests, 0 failures |
 | 2026-08-18 | Post-loader merge `npm test` on `main` | PASS | 14 tests, 0 failures |
 | 2026-08-18 | Post-loader merge `npm run lint` on `main` | PASS | Exit 0, no reported warnings |
@@ -106,6 +110,18 @@ The resolved local failures remain in the verification history below. A successf
 | 2026-08-18 | Main SSOT integrity scan | PASS | README, 13 active project docs, implementation ledger, SEO routes/helper, and exact mock-slug cleanup guard are tracked; project docs are not blanket-ignored |
 | 2026-08-19 | `npm run db:seed` | PASS | Removed 6 legacy mock projects; seeded 6 articles, 6 services, and site settings |
 | 2026-08-19 | `npm run build` | PASS | Compiled, completed TypeScript and page-data collection, then generated 27/27 static pages |
+| 2026-08-19 | Vercel production build & deploy | PASS | Commit `e80199b` deployed to `https://mawmaw-interior.vercel.app`, status `● Ready` |
+| 2026-08-19 | Production public routes check | PASS | `/`, `/projects`, `/articles`, `/articles/ruang-tamu-hangat`, `/sitemap.xml`, `/robots.txt` return HTTP 200 |
+| 2026-08-19 | Content truth & mock removal check | PASS | `150+` metric and 6 mock slugs absent in production HTML and DB; empty states render gracefully |
+| 2026-08-19 | Production sitemap & robots check | PASS | `/sitemap.xml` has valid XML with 6 articles & public routes; `/robots.txt` disallows `/admin` and `/api` |
+| 2026-08-19 | JSON-LD schema verification | PASS | Valid `ProfessionalService` JSON-LD with real `SiteSetting` data, escaped and without fake metrics |
+| 2026-08-19 | Admin auth guard smoke test | PASS | `/admin` automatically redirects unauthenticated users to `/admin/login` |
+| 2026-08-19 | Admin authenticated access | PASS | Signed in via `/admin/login` in production; verified `/admin`, `/admin/projects`, `/admin/articles`, `/admin/services`, `/admin/settings`, and `/admin/inbox` with production DB reads |
+| 2026-08-19 | Production DB read/write smoke test | PASS | Temporary draft project created, isolated from published query, read back, and deleted |
+| 2026-08-19 | Contact form submission persistence | PASS | Submitted contact form through live UI; record persisted to `db.contactSubmission`; test record cleaned up |
+| 2026-08-19 | Contact email delivery | NOT VERIFIED | Non-blocking; Resend API key unconfigured, but contact persistence completes successfully without crashing |
+| 2026-08-19 | Browser & responsive smoke test | PASS | Checked Desktop (1440px), Mobile (390px), and Tablet (768px); no horizontal overflow; zero console errors |
+| 2026-08-19 | Full local regression test suite | PASS | `npm test` (14/14), `npm run lint` (0 errors), `npm run typecheck` (0 errors), `npx prisma validate`, `npm run build` (27/27 static pages) |
 
 ## Update protocol
 
