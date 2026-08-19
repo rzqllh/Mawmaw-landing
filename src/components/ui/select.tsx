@@ -27,7 +27,7 @@ const SelectTrigger = React.forwardRef<
       // Variants
       variant === "default" &&
         "rounded-[var(--radius-sm)] border border-forest-200/70 bg-surface text-forest-900 shadow-[0_1px_0_rgba(26,42,29,0.03)] placeholder:text-text-muted/75 focus:ring-2 focus:ring-gold-500/20",
-      variant === "inverse" && "field-dark rounded-[var(--radius-sm)] text-forest-900",
+      variant === "inverse" && "field-dark rounded-[var(--radius-sm)] text-text-inverse",
       variant === "admin" && "rounded-lg bg-forest-900/5 border border-transparent text-forest-900 hover:bg-forest-900/10 focus:bg-white focus:border-gold-500 focus:ring-4 focus:ring-gold-500/15",
       className
     )}

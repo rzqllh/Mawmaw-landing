@@ -44,7 +44,7 @@ export function WizardStep2Space() {
                 type="button"
                 onClick={() => updateData({ spaceType: type.id })}
                 aria-pressed={data.spaceType === type.id}
-                className={`min-h-11 rounded-lg border px-4 py-3 font-sans text-sm transition-colors ${
+                className={`min-h-11 rounded-lg border px-4 py-3 font-sans text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                   data.spaceType === type.id
                     ? "border-gold-500 bg-gold-500/10 text-gold-300"
                     : "border-white/20 bg-white/[0.06] text-white/70 hover:border-white/40"
@@ -65,7 +65,7 @@ export function WizardStep2Space() {
                 type="button"
                 onClick={() => updateData({ spaceSize: size.id })}
                 aria-pressed={data.spaceSize === size.id}
-                className={`min-h-11 rounded-lg border px-4 py-3 font-sans text-sm transition-colors ${
+                className={`min-h-11 rounded-lg border px-4 py-3 font-sans text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                   data.spaceSize === size.id
                     ? "border-gold-500 bg-gold-500/10 text-gold-300"
                     : "border-white/20 bg-white/[0.06] text-white/70 hover:border-white/40"

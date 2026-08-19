@@ -37,7 +37,7 @@ export function WizardStep4Budget() {
               type="button"
               onClick={() => updateData({ budgetRange: budget.id })}
               aria-pressed={isSelected}
-              className={`flex min-h-11 items-center justify-between rounded-xl border p-5 text-left transition-colors ${
+              className={`flex min-h-11 items-center justify-between rounded-xl border p-5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                 isSelected
                   ? "border-gold-300 bg-gold-500/10 text-gold-200"
                   : "border-white/20 bg-white/[0.06] text-white hover:border-white/40"

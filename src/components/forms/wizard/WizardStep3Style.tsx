@@ -59,7 +59,7 @@ export function WizardStep3Style() {
               type="button"
               onClick={() => updateData({ stylePreference: style.id })}
               aria-pressed={isSelected}
-              className={`group relative aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
+              className={`group relative aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                 isSelected ? "border-gold-500" : "border-transparent"
               } ${style.id === "kontemporer" ? "col-span-2 aspect-[21/9]" : ""}`}
             >

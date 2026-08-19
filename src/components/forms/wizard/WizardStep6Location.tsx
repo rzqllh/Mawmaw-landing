@@ -38,7 +38,7 @@ export function WizardStep6Location() {
               type="button"
               onClick={() => updateData({ location: loc.id })}
               aria-pressed={isSelected}
-              className={`min-h-11 rounded-lg border px-4 py-4 font-sans text-base transition-colors ${
+              className={`min-h-11 rounded-lg border px-4 py-4 font-sans text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                 isSelected
                   ? "border-gold-300 bg-gold-500/10 text-gold-200"
                   : "border-white/20 bg-white/[0.06] text-white/70 hover:border-white/40"
