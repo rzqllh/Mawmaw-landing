@@ -22,11 +22,11 @@ export function WizardStep6Location() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="space-y-8"
+      className="space-y-5 sm:space-y-6"
     >
       <div>
-        <h2 id="wizard-step-6-title" className="mb-2 font-serif text-3xl text-white md:text-4xl">Lokasi proyek</h2>
-        <p className="font-sans text-white/70">Pilih area tempat properti berada.</p>
+        <h2 id="wizard-step-6-title" className="mb-1 font-serif text-xl sm:text-2xl md:text-3xl font-normal text-white">Lokasi proyek</h2>
+        <p className="text-xs sm:text-sm font-sans text-white/70">Pilih area tempat properti berada.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3" role="group" aria-labelledby="wizard-step-6-title">

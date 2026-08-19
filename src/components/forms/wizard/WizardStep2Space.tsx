@@ -27,11 +27,11 @@ export function WizardStep2Space() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="space-y-8"
+      className="space-y-5 sm:space-y-6"
     >
       <div>
-        <h2 className="mb-2 font-serif text-3xl text-white md:text-4xl">Tentang ruang Anda</h2>
-        <p className="font-sans text-white/70">Berikan gambaran singkat mengenai properti yang akan dirancang.</p>
+        <h2 className="mb-1 font-serif text-xl sm:text-2xl md:text-3xl font-normal text-white">Tentang ruang Anda</h2>
+        <p className="text-xs sm:text-sm font-sans text-white/70">Berikan gambaran singkat mengenai properti yang akan dirancang.</p>
       </div>
 
       <div className="space-y-6">
