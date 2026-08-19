@@ -18,10 +18,13 @@ async function verifyAuth() {
   return user;
 }
 
-export async function getSubmissions() {
+export async function getSubmissions(limit = 100) {
   await verifyAuth();
   
+  const take = Math.min(Math.max(1, limit), 250);
+
   return prisma.contactSubmission.findMany({
+    take,
     orderBy: { createdAt: "desc" },
   });
 }
@@ -37,23 +40,32 @@ export async function getSubmission(id: string) {
 export async function updateSubmissionStatus(id: string, status: ContactStatus) {
   await verifyAuth();
   
-  const updated = await prisma.contactSubmission.update({
-    where: { id },
-    data: { status },
-  });
-  
-  revalidatePath("/admin/inbox");
-  revalidatePath(`/admin/inbox/${id}`);
-  
-  return updated;
+  try {
+    const updated = await prisma.contactSubmission.update({
+      where: { id },
+      data: { status },
+    });
+    
+    revalidatePath("/admin/inbox");
+    revalidatePath(`/admin/inbox/${id}`);
+    
+    return { success: true, data: updated };
+  } catch {
+    return { success: false, error: "Gagal memperbarui status pesan." };
+  }
 }
 
 export async function deleteSubmission(id: string) {
   await verifyAuth();
   
-  await prisma.contactSubmission.delete({
-    where: { id },
-  });
-  
-  revalidatePath("/admin/inbox");
+  try {
+    await prisma.contactSubmission.delete({
+      where: { id },
+    });
+    
+    revalidatePath("/admin/inbox");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Gagal menghapus pesan." };
+  }
 }

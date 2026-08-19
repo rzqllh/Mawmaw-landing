@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db as prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { serviceSchema } from "@/lib/validations/admin";
 
 async function verifyAuth() {
   const supabase = await createClient();
@@ -36,26 +37,33 @@ export async function getService(id: string) {
 
 export async function createService(formData: FormData) {
   await verifyAuth();
-  
-  const title = formData.get("title") as string;
-  const slug = formData.get("slug") as string;
-  const description = formData.get("description") as string;
-  const icon = formData.get("icon") as string;
-  const imageSrc = (formData.get("imageSrc") as string) || null;
-  const imageAlt = (formData.get("imageAlt") as string) || null;
-  const sortOrder = parseInt(formData.get("sortOrder") as string) || 0;
-  
-  await prisma.service.create({
-    data: {
-      title,
-      slug,
-      description,
-      icon,
-      imageSrc,
-      imageAlt,
-      sortOrder,
-    }
+
+  const parsed = serviceSchema.safeParse({
+    title: formData.get("title"),
+    slug: formData.get("slug"),
+    description: formData.get("description"),
+    icon: formData.get("icon"),
+    imageSrc: (formData.get("imageSrc") as string) || null,
+    imageAlt: (formData.get("imageAlt") as string) || null,
+    sortOrder: parseInt(formData.get("sortOrder") as string) || 0,
   });
+
+  if (!parsed.success) {
+    const errorMsg = parsed.error.issues.map((i) => i.message).join(", ");
+    return { success: false, error: errorMsg };
+  }
+
+  try {
+    await prisma.service.create({
+      data: parsed.data,
+    });
+  } catch (error: unknown) {
+    const code = (error as { code?: string })?.code;
+    if (code === "P2002") {
+      return { success: false, error: "Slug layanan sudah digunakan. Gunakan slug yang berbeda." };
+    }
+    return { success: false, error: "Gagal menyimpan layanan. Silakan coba lagi." };
+  }
   
   revalidatePath("/admin/services");
   revalidatePath("/");
@@ -64,27 +72,34 @@ export async function createService(formData: FormData) {
 
 export async function updateService(id: string, formData: FormData) {
   await verifyAuth();
-  
-  const title = formData.get("title") as string;
-  const slug = formData.get("slug") as string;
-  const description = formData.get("description") as string;
-  const icon = formData.get("icon") as string;
-  const imageSrc = (formData.get("imageSrc") as string) || null;
-  const imageAlt = (formData.get("imageAlt") as string) || null;
-  const sortOrder = parseInt(formData.get("sortOrder") as string) || 0;
-  
-  await prisma.service.update({
-    where: { id },
-    data: {
-      title,
-      slug,
-      description,
-      icon,
-      imageSrc,
-      imageAlt,
-      sortOrder,
-    }
+
+  const parsed = serviceSchema.safeParse({
+    title: formData.get("title"),
+    slug: formData.get("slug"),
+    description: formData.get("description"),
+    icon: formData.get("icon"),
+    imageSrc: (formData.get("imageSrc") as string) || null,
+    imageAlt: (formData.get("imageAlt") as string) || null,
+    sortOrder: parseInt(formData.get("sortOrder") as string) || 0,
   });
+
+  if (!parsed.success) {
+    const errorMsg = parsed.error.issues.map((i) => i.message).join(", ");
+    return { success: false, error: errorMsg };
+  }
+
+  try {
+    await prisma.service.update({
+      where: { id },
+      data: parsed.data,
+    });
+  } catch (error: unknown) {
+    const code = (error as { code?: string })?.code;
+    if (code === "P2002") {
+      return { success: false, error: "Slug layanan sudah digunakan. Gunakan slug yang berbeda." };
+    }
+    return { success: false, error: "Gagal memperbarui layanan. Silakan coba lagi." };
+  }
   
   revalidatePath("/admin/services");
   revalidatePath("/");
@@ -93,11 +108,16 @@ export async function updateService(id: string, formData: FormData) {
 
 export async function deleteService(id: string) {
   await verifyAuth();
-  
-  await prisma.service.delete({
-    where: { id },
-  });
-  
-  revalidatePath("/admin/services");
-  revalidatePath("/");
+
+  try {
+    await prisma.service.delete({
+      where: { id },
+    });
+    
+    revalidatePath("/admin/services");
+    revalidatePath("/");
+    return { success: true };
+  } catch {
+    return { success: false, error: "Gagal menghapus layanan." };
+  }
 }

@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { projectSchema } from "@/lib/validations/admin";
 import { revalidatePath } from "next/cache";
 import { draftMode } from "next/headers";
 import { redirect } from "next/navigation";
@@ -15,113 +16,126 @@ async function requireAuth() {
   }
 }
 
+function parseGallery(formData: FormData) {
+  const galleryRaw = formData.get("gallery") as string;
+  if (galleryRaw) {
+    try {
+      const parsed = JSON.parse(galleryRaw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 export async function createProject(formData: FormData) {
   await requireAuth();
 
-  const title = formData.get("title") as string;
-  const slug = formData.get("slug") as string;
-  const category = formData.get("category") as string;
-  const excerpt = formData.get("excerpt") as string;
-  const description = formData.get("description") as string;
-  const coverSrc = formData.get("coverSrc") as string;
-  const coverAlt = formData.get("coverAlt") as string;
-  const coverBlur = formData.get("coverBlur") as string;
-  const location = formData.get("location") as string;
-  const year = formData.get("year") as string;
-  const featured = formData.get("featured") === "on";
-  const status = formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
+  const gallery = parseGallery(formData);
 
-  // Note: For gallery, ideally you'd parse JSON or multiple inputs. 
-  // For simplicity in this demo, we'll initialize an empty array or parse a JSON string.
-  const galleryRaw = formData.get("gallery") as string;
-  let gallery = [];
-  if (galleryRaw) {
-    try { gallery = JSON.parse(galleryRaw); } catch {}
-  }
-
-  await db.project.create({
-    data: {
-      slug,
-      title,
-      category,
-      excerpt,
-      description,
-      coverSrc,
-      coverAlt,
-      coverBlur: coverBlur || null,
-      location,
-      year,
-      featured,
-      gallery,
-      status,
-    }
+  const parsed = projectSchema.safeParse({
+    title: formData.get("title"),
+    slug: formData.get("slug"),
+    category: formData.get("category"),
+    location: formData.get("location"),
+    year: formData.get("year"),
+    excerpt: formData.get("excerpt"),
+    description: formData.get("description"),
+    coverSrc: formData.get("coverSrc"),
+    coverAlt: formData.get("coverAlt"),
+    coverBlur: (formData.get("coverBlur") as string) || null,
+    featured: formData.get("featured") === "on",
+    status: formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
+    gallery,
+    scope: [],
   });
 
-  revalidatePath("/", "layout");
-  revalidatePath("/projects", "page");
-  
-  return { success: true };
+  if (!parsed.success) {
+    const errorMsg = parsed.error.issues.map((i) => i.message).join(", ");
+    return { success: false, error: errorMsg };
+  }
+
+  try {
+    await db.project.create({
+      data: parsed.data,
+    });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/projects", "page");
+
+    return { success: true };
+  } catch (error: unknown) {
+    const code = (error as { code?: string })?.code;
+    if (code === "P2002") {
+      return { success: false, error: "Slug proyek sudah digunakan. Gunakan slug yang berbeda." };
+    }
+    return { success: false, error: "Gagal menyimpan proyek. Silakan coba lagi." };
+  }
 }
 
 export async function updateProject(id: string, formData: FormData) {
   await requireAuth();
 
-  const title = formData.get("title") as string;
-  const slug = formData.get("slug") as string;
-  const category = formData.get("category") as string;
-  const excerpt = formData.get("excerpt") as string;
-  const description = formData.get("description") as string;
-  const coverSrc = formData.get("coverSrc") as string;
-  const coverAlt = formData.get("coverAlt") as string;
-  const coverBlur = formData.get("coverBlur") as string;
-  const location = formData.get("location") as string;
-  const year = formData.get("year") as string;
-  const featured = formData.get("featured") === "on";
-  const status = formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
+  const gallery = parseGallery(formData);
 
-  const galleryRaw = formData.get("gallery") as string;
-  let gallery = [];
-  if (galleryRaw) {
-    try { gallery = JSON.parse(galleryRaw); } catch {}
-  }
-
-  await db.project.update({
-    where: { id },
-    data: {
-      slug,
-      title,
-      category,
-      excerpt,
-      description,
-      coverSrc,
-      coverAlt,
-      coverBlur: coverBlur || null,
-      location,
-      year,
-      featured,
-      gallery,
-      status,
-    }
+  const parsed = projectSchema.safeParse({
+    title: formData.get("title"),
+    slug: formData.get("slug"),
+    category: formData.get("category"),
+    location: formData.get("location"),
+    year: formData.get("year"),
+    excerpt: formData.get("excerpt"),
+    description: formData.get("description"),
+    coverSrc: formData.get("coverSrc"),
+    coverAlt: formData.get("coverAlt"),
+    coverBlur: (formData.get("coverBlur") as string) || null,
+    featured: formData.get("featured") === "on",
+    status: formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
+    gallery,
+    scope: [],
   });
 
-  revalidatePath("/", "layout");
-  revalidatePath("/projects", "page");
-  revalidatePath(`/projects/${slug}`, "page");
+  if (!parsed.success) {
+    const errorMsg = parsed.error.issues.map((i) => i.message).join(", ");
+    return { success: false, error: errorMsg };
+  }
 
-  return { success: true };
+  try {
+    await db.project.update({
+      where: { id },
+      data: parsed.data,
+    });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/projects", "page");
+    revalidatePath(`/projects/${parsed.data.slug}`, "page");
+
+    return { success: true };
+  } catch (error: unknown) {
+    const code = (error as { code?: string })?.code;
+    if (code === "P2002") {
+      return { success: false, error: "Slug proyek sudah digunakan. Gunakan slug yang berbeda." };
+    }
+    return { success: false, error: "Gagal memperbarui proyek. Silakan coba lagi." };
+  }
 }
 
 export async function deleteProject(id: string) {
   await requireAuth();
 
-  await db.project.delete({
-    where: { id }
-  });
+  try {
+    await db.project.delete({
+      where: { id },
+    });
 
-  revalidatePath("/", "layout");
-  revalidatePath("/projects", "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/projects", "page");
 
-  return { success: true };
+    return { success: true };
+  } catch {
+    return { success: false, error: "Gagal menghapus proyek." };
+  }
 }
 
 export async function previewProject(slug: string) {

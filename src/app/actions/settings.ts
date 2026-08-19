@@ -162,6 +162,6 @@ export async function updateSiteSettings(formData: FormData) {
     return { success: true };
   } catch (error: unknown) {
     console.error("Settings Update Error:", error);
-    return { error: error instanceof Error ? error.message : "Gagal menyimpan pengaturan" };
+    return { error: "Gagal menyimpan pengaturan. Silakan periksa format data dan coba lagi." };
   }
 }

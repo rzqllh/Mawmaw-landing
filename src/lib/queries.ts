@@ -2,14 +2,67 @@ import { db } from "./db";
 import { unstable_cache } from "next/cache";
 import { draftMode } from "next/headers";
 import type { IconName } from "@/lib/icons";
-import type { Project, Article, Service, ImageAsset } from "@/data/public-content";
+import {
+  aboutContent,
+  contactContent,
+  footerContent,
+  heroContent,
+  servicesSection,
+  siteConfig,
+  type Project,
+  type Article,
+  type Service,
+  type ImageAsset,
+} from "@/data/public-content";
 import type { Project as PrismaProject, Article as PrismaArticle, Service as PrismaService, SiteSetting } from "@prisma/client";
+
+function getDefaultSiteSettings(): SiteSetting {
+  return {
+    id: "global",
+    siteName: siteConfig.name,
+    siteDescription: siteConfig.description,
+    email: siteConfig.email,
+    phone: siteConfig.phone ?? "",
+    address: siteConfig.address ?? "",
+    socials: siteConfig.socials,
+    heroTitle: heroContent.title,
+    heroDescription: heroContent.description,
+    heroImageSrc: heroContent.image.src,
+    heroImageAlt: heroContent.image.alt,
+    heroImageBlur: heroContent.image.blurDataURL || null,
+    heroStatCards: heroContent.statCards,
+    aboutLabel: aboutContent.label,
+    aboutTitle: aboutContent.title,
+    aboutDescription: aboutContent.description,
+    aboutImageSrc: aboutContent.image.src,
+    aboutImageAlt: aboutContent.image.alt,
+    aboutImageBlur: aboutContent.image.blurDataURL || null,
+    aboutBadgeTitle: aboutContent.badge?.title ?? null,
+    aboutBadgeDesc: aboutContent.badge?.description ?? null,
+    aboutValues: aboutContent.values,
+    servicesLabel: servicesSection.label,
+    servicesTitle: servicesSection.title,
+    servicesDesc: servicesSection.description,
+    projectsLabel: "PROYEK KAMI",
+    projectsTitle: "Karya Unggulan",
+    projectsDesc: "Pilihan proyek interior yang telah kami rancang dengan sentuhan personal.",
+    articlesLabel: "ARTIKEL KAMI",
+    articlesTitle: "Inspirasi & Wawasan",
+    articlesDesc: "Catatan dan panduan seputar desain interior dan tata ruang.",
+    contactTitle: contactContent.title,
+    contactDesc: contactContent.description,
+    footerHeadline: footerContent.headline,
+    footerSummary: footerContent.summary,
+    copyright: footerContent.copyright,
+    updatedAt: new Date(),
+  };
+}
 
 // DTO Mappers
 function toProjectDTO(row: PrismaProject): Project {
   return {
     ...row,
-    coverImage: { src: row.coverSrc, alt: row.coverAlt, width: 1600, height: 1200, blurDataURL: row.coverBlur || undefined }, // Dimensions handle next/image layout
+    coverImage: { src: row.coverSrc, alt: row.coverAlt, width: 1600, height: 1200, blurDataURL: row.coverBlur || undefined },
     gallery: row.gallery as ImageAsset[],
   };
 }
@@ -151,15 +204,19 @@ export const getServices = unstable_cache(
 // SITE SETTINGS
 export const getSiteSettings = unstable_cache(
   async () => {
-    const settings = await db.siteSetting.findUnique({
-      where: { id: "global" },
-    });
+    try {
+      const settings = await db.siteSetting.findUnique({
+        where: { id: "global" },
+      });
 
-    if (!settings) {
-      throw new Error("Site settings belum tersedia. Jalankan `npm run db:seed` sebelum membuka situs.");
+      if (!settings) {
+        return getDefaultSiteSettings();
+      }
+
+      return settings;
+    } catch {
+      return getDefaultSiteSettings();
     }
-
-    return settings;
   },
   ["site-settings"],
   { tags: ["site-settings"], revalidate: 3600 }
