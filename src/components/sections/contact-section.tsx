@@ -79,9 +79,12 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
         <div className="grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <Reveal>
             <div className="lg:sticky lg:top-0">
-              <p className="text-[0.65rem] lg:text-[0.7rem] font-bold tracking-[0.2em] uppercase text-gold-300 mb-1.5">
-                {contactContent.label}
-              </p>
+              <div className="flex items-center gap-2.5 mb-2">
+                <span className="text-[0.65rem] lg:text-[0.7rem] font-bold tracking-[0.22em] uppercase text-gold-300">
+                  {contactContent.label || "KONSULTASI"}
+                </span>
+                <span className="inline-block h-px w-8 bg-gold-400/50" />
+              </div>
 
               <h2 className="font-serif text-2xl sm:text-3xl lg:text-[2.75rem] xl:text-[3.25rem] leading-[1.1] text-text-inverse tracking-tight text-balance">
                 {settings.contactTitle}

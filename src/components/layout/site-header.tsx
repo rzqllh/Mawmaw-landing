@@ -69,9 +69,9 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       ? "#artikel"
       : activeSectionHref;
       
-  // Ketika di hero section atau di seksi kontak, header bergaya dark frosted glass agar teks dan aksen terlihat kontras sempurna.
-  const isDarkHero = pathname === "/" && !isPastHero;
-  const isDarkSection = activeSectionHref === "#kontak" || isDarkHero;
+  const isHomePage = pathname === "/";
+  const [isDarkBg, setIsDarkBg] = useState(true);
+  const effectiveIsDarkBg = isHomePage ? isDarkBg : false;
 
   const headerTransition = shouldReduceMotion
     ? { duration: 0 }
@@ -159,14 +159,30 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
 
     const updateHeaderActions = () => {
       frame = 0;
-      setHasScrolled(window.scrollY > 4);
-      const hero = document.getElementById("home-hero");
+      const scrollY = window.scrollY;
+      setHasScrolled(scrollY > 4);
 
-      if (!hero) {
-        setIsPastHero(true);
-      } else {
-        setIsPastHero(hero.getBoundingClientRect().bottom <= 112);
+      const headerTargetY = 48; // Middle of header height
+      const hero = document.getElementById("home-hero");
+      const contact = document.getElementById("kontak");
+
+      let overDark = false;
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        if (heroRect.bottom > headerTargetY) {
+          overDark = true;
+        }
       }
+
+      if (contact) {
+        const contactRect = contact.getBoundingClientRect();
+        if (contactRect.top <= headerTargetY && contactRect.bottom > headerTargetY) {
+          overDark = true;
+        }
+      }
+
+      setIsDarkBg(overDark);
+      setIsPastHero(hero ? hero.getBoundingClientRect().bottom <= 80 : true);
 
       const activeSection = sectionIds.reduce<string | null>((active, id) => {
         const section = document.getElementById(id);
@@ -175,9 +191,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
         const rect = section.getBoundingClientRect();
         const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
         
-        // Section is active if its top edge has reached the header area (approx 112px from top)
-        // OR if we are at the bottom of the page and this is the last section in the array
-        const isActiveArea = (rect.top <= 120 && rect.bottom > 120) || 
+        const isActiveArea = (rect.top <= 140 && rect.bottom > 140) || 
                              (isAtBottom && id === sectionIds[sectionIds.length - 1]);
 
         return isActiveArea ? `#${id}` : active;
@@ -212,12 +226,10 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
           data-header-state={showLiquidHeader ? "glass" : "hero"}
           className={cn(
             "mx-auto flex min-h-12 md:min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-1.5 md:py-2 transition-all duration-300 ease-out md:px-4",
-            isDarkSection
+            effectiveIsDarkBg
               ? hasScrolled
                 ? "bg-black/40 border border-white/15 backdrop-blur-2xl text-[#FDFBF7] shadow-glass"
-                : isDarkHero
-                  ? "bg-transparent border border-transparent text-[#FDFBF7]"
-                  : "bg-black/40 border border-white/15 backdrop-blur-2xl text-[#FDFBF7] shadow-glass"
+                : "bg-transparent border border-transparent text-[#FDFBF7]"
               : hasScrolled
                 ? "bg-surface/85 border border-black/5 backdrop-blur-2xl shadow-glass text-forest-900"
                 : "bg-surface/60 border border-transparent backdrop-blur-sm text-forest-900"
@@ -272,8 +284,8 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
                         "relative rounded-pill px-2 py-2 md:px-3 text-[0.8rem] lg:text-sm font-semibold transition-colors hover:bg-surface/75 hover:text-forest-900 whitespace-nowrap",
-                        isDarkSection ? "text-text-inverse/70" : "text-text-secondary",
-                        isActive && (isDarkSection ? "text-text-inverse" : "text-forest-900")
+                        effectiveIsDarkBg ? "text-text-inverse/70" : "text-text-secondary",
+                        isActive && (effectiveIsDarkBg ? "text-text-inverse" : "text-forest-900")
                       )}
                     >
                       {item.label}
@@ -281,7 +293,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                         aria-hidden
                         className={cn(
                           "absolute inset-x-3 -bottom-0.5 h-[2px] origin-center rounded-t-full transition-all duration-300 ease-out",
-                          isDarkSection ? "bg-text-inverse" : "bg-forest-900",
+                          effectiveIsDarkBg ? "bg-text-inverse" : "bg-forest-900",
                           isActive
                             ? "scale-x-100 opacity-100"
                             : "scale-x-0 opacity-0"
@@ -336,7 +348,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
               onClick={() => setIsMobileMenuOpen(true)}
               className={cn(
                 "flex items-center justify-center rounded-full p-2 md:hidden transition-colors min-h-[44px] min-w-[44px]",
-                isDarkSection ? "text-[#FDFBF7] hover:bg-white/10" : "text-forest-900 hover:bg-forest-900/5"
+                effectiveIsDarkBg ? "text-[#FDFBF7] hover:bg-white/10" : "text-forest-900 hover:bg-forest-900/5"
               )}
               aria-label="Buka menu"
               aria-controls="mobile-navigation-dialog"

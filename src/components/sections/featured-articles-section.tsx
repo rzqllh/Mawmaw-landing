@@ -14,13 +14,16 @@ export async function FeaturedArticlesSection() {
   const supportingArticles = topArticles.slice(1);
 
   return (
-    <section id="artikel" className="relative surface-section section-y">
+    <section id="artikel" className="relative section-y bg-[#F4F1EA] border-t border-forest-900/[0.08]">
       <div className="section-container relative z-10">
         <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
-          <p className="section-eyebrow">
-            {settings.articlesLabel}
-          </p>
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <span className="text-[0.65rem] lg:text-xs font-bold tracking-[0.22em] uppercase text-gold-700">
+              {settings.articlesLabel || "ARTIKEL KAMI"}
+            </span>
+            <span className="inline-block h-px w-8 bg-gold-700/40" />
+          </div>
           <h2 className="heading-section text-forest-900">
             {settings.articlesTitle}
           </h2>

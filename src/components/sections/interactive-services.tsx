@@ -77,10 +77,13 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
         {/* Right: Tabbed Layout */}
         <Reveal delay={0.1} className="relative flex flex-col justify-center h-auto lg:h-[70vh] max-h-[700px] pr-2">
           <div className="pb-4 shrink-0">
-            <p className="text-[0.65rem] lg:text-xs font-bold tracking-[0.2em] uppercase text-gold-700 mb-3">
-              {settings.servicesLabel}
-            </p>
-            <h2 className="text-4xl lg:text-5xl xl:text-[3.5rem] font-serif text-forest-900 leading-[1] mb-5 tracking-tight text-balance">
+            <div className="flex items-center gap-2.5 mb-2.5">
+              <span className="text-[0.65rem] lg:text-xs font-bold tracking-[0.22em] uppercase text-gold-700">
+                {settings.servicesLabel || "LAYANAN KAMI"}
+              </span>
+              <span className="inline-block h-px w-8 bg-gold-700/40" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-serif text-forest-900 leading-[1.08] mb-4 tracking-tight text-balance">
               {settings.servicesTitle}
             </h2>
             

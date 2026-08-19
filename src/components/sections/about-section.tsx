@@ -8,7 +8,7 @@ export async function AboutSection() {
   const aboutValues = settings.aboutValues as { title: string, description: string, icon: string }[];
 
   return (
-    <section id="tentang" className="surface-section-muted relative flex min-h-dvh scroll-mt-24 flex-col justify-center py-20 md:py-24">
+    <section id="tentang" className="relative flex min-h-dvh scroll-mt-24 flex-col justify-center py-16 sm:py-20 md:py-24 bg-[#FAF8F5] border-t border-forest-900/[0.08]">
       <div className="section-container relative z-10 flex w-full flex-col justify-center">
 
         <div className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-16">
@@ -27,10 +27,13 @@ export async function AboutSection() {
 
           <div className="flex h-auto w-full flex-col justify-center pb-4 pr-2 lg:w-[55%] lg:pb-0">
             <Reveal delay={0.1} className="shrink-0">
-              <p className="text-[0.65rem] lg:text-[0.75rem] font-bold tracking-[0.2em] uppercase text-gold-700 mb-3">
-                {settings.aboutLabel}
-              </p>
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-[4rem] leading-[0.9] text-forest-900 tracking-tight text-balance">
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <span className="text-[0.65rem] lg:text-[0.75rem] font-bold tracking-[0.22em] uppercase text-gold-700">
+                  {settings.aboutLabel || "TENTANG MAWMAW"}
+                </span>
+                <span className="inline-block h-px w-8 bg-gold-700/40" />
+              </div>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[1.08] text-forest-900 tracking-tight text-balance">
                 {settings.aboutTitle}
               </h2>
               <div className="mt-5 h-px w-12 bg-gold-500/80" />

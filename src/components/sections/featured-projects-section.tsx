@@ -12,13 +12,16 @@ export async function FeaturedProjectsSection() {
   const [firstProject, secondProject, thirdProject] = featuredProjects;
 
   return (
-    <section id="proyek" className="relative surface-section-muted section-y pb-32">
+    <section id="proyek" className="relative section-y pb-24 sm:pb-32 bg-[#FAF8F5] border-t border-forest-900/[0.08]">
       <div className="section-container relative z-10">
         <div className="mb-8 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
-          <p className="section-eyebrow">
-            {settings.projectsLabel}
-          </p>
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <span className="text-[0.65rem] lg:text-xs font-bold tracking-[0.22em] uppercase text-gold-700">
+              {settings.projectsLabel || "PROYEK KAMI"}
+            </span>
+            <span className="inline-block h-px w-8 bg-gold-700/40" />
+          </div>
           <h2 className="heading-section text-forest-900">
             {settings.projectsTitle}
           </h2>
