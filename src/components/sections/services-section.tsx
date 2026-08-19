@@ -5,7 +5,7 @@ export async function ServicesSection() {
   const services = await getServices();
   const settings = await getSiteSettings();
   return (
-    <section id="layanan" className="relative flex min-h-dvh scroll-mt-24 flex-col justify-center py-16 sm:py-20 md:py-24 bg-[#F4F1EA] border-t border-forest-900/[0.08]">
+    <section id="layanan" className="relative scroll-mt-20 sm:scroll-mt-24 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#F4F1EA] border-t border-forest-900/[0.08]">
       <div className="section-container relative z-10 w-full">
         {services.length ? (
           <InteractiveServices services={services} settings={settings} />

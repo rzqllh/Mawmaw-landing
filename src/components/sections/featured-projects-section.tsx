@@ -12,8 +12,8 @@ export async function FeaturedProjectsSection() {
   const [firstProject, secondProject, thirdProject] = featuredProjects;
 
   return (
-    <section id="proyek" className="relative section-y pb-24 sm:pb-32 bg-[#FAF8F5] border-t border-forest-900/[0.08]">
-      <div className="section-container relative z-10">
+    <section id="proyek" className="relative scroll-mt-20 sm:scroll-mt-24 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#FAF8F5] border-t border-forest-900/[0.08]">
+      <div className="section-container relative z-10 w-full">
         <div className="mb-8 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
           <div className="flex items-center gap-2.5 mb-2.5">

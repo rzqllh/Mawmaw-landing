@@ -23,7 +23,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="grid lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-16 items-center h-full w-full">
+    <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-16 items-start lg:items-center w-full">
         
         <Reveal className="group relative hidden h-[70vh] max-h-[700px] w-full overflow-hidden rounded-2xl border border-forest-900/10 lg:block">
           <div className="absolute inset-0 border border-white/20 rounded-[2.5rem] z-20 pointer-events-none"></div>
@@ -75,7 +75,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
         </Reveal>
 
         {/* Right: Tabbed Layout */}
-        <Reveal delay={0.1} className="relative flex flex-col justify-center h-auto lg:h-[70vh] max-h-[700px] pr-2">
+        <Reveal delay={0.1} className="relative flex flex-col justify-center w-full pr-0 lg:pr-2">
           <div className="pb-4 shrink-0">
             <div className="flex items-center gap-2.5 mb-2.5">
               <span className="text-[0.65rem] lg:text-xs font-bold tracking-[0.22em] uppercase text-gold-700">
