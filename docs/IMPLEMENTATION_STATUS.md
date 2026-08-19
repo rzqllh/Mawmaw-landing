@@ -122,6 +122,11 @@ None. All release-critical criteria verified.
 | 2026-08-19 | Contact email delivery | NOT VERIFIED | Non-blocking; Resend API key unconfigured, but contact persistence completes successfully without crashing |
 | 2026-08-19 | Browser & responsive smoke test | PASS | Checked Desktop (1440px), Mobile (390px), and Tablet (768px); no horizontal overflow; zero console errors |
 | 2026-08-19 | Full local regression test suite | PASS | `npm test` (14/14), `npm run lint` (0 errors), `npm run typecheck` (0 errors), `npx prisma validate`, `npm run build` (27/27 static pages) |
+| 2026-08-19 | Post-release credential & secret scan | PASS | Tracked repository and Git history contain 0 secrets/passwords; `.env.local` is ignored and untracked; temporary testing scripts removed |
+| 2026-08-19 | Dependency vulnerability audit (`npm audit`) | PASS | Read-only scan triaged 14 vulnerabilities (3 moderate, 11 high); dev/upstream classification documented for scheduled maintenance |
+| 2026-08-19 | Resend production readiness audit | PASS | Non-blocking contact persistence verified; manual configuration requirements documented for owner |
+| 2026-08-19 | Prisma migration readiness audit | PASS | Safe non-destructive baseline adoption plan documented (`prisma migrate dev --create-only` + `prisma migrate resolve --applied`) |
+| 2026-08-19 | Next.js middleware deprecation audit | PASS | Informational deprecation analyzed; zero runtime breakage; migration plan to `src/proxy.ts` established |
 
 ## Update protocol
 
