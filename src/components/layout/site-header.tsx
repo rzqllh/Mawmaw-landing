@@ -180,11 +180,13 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
           className={cn(
             "mx-auto flex min-h-14 md:min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-2 transition-all duration-300 ease-out md:px-4",
             isDarkHero
-              ? "bg-forest-900/35 border border-white/15 backdrop-blur-md text-[#FDFBF7]"
+              ? hasScrolled
+                ? "bg-black/30 border border-white/15 backdrop-blur-2xl text-[#FDFBF7] shadow-glass"
+                : "bg-transparent border border-transparent text-[#FDFBF7]"
               : hasScrolled
-                ? "bg-surface/85 border border-black/5 backdrop-blur-md shadow-glass text-forest-900"
+                ? "bg-surface/85 border border-black/5 backdrop-blur-2xl shadow-glass text-forest-900"
                 : isDarkSection
-                  ? "bg-forest-900/80 border border-white/10 backdrop-blur-md text-text-inverse"
+                  ? "bg-forest-900/80 border border-white/10 backdrop-blur-2xl text-text-inverse"
                   : "bg-surface/60 border border-transparent backdrop-blur-sm text-forest-900"
           )}
           transition={headerTransition}

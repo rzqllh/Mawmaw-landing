@@ -21,27 +21,27 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 40,
-    damping: 15,
+    stiffness: 45,
+    damping: 18,
     restDelta: 0.001,
   });
 
   const imageY = useTransform(
     smoothProgress,
     [0, 1],
-    shouldReduceMotion ? ["0%", "0%"] : ["0%", "20%"]
+    shouldReduceMotion ? ["0%", "0%"] : ["0%", "18%"]
   );
   const imageScale = useTransform(
     smoothProgress,
     [0, 1],
-    shouldReduceMotion ? [1, 1] : [1.08, 1.0]
+    shouldReduceMotion ? [1, 1] : [1.06, 1.0]
   );
-  const imageOpacity = useTransform(smoothProgress, [0, 0.8, 1], [0.95, 0.5, 0.1]);
+  const imageOpacity = useTransform(smoothProgress, [0, 0.8, 1], [0.95, 0.45, 0.1]);
 
   const copyY = useTransform(
     smoothProgress,
     [0, 1],
-    shouldReduceMotion ? ["0%", "0%"] : ["0%", "-12%"]
+    shouldReduceMotion ? ["0%", "0%"] : ["0%", "-10%"]
   );
 
   const containerVariants = {
@@ -49,8 +49,8 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.15,
+        staggerChildren: 0.1,
+        delayChildren: 0.12,
       },
     },
   };
@@ -58,14 +58,14 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
   const itemVariants = {
     hidden: {
       opacity: 0,
-      y: 35,
-      filter: shouldReduceMotion ? "blur(0px)" : "blur(8px)",
+      y: 28,
+      filter: shouldReduceMotion ? "blur(0px)" : "blur(6px)",
     },
     show: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      transition: { duration: 1.1, ease },
+      transition: { duration: 1.0, ease },
     },
   };
 
@@ -79,7 +79,7 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
       ref={sectionRef}
       className="relative isolate flex min-h-dvh flex-col justify-between overflow-hidden bg-forest-900 text-[#FDFBF7]"
     >
-      {/* BACKGROUND IMAGE WITH PARALLAX */}
+      {/* BACKGROUND IMAGE WITH SMOOTH PARALLAX */}
       <motion.div
         aria-hidden
         className="absolute inset-0 will-change-transform transform-gpu"
@@ -94,29 +94,29 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
           fetchPriority="high"
           placeholder={settings.heroImageBlur ? "blur" : "empty"}
           blurDataURL={settings.heroImageBlur || undefined}
-          className="object-cover object-center saturate-[0.95] contrast-[1.04]"
+          className="object-cover object-center saturate-[0.92] contrast-[1.03]"
         />
       </motion.div>
 
-      {/* LUXURY WARM GRADIENT VIGNETTE OVERLAY (Ensures WCAG AAA contrast) */}
+      {/* APPLE HIG / VIGNETTE GRADIENT (Ensures WCAG AAA contrast across mobile and desktop) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-forest-900/65 via-forest-900/35 to-forest-900/90"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-forest-900/60 via-forest-900/30 to-forest-900/90"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,190,66,0.08),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(212,190,66,0.06),transparent_60%)]"
       />
 
-      {/* MAIN HERO CONTENT */}
-      <div className="section-container relative z-10 flex min-h-dvh w-full flex-col justify-between pt-28 sm:pt-32 pb-8 sm:pb-12">
+      {/* MAIN HERO CONTAINER (With safe-area padding top & bottom) */}
+      <div className="section-container relative z-10 flex min-h-dvh w-full flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+5.5rem)] sm:pt-32 pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)] sm:pb-10">
         {/* CENTER CONTENT */}
         <motion.div
           style={{ y: copyY }}
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 50 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 35 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease }}
-          className="my-auto w-full max-w-3xl pt-8 sm:pt-12 will-change-transform"
+          transition={{ duration: 1.1, ease }}
+          className="my-auto w-full max-w-3xl py-4 sm:py-8 will-change-transform"
         >
           <motion.div
             variants={containerVariants}
@@ -127,47 +127,47 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
             {/* EYEBROW / STUDIO TAG */}
             <motion.div
               variants={itemVariants}
-              className="mb-5 sm:mb-7 flex flex-col items-start gap-1"
+              className="mb-4 sm:mb-6 flex flex-col items-start gap-1"
             >
-              <span className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] text-stone-300 uppercase">
+              <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] text-stone-300 uppercase">
                 STUDIO DESAIN INTERIOR
               </span>
-              <div className="flex items-center gap-2.5">
-                <span className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] text-stone-300 uppercase">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] text-stone-300 uppercase">
                   JAKARTA
                 </span>
-                <span className="inline-block h-px w-10 sm:w-14 bg-stone-300/60" />
+                <span className="inline-block h-px w-8 sm:w-12 bg-stone-300/50" />
               </div>
             </motion.div>
 
-            {/* HEADLINE */}
+            {/* HEADLINE (Fluid clamp scaling + text-balance to prevent awkward 5-line wraps) */}
             <motion.h1
               variants={itemVariants}
-              className="font-serif text-[2.65rem] leading-[1.08] sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-[-0.015em] text-[#FDFBF7] text-balance"
+              className="font-serif text-[clamp(2.15rem,5.5vw,4.5rem)] leading-[1.12] sm:leading-[1.1] font-normal tracking-[-0.015em] text-[#FDFBF7] max-w-2xl text-balance"
             >
               {settings.heroTitle || "Ruang yang mengerti cara Anda hidup."}
             </motion.h1>
 
-            {/* SUBHEADLINE */}
+            {/* SUBHEADLINE (Human, anti-slop, clean readable line height) */}
             <motion.p
               variants={itemVariants}
-              className="mt-5 sm:mt-7 max-w-xl text-sm sm:text-base md:text-lg leading-relaxed text-[#E5DFD7]"
+              className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base md:text-lg leading-relaxed text-[#E5DFD7]/90 text-pretty"
             >
               {settings.heroDescription ||
                 "Desain interior yang personal, fungsional, dan mencerminkan siapa Anda."}
             </motion.p>
 
-            {/* CTAS */}
+            {/* CTAS (Compact intrinsic width, 44px+ touch targets, tight ergonomic spacing) */}
             <motion.div
               variants={itemVariants}
-              className="mt-8 sm:mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto"
+              className="mt-7 sm:mt-9 flex flex-wrap items-center gap-4 sm:gap-6"
             >
-              {/* PRIMARY SPLIT PILL BUTTON */}
+              {/* PRIMARY COMPACT SPLIT-PILL CTA */}
               <ConfirmWhatsappLink
                 href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
                   "Halo Mawmaw Interior, saya ingin konsultasi desain interior."
                 )}`}
-                className="group inline-flex w-full sm:w-auto items-center justify-between sm:justify-start rounded-full bg-[#13251B]/90 hover:bg-[#1A3326] border border-white/20 hover:border-gold-400/50 text-white shadow-xl backdrop-blur-md transition-all duration-300 min-h-[52px] pl-2 pr-6 py-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400"
+                className="group inline-flex max-w-max items-center rounded-full bg-[#13251B]/95 hover:bg-[#1A3326] border border-white/20 hover:border-gold-400/50 text-white shadow-xl backdrop-blur-md transition-all duration-300 min-h-[48px] pl-1.5 pr-5 py-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400 active:scale-[0.98]"
               >
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-gold-500/20 text-gold-300 transition-colors">
                   <ArrowRight
@@ -175,8 +175,8 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
                     weight="bold"
                   />
                 </span>
-                <span className="mx-3.5 h-4 w-px bg-white/20" />
-                <span className="text-sm sm:text-base font-semibold tracking-wide text-[#FDFBF7]">
+                <span className="mx-3 h-4 w-px bg-white/20" />
+                <span className="text-sm font-semibold tracking-wide text-[#FDFBF7]">
                   Ceritakan Proyek Anda
                 </span>
               </ConfirmWhatsappLink>
@@ -184,7 +184,7 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
               {/* SECONDARY UNDERLINED LINK */}
               <Link
                 href="#proyek"
-                className="inline-flex items-center text-sm font-medium text-[#E2DCD5] hover:text-white underline underline-offset-8 decoration-white/35 hover:decoration-gold-400 transition-all py-2.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400"
+                className="inline-flex items-center text-sm font-medium text-[#E2DCD5] hover:text-white underline underline-offset-8 decoration-white/35 hover:decoration-gold-400 transition-all min-h-[44px] px-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400 active:scale-[0.98]"
               >
                 Lihat Portfolio
               </Link>
@@ -192,36 +192,32 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
           </motion.div>
         </motion.div>
 
-        {/* BOTTOM META BAR / PILLAR INDICATOR */}
+        {/* BOTTOM META BAR (Clean Inline iOS Meta Strip per Decision 4) */}
         <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 15 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.6, ease }}
-          className="relative z-10 w-full pt-8 sm:pt-10"
+          transition={{ duration: 1.0, delay: 0.4, ease }}
+          className="relative z-10 w-full pt-4"
         >
           <div className="flex w-full items-end justify-between gap-4">
             {/* LEFT PILLAR TAG & MICRO-COPY */}
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="flex flex-col items-center">
-                <span className="font-serif text-2xl sm:text-3xl font-medium text-gold-300 leading-none">
-                  01
-                </span>
-                <span className="mt-1 text-[8px] sm:text-[9px] tracking-[0.25em] font-bold text-stone-400 uppercase">
-                  RESIDENTIAL
-                </span>
-                <span className="mt-1.5 h-6 sm:h-8 w-px bg-white/25" />
+            <div className="flex flex-col items-start gap-1">
+              <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.2em] text-gold-300 uppercase">
+                <span className="font-serif text-lg font-medium text-gold-300 leading-none">01</span>
+                <span className="text-white/30">•</span>
+                <span className="text-[10px] tracking-[0.2em] text-stone-300 font-bold">RESIDENTIAL</span>
               </div>
-              <p className="text-xs sm:text-sm text-[#D1C9BE] leading-relaxed max-w-[210px] sm:max-w-xs pt-0.5">
+              <p className="mt-0.5 text-xs sm:text-sm text-[#D1C9BE] leading-snug max-w-[240px] sm:max-w-md">
                 Setiap ruang punya cerita. Kami hadir untuk merancangnya bersama Anda.
               </p>
             </div>
 
             {/* RIGHT CIRCULAR SCROLL DOWN BUTTON */}
-            <div className="flex flex-col items-end gap-2">
+            <div className="flex flex-col items-end gap-2 shrink-0">
               <Link
                 href="#about"
                 aria-label="Gulir ke tentang kami"
-                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/25 bg-white/5 text-[#E2DCD5] hover:text-white hover:border-gold-400/60 hover:bg-white/15 transition-all shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5 text-[#E2DCD5] hover:text-white hover:border-gold-400/60 hover:bg-white/15 transition-all shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400 active:scale-[0.95]"
               >
                 <ArrowDown className="h-4 w-4 text-stone-300 animate-bounce" weight="regular" />
               </Link>
@@ -229,7 +225,7 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
           </div>
 
           {/* SLIDE PROGRESS BAR */}
-          <div className="mt-4 flex h-0.5 w-20 sm:w-28 gap-1.5 overflow-hidden rounded-full bg-white/20">
+          <div className="mt-3 flex h-0.5 w-20 sm:w-28 gap-1.5 overflow-hidden rounded-full bg-white/20">
             <div className="h-full w-2/5 rounded-full bg-gold-400" />
             <div className="h-full w-3/5 rounded-full bg-white/10" />
           </div>
