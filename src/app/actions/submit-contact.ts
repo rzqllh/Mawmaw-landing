@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { contactFormSchema } from "@/lib/validation";
+import { logServerError } from "@/lib/server-log";
 import { Resend } from "resend";
 import { headers } from "next/headers";
 import { ratelimit } from "@/lib/rate-limit";
@@ -30,7 +31,7 @@ async function persistContactSubmission(data: ContactSubmissionInput) {
   try {
     await db.contactSubmission.create({ data });
   } catch (error) {
-    console.error("Failed to save contact submission", error);
+    logServerError("contact.persistence_failed", error);
     return {
       success: false,
       error: "Permintaan belum tersimpan. Silakan coba lagi atau hubungi kami lewat WhatsApp.",
@@ -47,7 +48,7 @@ async function persistContactSubmission(data: ContactSubmissionInput) {
       const safeLocation = escapeHtml(data.location);
       const safeMessage = escapeHtml(data.message).replace(/\n/g, "<br>");
 
-      await resend.emails.send({
+      const { error } = await resend.emails.send({
         from: process.env.FROM_EMAIL || "onboarding@resend.dev",
         to: process.env.ADMIN_NOTIFICATION_EMAIL,
         subject: `New Lead: ${data.name.replace(/[\r\n]/g, " ")} - ${data.projectType.replace(/[\r\n]/g, " ")}`,
@@ -63,8 +64,12 @@ async function persistContactSubmission(data: ContactSubmissionInput) {
           <p>${safeMessage}</p>
         `,
       });
+
+      if (error) {
+        logServerError("contact.notification_failed", error);
+      }
     } catch (error) {
-      console.error("Failed to send email notification", error);
+      logServerError("contact.notification_failed", error);
     }
   }
 
