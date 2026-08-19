@@ -29,7 +29,7 @@ export const buttonVariants = cva(
           "border border-text-inverse/20 bg-transparent text-text-inverse hover:bg-text-inverse/10 hover:border-gold-300/50 hover:text-gold-300",
       },
       size: {
-        sm: "min-h-10 px-4 text-xs",
+        sm: "min-h-11 px-4 text-xs",
         md: "min-h-11 px-5 text-sm",
         lg: "min-h-12 px-6 text-base",
       },

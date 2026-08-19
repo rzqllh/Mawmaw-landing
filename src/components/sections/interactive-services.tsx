@@ -116,7 +116,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
                     role="tab"
                     aria-selected={isActive}
                     aria-controls={`service-panel-${s.id}`}
-                    className={`group cursor-pointer py-4 lg:py-5 transition-all duration-300 ease-out flex items-center justify-between ${
+                    className={`group cursor-pointer py-4 lg:py-5 transition-all duration-300 ease-out flex items-center justify-between rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 ${
                       isActive ? 'bg-forest-50/50 pl-3' : 'hover:pl-2 hover:bg-forest-50/30'
                     }`}
                     onPointerEnter={(e) => {

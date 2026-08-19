@@ -90,10 +90,10 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 akan membantu memetakan langkah awal dengan tenang.
               </p>
             </div>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/#kontak">
+            <Button asChild variant="gold" size="lg">
+              <Link href="/#kontak" className="group">
                 Ceritakan Proyek Anda
-                <ArrowRight aria-hidden className="h-5 w-5" />
+                <ArrowRight aria-hidden className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>

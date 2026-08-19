@@ -21,8 +21,17 @@ export function LightboxTrigger({ images, initialIndex = 0, children, className 
   return (
     <>
       <div 
-        className={cn("group relative cursor-pointer", className)}
+        role="button"
+        tabIndex={0}
+        aria-label="Buka gambar dalam tampilan penuh"
+        className={cn("group relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2", className)}
         onClick={() => setIsOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setIsOpen(true);
+          }
+        }}
       >
         {children}
         

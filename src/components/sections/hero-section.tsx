@@ -215,7 +215,7 @@ export function HeroSection({ settings }: { settings: SiteSetting }) {
             {/* RIGHT CIRCULAR SCROLL DOWN BUTTON */}
             <div className="flex flex-col items-end gap-2 shrink-0">
               <Link
-                href="#about"
+                href="#tentang"
                 aria-label="Gulir ke tentang kami"
                 className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5 text-[#E2DCD5] hover:text-white hover:border-gold-400/60 hover:bg-white/15 transition-all shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400 active:scale-[0.95]"
               >

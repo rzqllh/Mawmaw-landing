@@ -204,12 +204,12 @@ function FooterColumn({
   children: ReactNode;
 }) {
   return (
-    <section className="p-5">
-      <h2 className="section-eyebrow-inverse !mb-0">
+    <div className="p-5">
+      <h3 className="section-eyebrow-inverse !mb-0">
         {title}
-      </h2>
+      </h3>
 
       <div className="mt-5 grid gap-3">{children}</div>
-    </section>
+    </div>
   );
 }
