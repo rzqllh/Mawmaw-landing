@@ -4,6 +4,19 @@ import { NextResponse, type NextRequest } from "next/server";
 type CookiesToSet = Parameters<SetAllCookies>[0];
 type ResponseHeaders = Parameters<SetAllCookies>[1];
 
+function applySupabaseResponseState(
+  response: NextResponse,
+  cookiesToSet: CookiesToSet,
+  headers: ResponseHeaders
+) {
+  cookiesToSet.forEach(({ name, value, options }) =>
+    response.cookies.set(name, value, options)
+  );
+  Object.entries(headers).forEach(([name, value]) => response.headers.set(name, value));
+
+  return response;
+}
+
 export function createSupabaseResponse(
   request: NextRequest,
   cookiesToSet: CookiesToSet,
@@ -13,18 +26,42 @@ export function createSupabaseResponse(
 
   const response = NextResponse.next({ request });
 
-  cookiesToSet.forEach(({ name, value, options }) =>
-    response.cookies.set(name, value, options)
-  );
-  Object.entries(headers).forEach(([name, value]) => response.headers.set(name, value));
+  return applySupabaseResponseState(response, cookiesToSet, headers);
+}
 
-  return response;
+export function createAuthRedirectResponse(
+  request: NextRequest,
+  isAuthenticated: boolean,
+  cookiesToSet: CookiesToSet,
+  headers: ResponseHeaders
+) {
+  const url = request.nextUrl.clone();
+
+  if (
+    !isAuthenticated &&
+    url.pathname.startsWith("/admin") &&
+    !url.pathname.startsWith("/admin/login")
+  ) {
+    url.pathname = "/admin/login";
+  } else if (isAuthenticated && url.pathname === "/admin/login") {
+    url.pathname = "/admin";
+  } else {
+    return null;
+  }
+
+  return applySupabaseResponseState(
+    NextResponse.redirect(url),
+    cookiesToSet,
+    headers
+  );
 }
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
+  let latestCookiesToSet: CookiesToSet = [];
+  let latestResponseHeaders: ResponseHeaders = {};
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,6 +72,8 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet, headers) {
+          latestCookiesToSet = cookiesToSet;
+          latestResponseHeaders = headers;
           supabaseResponse = createSupabaseResponse(request, cookiesToSet, headers);
         },
       },
@@ -45,24 +84,13 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith("/admin") &&
-    !request.nextUrl.pathname.startsWith("/admin/login")
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin/login";
-    return NextResponse.redirect(url);
-  }
-
-  if (
-    user &&
-    request.nextUrl.pathname === "/admin/login"
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin";
-    return NextResponse.redirect(url);
-  }
+  const authRedirectResponse = createAuthRedirectResponse(
+    request,
+    Boolean(user),
+    latestCookiesToSet,
+    latestResponseHeaders
+  );
+  if (authRedirectResponse) return authRedirectResponse;
 
   return supabaseResponse;
 }

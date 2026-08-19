@@ -15,6 +15,13 @@ type CreateSupabaseResponse = (
   headers: Parameters<SetAllCookies>[1]
 ) => NextResponse;
 
+type CreateAuthRedirectResponse = (
+  request: NextRequest,
+  isAuthenticated: boolean,
+  cookies: Parameters<SetAllCookies>[0],
+  headers: Parameters<SetAllCookies>[1]
+) => NextResponse | null;
+
 test("creates an auth response with request cookies, response cookies, and no-cache headers", async () => {
   const supabaseMiddleware = await import("./supabase/middleware.ts");
   const createSupabaseResponse = (
@@ -43,6 +50,80 @@ test("creates an auth response with request cookies, response cookies, and no-ca
 
   assert.equal(request.cookies.get("sb-access-token")?.value, "refreshed-token");
   assert.equal(response.cookies.get("sb-access-token")?.value, "refreshed-token");
+  assert.equal(
+    response.headers.get("Cache-Control"),
+    "private, no-cache, no-store, must-revalidate, max-age=0"
+  );
+  assert.equal(response.headers.get("Expires"), "0");
+  assert.equal(response.headers.get("Pragma"), "no-cache");
+});
+
+test("redirects an unauthenticated admin request with Supabase auth state", async () => {
+  const supabaseMiddleware = await import("./supabase/middleware.ts");
+  const createAuthRedirectResponse = (
+    supabaseMiddleware as { createAuthRedirectResponse?: CreateAuthRedirectResponse }
+  ).createAuthRedirectResponse;
+
+  assert.equal(typeof createAuthRedirectResponse, "function");
+  if (!createAuthRedirectResponse) return;
+
+  const response = createAuthRedirectResponse(
+    new NextRequest("https://mawmaw.test/admin/projects"),
+    false,
+    [
+      {
+        name: "sb-access-token",
+        value: "refreshed-token",
+        options: { httpOnly: true, path: "/" },
+      },
+    ],
+    {
+      "Cache-Control": "private, no-cache, no-store, must-revalidate, max-age=0",
+      Expires: "0",
+      Pragma: "no-cache",
+    }
+  );
+
+  assert.ok(response);
+  assert.equal(response.headers.get("Location"), "https://mawmaw.test/admin/login");
+  assert.equal(response.cookies.get("sb-access-token")?.value, "refreshed-token");
+  assert.equal(
+    response.headers.get("Cache-Control"),
+    "private, no-cache, no-store, must-revalidate, max-age=0"
+  );
+  assert.equal(response.headers.get("Expires"), "0");
+  assert.equal(response.headers.get("Pragma"), "no-cache");
+});
+
+test("redirects an authenticated login request with cleared Supabase auth state", async () => {
+  const supabaseMiddleware = await import("./supabase/middleware.ts");
+  const createAuthRedirectResponse = (
+    supabaseMiddleware as { createAuthRedirectResponse?: CreateAuthRedirectResponse }
+  ).createAuthRedirectResponse;
+
+  assert.equal(typeof createAuthRedirectResponse, "function");
+  if (!createAuthRedirectResponse) return;
+
+  const response = createAuthRedirectResponse(
+    new NextRequest("https://mawmaw.test/admin/login"),
+    true,
+    [
+      {
+        name: "sb-access-token",
+        value: "",
+        options: { httpOnly: true, maxAge: 0, path: "/" },
+      },
+    ],
+    {
+      "Cache-Control": "private, no-cache, no-store, must-revalidate, max-age=0",
+      Expires: "0",
+      Pragma: "no-cache",
+    }
+  );
+
+  assert.ok(response);
+  assert.equal(response.headers.get("Location"), "https://mawmaw.test/admin");
+  assert.equal(response.cookies.get("sb-access-token")?.value, "");
   assert.equal(
     response.headers.get("Cache-Control"),
     "private, no-cache, no-store, must-revalidate, max-age=0"
