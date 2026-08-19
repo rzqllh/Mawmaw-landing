@@ -69,9 +69,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       ? "#artikel"
       : activeSectionHref;
       
-  const isHomePage = pathname === "/";
-  const [isDarkBg, setIsDarkBg] = useState(true);
-  const effectiveIsDarkBg = isHomePage ? isDarkBg : false;
+  const [isDarkBg, setIsDarkBg] = useState(pathname === "/");
 
   const headerTransition = shouldReduceMotion
     ? { duration: 0 }
@@ -147,10 +145,6 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
-    if (pathname !== "/") {
-      return;
-    }
-
     let frame = 0;
     const sectionIds = navItems
       .map((item) => item.href)
@@ -165,6 +159,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       const headerTargetY = 48; // Middle of header height
       const hero = document.getElementById("home-hero");
       const contact = document.getElementById("kontak");
+      const footer = document.querySelector("footer");
 
       let overDark = false;
       if (hero) {
@@ -176,7 +171,13 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
 
       if (contact) {
         const contactRect = contact.getBoundingClientRect();
-        if (contactRect.top <= headerTargetY && contactRect.bottom > headerTargetY) {
+        // Dari awal kontak sampai ke footer di bawahnya adalah area gelap
+        if (contactRect.top <= headerTargetY) {
+          overDark = true;
+        }
+      } else if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        if (footerRect.top <= headerTargetY) {
           overDark = true;
         }
       }
@@ -184,20 +185,22 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
       setIsDarkBg(overDark);
       setIsPastHero(hero ? hero.getBoundingClientRect().bottom <= 80 : true);
 
-      const activeSection = sectionIds.reduce<string | null>((active, id) => {
-        const section = document.getElementById(id);
-        if (!section) return active;
+      if (pathname === "/") {
+        const activeSection = sectionIds.reduce<string | null>((active, id) => {
+          const section = document.getElementById(id);
+          if (!section) return active;
 
-        const rect = section.getBoundingClientRect();
-        const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
-        
-        const isActiveArea = (rect.top <= 140 && rect.bottom > 140) || 
-                             (isAtBottom && id === sectionIds[sectionIds.length - 1]);
+          const rect = section.getBoundingClientRect();
+          const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
+          
+          const isActiveArea = (rect.top <= 140 && rect.bottom > 140) || 
+                               (isAtBottom && id === sectionIds[sectionIds.length - 1]);
 
-        return isActiveArea ? `#${id}` : active;
-      }, null);
+          return isActiveArea ? `#${id}` : active;
+        }, null);
 
-      setActiveSectionHref(activeSection);
+        setActiveSectionHref(activeSection);
+      }
     };
 
     const requestUpdate = () => {
@@ -226,7 +229,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
           data-header-state={showLiquidHeader ? "glass" : "hero"}
           className={cn(
             "mx-auto flex min-h-12 md:min-h-16 max-w-6xl items-center justify-between gap-2 rounded-pill px-3 py-1.5 md:py-2 transition-all duration-300 ease-out md:px-4",
-            effectiveIsDarkBg
+            isDarkBg
               ? hasScrolled
                 ? "bg-black/40 border border-white/15 backdrop-blur-2xl text-[#FDFBF7] shadow-glass"
                 : "bg-transparent border border-transparent text-[#FDFBF7]"
@@ -284,8 +287,8 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
                         "relative rounded-pill px-2 py-2 md:px-3 text-[0.8rem] lg:text-sm font-semibold transition-colors hover:bg-surface/75 hover:text-forest-900 whitespace-nowrap",
-                        effectiveIsDarkBg ? "text-text-inverse/70" : "text-text-secondary",
-                        isActive && (effectiveIsDarkBg ? "text-text-inverse" : "text-forest-900")
+                        isDarkBg ? "text-text-inverse/70" : "text-text-secondary",
+                        isActive && (isDarkBg ? "text-text-inverse" : "text-forest-900")
                       )}
                     >
                       {item.label}
@@ -293,7 +296,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
                         aria-hidden
                         className={cn(
                           "absolute inset-x-3 -bottom-0.5 h-[2px] origin-center rounded-t-full transition-all duration-300 ease-out",
-                          effectiveIsDarkBg ? "bg-text-inverse" : "bg-forest-900",
+                          isDarkBg ? "bg-text-inverse" : "bg-forest-900",
                           isActive
                             ? "scale-x-100 opacity-100"
                             : "scale-x-0 opacity-0"
@@ -348,7 +351,7 @@ export function SiteHeader({ settings }: { settings: SiteSetting }) {
               onClick={() => setIsMobileMenuOpen(true)}
               className={cn(
                 "flex items-center justify-center rounded-full p-2 md:hidden transition-colors min-h-[44px] min-w-[44px]",
-                effectiveIsDarkBg ? "text-[#FDFBF7] hover:bg-white/10" : "text-forest-900 hover:bg-forest-900/5"
+                isDarkBg ? "text-[#FDFBF7] hover:bg-white/10" : "text-forest-900 hover:bg-forest-900/5"
               )}
               aria-label="Buka menu"
               aria-controls="mobile-navigation-dialog"
