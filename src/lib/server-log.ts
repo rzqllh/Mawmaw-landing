@@ -1,10 +1,12 @@
-type ContactFailureEvent =
+export type ServerErrorEvent =
   | "contact.persistence_failed"
-  | "contact.notification_failed";
+  | "contact.notification_failed"
+  | "health.check_failed"
+  | "system.unhandled_error";
 
 type ServerErrorLog = {
   level: "error";
-  event: ContactFailureEvent;
+  event: ServerErrorEvent;
   errorName: string;
   code?: string | number;
 };
@@ -42,7 +44,7 @@ function getErrorName(error: unknown) {
 }
 
 export function formatServerErrorLog(
-  event: ContactFailureEvent,
+  event: ServerErrorEvent,
   error: unknown
 ) {
   const entry: ServerErrorLog = {
@@ -59,6 +61,6 @@ export function formatServerErrorLog(
   return JSON.stringify(entry);
 }
 
-export function logServerError(event: ContactFailureEvent, error: unknown) {
+export function logServerError(event: ServerErrorEvent, error: unknown) {
   console.error(formatServerErrorLog(event, error));
 }
