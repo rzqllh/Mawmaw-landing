@@ -8,7 +8,7 @@ export async function AboutSection() {
   const aboutValues = settings.aboutValues as { title: string, description: string, icon: string }[];
 
   return (
-    <section id="tentang" className="relative scroll-mt-24 sm:scroll-mt-28 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#FAF8F5] border-t border-forest-900/[0.08]">
+    <section id="tentang" className="relative py-16 sm:py-20 md:py-24 lg:py-28 bg-[#FAF8F5] border-t border-forest-900/[0.08]">
       <div className="section-container relative z-10 w-full">
 
         <div className="flex w-full flex-col items-center gap-10 lg:flex-row lg:gap-16">

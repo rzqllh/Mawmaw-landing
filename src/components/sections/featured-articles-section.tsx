@@ -14,7 +14,7 @@ export async function FeaturedArticlesSection() {
   const supportingArticles = topArticles.slice(1);
 
   return (
-    <section id="artikel" className="relative scroll-mt-24 sm:scroll-mt-28 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#F4F1EA] border-t border-forest-900/[0.08]">
+    <section id="artikel" className="relative py-16 sm:py-20 md:py-24 lg:py-28 bg-[#F4F1EA] border-t border-forest-900/[0.08]">
       <div className="section-container relative z-10 w-full">
         <div className="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
         <div className="max-w-2xl">
