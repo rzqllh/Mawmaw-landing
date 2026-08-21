@@ -16,18 +16,16 @@ GitHub repository
 1. PostgreSQL database exists and accepts both application and direct connections.
 2. Supabase project exists with at least one admin user.
 3. All required variables from `.env.example` are configured in Vercel.
-4. Prisma schema is applied.
+4. Prisma schema and checked-in migrations are applied (`npx prisma migrate deploy` / `npx prisma migrate status`).
 5. Global settings row is seeded.
 
-Repository currently has no checked-in migration directory. Until migrations are introduced, apply the schema deliberately from a trusted environment:
+Repository uses checked-in Prisma migrations located in `prisma/migrations/`. To inspect or apply migrations:
 
 ```bash
 npx prisma generate
-npx prisma db push
-npm run db:seed
+npx prisma migrate status
+npx prisma migrate deploy
 ```
-
-`db push` changes database schema directly. Back up production data and review schema diff before running it against a populated database.
 
 ## Vercel configuration
 
@@ -53,13 +51,17 @@ Build reads PostgreSQL through public layouts, `generateStaticParams()`, and sit
 npm test
 npm run lint
 npm run typecheck
+npm run audit:ci
 npx prisma validate
+npx prisma migrate status
 npm run build
+git diff --check
 ```
 
 After deployment:
 
-- Load `/`, `/projects`, `/articles`, `/sitemap.xml`, and `/robots.txt`.
+- Load `/`, `/projects`, `/articles`, `/articles/ruang-tamu-hangat`, `/sitemap.xml`, and `/robots.txt`.
+- Confirm `GET /api/health` returns HTTP 200 with `{status: "ok", timestamp}`.
 - Confirm `/admin` redirects unauthenticated users to `/admin/login`.
 - Log in and test a draft preview without exposing `PREVIEW_SECRET`.
 - Submit direct contact and wizard flows.
@@ -70,6 +72,7 @@ After deployment:
 
 Use Vercel deployment rollback for application code. Database changes are separate and require their own backup/restore process. Do not assume reverting Git restores database rows.
 
-## Current blocker
+## Current status
 
-Latest verified local environment does not provide valid database credentials inside the isolated worktree. Static checks can run; production build and seed execution remain unverified until credentials are supplied.
+Production deployment at `https://mawmaw-interior.vercel.app` is verified live and synchronized with `main` and Supabase PostgreSQL.
+

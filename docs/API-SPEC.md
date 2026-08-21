@@ -74,6 +74,16 @@ Valid requests enable Next.js draft mode and redirect to the matching internal d
 
 Disables draft mode. Optional `redirect` accepts internal paths only. Absolute, protocol-relative, and malformed values resolve to `/`.
 
+## Observability and health routes
+
+### `GET /api/health`
+
+Performs a lightweight PostgreSQL database connectivity check (`SELECT 1`).
+
+- Returns `200 OK` with `{ status: "ok", timestamp: "<ISO-8601 string>" }` when database connectivity succeeds.
+- Returns `503 Service Unavailable` with `{ status: "unhealthy" }` when database connectivity fails, without leaking connection strings or internal database stack traces.
+- Headers include `Cache-Control: no-store, no-cache, must-revalidate`.
+
 ## Metadata routes
 
 - `GET /sitemap.xml`: static public routes plus published project/article URLs.
@@ -81,7 +91,8 @@ Disables draft mode. Optional `redirect` accepts internal paths only. Absolute, 
 
 ## Validation and errors
 
-- Trust-boundary inputs use Zod or constrained enum parsing.
+- Trust-boundary inputs use Zod (`src/lib/validations/admin.ts`, `src/lib/validations/contact.ts`) or constrained enum parsing.
 - Contact rate limit returns a user-safe Indonesian message.
 - Database write failure does not prevent wizard WhatsApp handoff.
-- Server logs may include operational errors but must not print request secrets or environment values.
+- Server logs (`src/lib/server-log.ts`) output structured JSON for operational events without printing request secrets, credentials, or environment values.
+
