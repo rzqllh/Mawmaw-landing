@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, Typecheck, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit & Integration Tests
+        run: npm test
+
+      - name: CI Audit Gate
+        run: npm run audit:ci
+
+      - name: Production Build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+          DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+          NEXT_PUBLIC_SUPABASE_URL: "https://mock.supabase.co"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "mock-anon-key"
+          SUPABASE_SERVICE_ROLE_KEY: "mock-service-role-key"
