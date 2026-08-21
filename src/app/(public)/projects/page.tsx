@@ -38,22 +38,24 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         title="Ruang yang dirancang dengan cerita dan fungsi."
         description="Setiap proyek memiliki ritme, kebutuhan, dan karakter berbeda. Portfolio ini disusun agar Anda dapat melihat bagaimana Mawmaw Interior menerjemahkan rasa nyaman ke dalam ruang nyata."
       >
-        <div className="flex flex-wrap gap-2" aria-label="Kategori proyek">
-          {categories.map((category) => (
-            <Link
-              key={category}
-              href={category === "Semua" ? "/projects" : `/projects?category=${encodeURIComponent(category)}`}
-              aria-current={category === activeCategory ? "page" : undefined}
-              className={`inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
-                category === activeCategory
-                  ? "border-forest-900 bg-forest-900 text-text-inverse"
-                  : "border-forest-200 bg-forest-50 text-forest-800 hover:border-forest-500"
-              }`}
-            >
-              {category}
-            </Link>
-          ))}
-        </div>
+        {categories.length > 1 ? (
+          <div className="flex flex-wrap gap-2" aria-label="Kategori proyek">
+            {categories.map((category) => (
+              <Link
+                key={category}
+                href={category === "Semua" ? "/projects" : `/projects?category=${encodeURIComponent(category)}`}
+                aria-current={category === activeCategory ? "page" : undefined}
+                className={`inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
+                  category === activeCategory
+                    ? "border-forest-900 bg-[#112019] text-[#FAF8F1] shadow-sm"
+                    : "border-forest-900/15 bg-forest-50/80 text-forest-800 hover:border-forest-500 hover:bg-forest-100"
+                }`}
+              >
+                {category}
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </PageHero>
 
       <section className="section-container section-y">
