@@ -24,7 +24,7 @@ export function HeroVariant1({ settings }: { settings: SiteSetting }) {
           <p className="text-sm md:text-base text-text-secondary max-w-sm font-sans mb-12">
             {settings.heroDescription}
           </p>
-          <Link href="#contact" className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] border-b border-forest-900 pb-2 hover:opacity-50 transition-opacity">
+          <Link href="/#kontak" className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] border-b border-forest-900 pb-2 hover:opacity-50 transition-opacity">
             Start a project <ArrowRight />
           </Link>
         </div>

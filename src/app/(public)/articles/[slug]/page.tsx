@@ -43,6 +43,9 @@ export async function generateMetadata({
   return {
     title: article.title,
     description: article.excerpt,
+    alternates: {
+      canonical: `/articles/${article.slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,
@@ -57,6 +60,12 @@ export async function generateMetadata({
       url: `/articles/${article.slug}`,
       siteName: "Mawmaw Interior",
       type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [article.coverImage.src.replace("w=1600", "w=800")],
     },
   };
 }
