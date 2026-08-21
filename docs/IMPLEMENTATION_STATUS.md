@@ -59,15 +59,16 @@
 
 ### Production Release Status
 
-- **App Deployment:** Current — Vercel production deployment running commit `add1031` at `https://mawmaw-interior.vercel.app`.
-- **Database Schema:** Current — Supabase PostgreSQL database reflects all 3 checked-in Prisma migrations with 0 drift.
-- **Backward Compatibility:** Verified — Latest migration `20260819114514_add_performance_indexes` is strictly additive (secondary B-tree indexes only).
+- **App Deployment:** Current — Vercel production deployment verified live at `https://mawmaw-interior.vercel.app` (Vercel check: success).
+- **Database Schema:** Current — Supabase PostgreSQL migration history is current with no pending or divergent migrations.
+- **Backward Compatibility:** Verified — application-contract backward-compatible; additive indexes only.
 
 ## Pending
 
 - Add owner portfolio projects through the admin dashboard (`/admin/projects/new`).
 - Configure production Resend API key (`RESEND_API_KEY`, `ADMIN_NOTIFICATION_EMAIL`) if email notification dispatch is desired.
 - Evaluate external uptime monitoring (e.g., pinging `/api/health`) and external error monitoring integration in a future ops milestone.
+- Security note: Supabase supports MFA/TOTP, but Mawmaw currently has no application-level MFA enrollment, challenge, or AAL2 enforcement.
 - Decide whether service detail pages, media upload workflow, furniture catalog, or testimonials belong in a later product phase.
 
 ## Blocked

@@ -45,6 +45,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -64,6 +65,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
         return;
       }
       toast.success("Detail proyek terkirim. Tim kami akan segera menghubungi Anda.");
+      reset();
     } catch {
       toast.error("Detail proyek belum terkirim. Silakan coba lagi.");
     }
