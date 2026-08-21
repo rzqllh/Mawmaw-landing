@@ -74,36 +74,39 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
   }
 
   return (
-    <section id="kontak" className="contact-section min-h-dvh scroll-mt-24">
-      <div className="section-container relative z-10 flex flex-1 flex-col justify-center py-8 lg:py-12">
+    <section id="kontak" className="relative scroll-mt-20 sm:scroll-mt-24 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#112019] text-[#FAF8F1] border-t border-forest-800/40">
+      <div className="section-container relative z-10 w-full">
         <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <Reveal>
             <div className="lg:sticky lg:top-0">
-              <p className="text-[0.65rem] lg:text-[0.7rem] font-bold tracking-[0.2em] uppercase text-gold-300 mb-2">
-                {contactContent.label}
-              </p>
+              <div className="flex items-center gap-2.5 mb-2">
+                <span className="text-[0.65rem] lg:text-[0.7rem] font-bold tracking-[0.22em] uppercase text-gold-300">
+                  {contactContent.label || "KONSULTASI"}
+                </span>
+                <span className="inline-block h-px w-8 bg-gold-400/50" />
+              </div>
 
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-[3rem] xl:text-[3.5rem] leading-[1] text-text-inverse tracking-tight text-balance">
+              <h2 className="font-serif text-2xl sm:text-3xl lg:text-[2.75rem] xl:text-[3.25rem] leading-[1.1] text-text-inverse tracking-tight text-balance">
                 {settings.contactTitle}
               </h2>
 
-              <p className="mt-3 max-w-[28rem] text-sm text-text-inverse/70 leading-relaxed text-pretty">
+              <p className="mt-2 max-w-[28rem] text-xs sm:text-sm text-text-inverse/75 leading-relaxed text-pretty">
                 {settings.contactDesc}
               </p>
 
-              <div className="mt-6 grid gap-2.5">
+              <div className="mt-4 sm:mt-5 grid gap-2 sm:gap-2.5">
                 {contactContent.trustBullets.map((item) => (
-                  <div key={item.label} className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-500/10 text-gold-300">
+                  <div key={item.label} className="flex items-center gap-2.5">
+                    <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-gold-500/10 text-gold-300">
                       <IconGlyph
                         name={item.icon}
                         aria-hidden
-                        className="h-4 w-4"
+                        className="h-3.5 w-3.5 sm:h-4 sm:w-4"
                         weight="duotone"
                       />
                     </span>
 
-                    <span className="text-xs lg:text-sm font-medium text-text-inverse/90">{item.label}</span>
+                    <span className="text-xs sm:text-sm font-medium text-text-inverse/90">{item.label}</span>
                   </div>
                 ))}
               </div>
@@ -111,18 +114,18 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
           </Reveal>
 
           <Reveal delay={0.08} className="flex flex-col justify-center">
-            <div className="mb-6 flex justify-center lg:justify-start">
+            <div className="mb-4 sm:mb-6 flex justify-center lg:justify-start">
               <div className="flex rounded-pill border border-white/15 bg-white/[0.06] p-1" role="group" aria-label="Pilih cara mengirim detail proyek">
                 <button
                   type="button"
                   onClick={() => setMode("wizard")}
                   aria-pressed={mode === "wizard"}
                   className={cn(
-                    "flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-pill transition-all",
+                    "flex items-center gap-1.5 px-4 py-1.5 text-xs sm:text-sm font-medium rounded-pill transition-all",
                     mode === "wizard" ? "bg-white text-forest-900 shadow-sm" : "text-white/70 hover:text-white"
                   )}
                 >
-                  <MagicWand weight={mode === "wizard" ? "fill" : "regular"} className="w-4 h-4" />
+                  <MagicWand weight={mode === "wizard" ? "fill" : "regular"} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Mode Interaktif
                 </button>
                 <button
@@ -130,11 +133,11 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
                   onClick={() => setMode("form")}
                   aria-pressed={mode === "form"}
                   className={cn(
-                    "flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-pill transition-all",
+                    "flex items-center gap-1.5 px-4 py-1.5 text-xs sm:text-sm font-medium rounded-pill transition-all",
                     mode === "form" ? "bg-white text-forest-900 shadow-sm" : "text-white/70 hover:text-white"
                   )}
                 >
-                  <ListDashes weight={mode === "form" ? "fill" : "regular"} className="w-4 h-4" />
+                  <ListDashes weight={mode === "form" ? "fill" : "regular"} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Form Langsung
                 </button>
               </div>

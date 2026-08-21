@@ -23,7 +23,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="grid lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-16 items-center h-full w-full">
+    <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-16 items-start lg:items-center w-full">
         
         <Reveal className="group relative hidden h-[70vh] max-h-[700px] w-full overflow-hidden rounded-2xl border border-forest-900/10 lg:block">
           <div className="absolute inset-0 border border-white/20 rounded-[2.5rem] z-20 pointer-events-none"></div>
@@ -75,12 +75,15 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
         </Reveal>
 
         {/* Right: Tabbed Layout */}
-        <Reveal delay={0.1} className="relative flex flex-col justify-center h-auto lg:h-[70vh] max-h-[700px] pr-2">
+        <Reveal delay={0.1} className="relative flex flex-col justify-center w-full pr-0 lg:pr-2">
           <div className="pb-4 shrink-0">
-            <p className="text-[0.65rem] lg:text-xs font-bold tracking-[0.2em] uppercase text-gold-700 mb-3">
-              {settings.servicesLabel}
-            </p>
-            <h2 className="text-4xl lg:text-5xl xl:text-[3.5rem] font-serif text-forest-900 leading-[1] mb-5 tracking-tight text-balance">
+            <div className="flex items-center gap-2.5 mb-2.5">
+              <span className="text-[0.65rem] lg:text-xs font-bold tracking-[0.22em] uppercase text-gold-700">
+                {settings.servicesLabel || "LAYANAN KAMI"}
+              </span>
+              <span className="inline-block h-px w-8 bg-gold-700/40" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-serif text-forest-900 leading-[1.08] mb-4 tracking-tight text-balance">
               {settings.servicesTitle}
             </h2>
             
@@ -113,7 +116,7 @@ export function InteractiveServices({ services, settings }: InteractiveServicesP
                     role="tab"
                     aria-selected={isActive}
                     aria-controls={`service-panel-${s.id}`}
-                    className={`group cursor-pointer py-4 lg:py-5 transition-all duration-300 ease-out flex items-center justify-between ${
+                    className={`group cursor-pointer py-4 lg:py-5 transition-all duration-300 ease-out flex items-center justify-between rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 ${
                       isActive ? 'bg-forest-50/50 pl-3' : 'hover:pl-2 hover:bg-forest-50/30'
                     }`}
                     onPointerEnter={(e) => {

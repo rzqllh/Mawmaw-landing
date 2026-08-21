@@ -38,14 +38,18 @@ export function WizardStep1Service() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="space-y-8"
+      className="space-y-5 sm:space-y-6"
     >
       <div>
-        <h2 id="wizard-step-1-title" className="mb-2 font-serif text-3xl text-white md:text-4xl">Layanan yang Anda butuhkan</h2>
-        <p className="font-sans text-white/70">Pilih satu atau beberapa layanan untuk proyek Anda.</p>
+        <h2 id="wizard-step-1-title" className="mb-1 font-serif text-xl sm:text-2xl md:text-3xl font-normal text-white">
+          Layanan yang Anda butuhkan
+        </h2>
+        <p className="text-xs sm:text-sm font-sans text-white/70">
+          Pilih satu atau beberapa layanan untuk proyek Anda.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2" role="group" aria-labelledby="wizard-step-1-title">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2" role="group" aria-labelledby="wizard-step-1-title">
         {servicesList.map((service) => {
           const isSelected = selected.includes(service.id);
           const Icon = service.icon;
@@ -56,15 +60,15 @@ export function WizardStep1Service() {
               type="button"
               onClick={() => toggleService(service.id)}
               aria-pressed={isSelected}
-              className={`min-h-11 rounded-xl border p-6 text-left transition-colors ${
+              className={`min-h-11 rounded-xl border p-4 sm:p-5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                 isSelected
                   ? "border-gold-300 bg-gold-500/10 text-gold-200"
                   : "border-white/20 bg-white/[0.06] text-white hover:border-white/40"
               } ${service.id === "keduanya" ? "md:col-span-2" : ""}`}
             >
-              <Icon weight="duotone" className="w-8 h-8 mb-4 opacity-80" />
-              <h3 className="font-sans font-medium text-lg mb-1">{service.title}</h3>
-              <p className="font-sans text-sm text-white/70">
+              <Icon weight="duotone" className="w-6 h-6 sm:w-7 sm:h-7 mb-2 sm:mb-3 opacity-85 text-gold-300" />
+              <h3 className="font-sans font-medium text-base sm:text-lg mb-0.5">{service.title}</h3>
+              <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed">
                 {service.description}
               </p>
             </button>

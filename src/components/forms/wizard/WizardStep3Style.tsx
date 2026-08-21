@@ -43,11 +43,11 @@ export function WizardStep3Style() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="space-y-8"
+      className="space-y-5 sm:space-y-6"
     >
       <div>
-        <h2 id="wizard-step-3-title" className="mb-2 font-serif text-3xl text-white md:text-4xl">Preferensi gaya</h2>
-        <p className="font-sans text-white/70">Pilih gaya yang paling dekat dengan suasana yang Anda inginkan.</p>
+        <h2 id="wizard-step-3-title" className="mb-1 font-serif text-xl sm:text-2xl md:text-3xl font-normal text-white">Preferensi gaya</h2>
+        <p className="text-xs sm:text-sm font-sans text-white/70">Pilih gaya yang paling dekat dengan suasana yang Anda inginkan.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4" role="group" aria-labelledby="wizard-step-3-title">
@@ -59,7 +59,7 @@ export function WizardStep3Style() {
               type="button"
               onClick={() => updateData({ stylePreference: style.id })}
               aria-pressed={isSelected}
-              className={`group relative aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
+              className={`group relative aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950 ${
                 isSelected ? "border-gold-500" : "border-transparent"
               } ${style.id === "kontemporer" ? "col-span-2 aspect-[21/9]" : ""}`}
             >

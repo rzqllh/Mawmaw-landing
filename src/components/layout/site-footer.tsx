@@ -64,7 +64,7 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
                 Studio Interior & Furnitur
               </p>
 
-              <h2 className="heading-section max-w-4xl tracking-[-0.045em] text-text-inverse">
+              <h2 className="heading-section max-w-4xl text-text-inverse">
                 {settings.footerHeadline}
               </h2>
 
@@ -95,7 +95,7 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
         <div className={cn("grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16", isLanding ? "mt-12" : "mt-4")}>
           <Reveal delay={0.1} className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-3">
-              <span className="relative flex !bg-forest-700 h-12 w-12 overflow-hidden rounded-pill bg-gold-500/14 ring-1 ring-text-inverse/14 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(4,12,8,0.18)]">
+              <span className="relative flex bg-forest-700 h-12 w-12 overflow-hidden rounded-pill ring-1 ring-text-inverse/14 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(4,12,8,0.18)]">
                 <Image
                   src="/brand/mawmaw-icon.png"
                   alt=""
@@ -204,12 +204,12 @@ function FooterColumn({
   children: ReactNode;
 }) {
   return (
-    <section className="p-5">
-      <h2 className="section-eyebrow-inverse !mb-0">
+    <div className="p-5">
+      <h3 className="section-eyebrow-inverse !mb-0">
         {title}
-      </h2>
+      </h3>
 
       <div className="mt-5 grid gap-3">{children}</div>
-    </section>
+    </div>
   );
 }

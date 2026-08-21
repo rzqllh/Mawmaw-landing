@@ -133,9 +133,9 @@ export const navItems: NavItem[] = [
 ];
 
 export const heroContent: HeroContent = {
-  title: "Ruang yang hangat, elegan, dan dirancang untuk kehidupan Anda.",
+  title: "Ruang yang mengerti cara Anda hidup.",
   description:
-    "Mawmaw Interior membantu menciptakan ruang yang personal, fungsional, dan indah untuk rumah maupun tempat usaha yang merefleksikan siapa Anda.",
+    "Desain interior yang personal, fungsional, dan mencerminkan siapa Anda.",
   primaryCta: {
     label: "Ceritakan Proyek Anda",
     href: createWhatsappLink(
@@ -204,7 +204,7 @@ export const aboutContent: AboutContent = {
 
 export const servicesSection = {
   label: "Layanan Kami",
-  title: "Solusi desain interior yang lengkap untuk Anda.",
+  title: "Layanan desain interior untuk setiap tahap ruang.",
   description:
     "Kami membantu merancang ruang dari arah besar hingga detail keseharian, dengan proses yang tenang dan jelas.",
 };
@@ -443,7 +443,7 @@ export const articles: Article[] = [
 
 export const contactContent = {
   label: "Konsultasi",
-  title: "Mari wujudkan ruang impian Anda.",
+  title: "Mari diskusikan rencana ruang Anda.",
   description:
     "Isi formulir ini dan tim Mawmaw Interior akan menghubungi Anda untuk memahami kebutuhan proyek secara lebih detail.",
   trustBullets: [

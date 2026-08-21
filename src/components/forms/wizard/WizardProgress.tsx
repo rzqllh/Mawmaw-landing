@@ -9,7 +9,7 @@ export function WizardProgress() {
 
   return (
     <div
-      className="mb-8 flex items-center gap-2"
+      className="mb-5 sm:mb-8 flex items-center gap-1.5 sm:gap-2"
       role="progressbar"
       aria-label="Progres konsultasi"
       aria-valuemin={1}
@@ -23,7 +23,7 @@ export function WizardProgress() {
         const isCompleted = stepNum < step;
 
         return (
-          <div key={stepNum} className="flex-1 h-1.5 rounded-full bg-neutral-200 overflow-hidden relative">
+          <div key={stepNum} className="flex-1 h-1 sm:h-1.5 rounded-full bg-white/15 overflow-hidden relative">
             {(isActive || isCompleted) && (
               <motion.div
                 layoutId={`progress-${stepNum}`}
