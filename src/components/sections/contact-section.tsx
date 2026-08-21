@@ -76,7 +76,7 @@ export function ContactSection({ settings }: { settings: SiteSetting }) {
   }
 
   return (
-    <section id="kontak" className="relative scroll-mt-20 sm:scroll-mt-24 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#112019] text-[#FAF8F1] border-t border-forest-800/40">
+    <section id="kontak" className="relative scroll-mt-24 sm:scroll-mt-28 py-16 sm:py-20 md:py-24 lg:py-28 bg-[#112019] text-[#FAF8F1] border-t border-forest-800/40">
       <div className="section-container relative z-10 w-full">
         <div className="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <Reveal>
