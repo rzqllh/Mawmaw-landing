@@ -87,11 +87,15 @@ function toServiceDTO(row: PrismaService): Service {
 // PROJECTS
 export const getPublishedProjects = unstable_cache(
   async () => {
-    const rows = await db.project.findMany({ 
-      where: { status: "PUBLISHED" },
-      orderBy: { sortOrder: "asc" } 
-    });
-    return rows.map(toProjectDTO);
+    try {
+      const rows = await db.project.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { sortOrder: "asc" }
+      });
+      return rows.map(toProjectDTO);
+    } catch {
+      return [];
+    }
   },
   ["projects", "published"],
   { tags: ["projects"], revalidate: 3600 }
@@ -99,14 +103,18 @@ export const getPublishedProjects = unstable_cache(
 
 export const getProjects = async () => {
   const isDraftMode = (await draftMode()).isEnabled;
-  
+
   return unstable_cache(
     async () => {
-      const rows = await db.project.findMany({ 
-        where: isDraftMode ? undefined : { status: "PUBLISHED" },
-        orderBy: { sortOrder: "asc" } 
-      });
-      return rows.map(toProjectDTO);
+      try {
+        const rows = await db.project.findMany({
+          where: isDraftMode ? undefined : { status: "PUBLISHED" },
+          orderBy: { sortOrder: "asc" }
+        });
+        return rows.map(toProjectDTO);
+      } catch {
+        return [];
+      }
     },
     ["projects", isDraftMode ? "draft" : "published"],
     { tags: ["projects"], revalidate: 3600 }
@@ -115,17 +123,21 @@ export const getProjects = async () => {
 
 export const getFeaturedProjects = async () => {
   const isDraftMode = (await draftMode()).isEnabled;
-  
+
   return unstable_cache(
     async () => {
-      const rows = await db.project.findMany({ 
-        where: { 
-          featured: true,
-          ...(isDraftMode ? {} : { status: "PUBLISHED" })
-        }, 
-        orderBy: { sortOrder: "asc" } 
-      });
-      return rows.map(toProjectDTO);
+      try {
+        const rows = await db.project.findMany({
+          where: {
+            featured: true,
+            ...(isDraftMode ? {} : { status: "PUBLISHED" })
+          },
+          orderBy: { sortOrder: "asc" }
+        });
+        return rows.map(toProjectDTO);
+      } catch {
+        return [];
+      }
     },
     ["projects-featured", isDraftMode ? "draft" : "published"],
     { tags: ["projects"], revalidate: 3600 }
@@ -137,10 +149,14 @@ export async function getProjectBySlug(slug: string) {
 
   return unstable_cache(
     async () => {
-      const row = await db.project.findUnique({ where: { slug } });
-      if (!row) return null;
-      if (!isDraftMode && row.status !== "PUBLISHED") return null;
-      return toProjectDTO(row);
+      try {
+        const row = await db.project.findUnique({ where: { slug } });
+        if (!row) return null;
+        if (!isDraftMode && row.status !== "PUBLISHED") return null;
+        return toProjectDTO(row);
+      } catch {
+        return null;
+      }
     },
     ["project", slug, isDraftMode ? "draft" : "published"],
     { tags: ["projects", `project-${slug}`], revalidate: 3600 }
@@ -150,11 +166,15 @@ export async function getProjectBySlug(slug: string) {
 // ARTICLES
 export const getPublishedArticles = unstable_cache(
   async () => {
-    const rows = await db.article.findMany({ 
-      where: { status: "PUBLISHED" },
-      orderBy: { publishedAt: "desc" } 
-    });
-    return rows.map(toArticleDTO);
+    try {
+      const rows = await db.article.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { publishedAt: "desc" }
+      });
+      return rows.map(toArticleDTO);
+    } catch {
+      return [];
+    }
   },
   ["articles", "published"],
   { tags: ["articles"], revalidate: 3600 }
@@ -165,11 +185,15 @@ export const getArticles = async () => {
 
   return unstable_cache(
     async () => {
-      const rows = await db.article.findMany({ 
-        where: isDraftMode ? undefined : { status: "PUBLISHED" },
-        orderBy: { publishedAt: "desc" } 
-      });
-      return rows.map(toArticleDTO);
+      try {
+        const rows = await db.article.findMany({
+          where: isDraftMode ? undefined : { status: "PUBLISHED" },
+          orderBy: { publishedAt: "desc" }
+        });
+        return rows.map(toArticleDTO);
+      } catch {
+        return [];
+      }
     },
     ["articles", isDraftMode ? "draft" : "published"],
     { tags: ["articles"], revalidate: 3600 }
@@ -181,10 +205,14 @@ export async function getArticleBySlug(slug: string) {
 
   return unstable_cache(
     async () => {
-      const row = await db.article.findUnique({ where: { slug } });
-      if (!row) return null;
-      if (!isDraftMode && row.status !== "PUBLISHED") return null;
-      return toArticleDTO(row);
+      try {
+        const row = await db.article.findUnique({ where: { slug } });
+        if (!row) return null;
+        if (!isDraftMode && row.status !== "PUBLISHED") return null;
+        return toArticleDTO(row);
+      } catch {
+        return null;
+      }
     },
     ["article", slug, isDraftMode ? "draft" : "published"],
     { tags: ["articles", `article-${slug}`], revalidate: 3600 }
@@ -194,8 +222,12 @@ export async function getArticleBySlug(slug: string) {
 // SERVICES
 export const getServices = unstable_cache(
   async () => {
-    const rows = await db.service.findMany({ orderBy: { sortOrder: "asc" } });
-    return rows.map(toServiceDTO);
+    try {
+      const rows = await db.service.findMany({ orderBy: { sortOrder: "asc" } });
+      return rows.map(toServiceDTO);
+    } catch {
+      return [];
+    }
   },
   ["services"],
   { tags: ["services"], revalidate: 3600 }

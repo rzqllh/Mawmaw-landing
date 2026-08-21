@@ -48,7 +48,7 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
               aria-current={category === activeCategory ? "page" : undefined}
               className={`inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
                 category === activeCategory
-                  ? "border-forest-900 bg-forest-900 text-white"
+                  ? "border-forest-900 bg-forest-900 text-text-inverse"
                   : "border-forest-200 bg-forest-50 text-forest-800 hover:border-forest-500"
               }`}
             >

@@ -24,6 +24,8 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-text-inverse: var(--text-inverse);
+  --color-white: #ffffff;
+  --color-black: #000000;
 
   /* 
    * 60-30-10 Color Principle:
