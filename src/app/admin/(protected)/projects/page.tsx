@@ -1,10 +1,11 @@
 import { db } from "@/lib/db";
 import Link from "next/link";
-import { Plus, FolderOpen, Trash } from "@phosphor-icons/react/dist/ssr";
+import { Plus, FolderOpen } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { AdminPageHeader } from "@/components/admin/ui/admin-page-header";
 import { DataGrid, DataGridItem } from "@/components/admin/ui/data-grid";
-import { previewProject } from "@/app/actions/projects";
+import { DeleteConfirm } from "@/components/admin/ui/delete-confirm";
+import { deleteProject, previewProject } from "@/app/actions/projects";
 
 export const metadata = {
   title: "Kelola Proyek - Admin",
@@ -99,22 +100,10 @@ export default async function AdminProjectsPage() {
                 </>
               }
               deleteAction={
-                <form
-                  action={async () => {
-                    "use server";
-                    const { deleteProject } = await import("@/app/actions/projects");
-                    await deleteProject(project.id);
-                  }}
-                >
-                  <button
-                    type="submit"
-                    title="Hapus proyek"
-                    className="text-[13px] font-bold text-red-600/70 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 flex items-center gap-1.5"
-                  >
-                    <Trash weight="bold" className="w-4 h-4" />
-                    Hapus
-                  </button>
-                </form>
+                <DeleteConfirm
+                  itemTitle={project.title}
+                  action={deleteProject.bind(null, project.id)}
+                />
               }
             />
           ))}

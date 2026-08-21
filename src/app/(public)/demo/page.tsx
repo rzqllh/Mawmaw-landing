@@ -13,7 +13,7 @@ export default async function DemoPage() {
   return (
     <main className="bg-neutral-900">
       <div className="fixed top-0 left-0 w-full bg-black text-white text-center py-2 text-xs tracking-widest uppercase z-50 font-mono">
-        Design Consultant Mode — Scroll to view 5 anti-slop variants
+        Design Consultant Mode: Scroll to view 5 anti-slop variants
       </div>
 
       <div className="pt-10">
