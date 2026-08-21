@@ -6,14 +6,16 @@ import {
   Gear,
   ArrowRight,
   Clock,
+  Envelope,
 } from "@phosphor-icons/react/dist/ssr";
 import { formatDate } from "@/lib/utils";
 
 export default async function AdminIndexPage() {
-  const [totalProjects, totalArticles, recentProjects, recentArticles] =
+  const [totalProjects, totalArticles, totalInbox, recentProjects, recentArticles] =
     await Promise.all([
       db.project.count(),
       db.article.count(),
+      db.contactSubmission.count({ where: { status: "NEW" } }),
       db.project.findMany({
         orderBy: { updatedAt: "desc" },
         take: 3,
@@ -75,7 +77,7 @@ export default async function AdminIndexPage() {
         <h2 className="text-[10px] font-bold text-forest-900/40 uppercase tracking-widest mb-4">
           Ringkasan Konten
         </h2>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <Link
             href="/admin/projects"
             className="group block admin-solid-surface p-6 hover:border-forest-900/30"
@@ -113,6 +115,25 @@ export default async function AdminIndexPage() {
           </Link>
 
           <Link
+            href="/admin/inbox"
+            className="group block admin-solid-surface p-6 hover:border-forest-900/30"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-10 h-10 rounded-xl bg-forest-50 text-forest-900 flex items-center justify-center">
+                <Envelope weight="duotone" className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-bold text-forest-900/40 group-hover:text-forest-900/60 transition-colors">
+                Buka →
+              </span>
+            </div>
+            <h2 className="text-lg font-bold text-forest-900">Inbox</h2>
+            <p className="text-3xl font-serif mt-2 text-forest-900">
+              {totalInbox}
+              <span className="text-sm font-sans font-normal text-forest-900/40 ml-1">baru</span>
+            </p>
+          </Link>
+
+          <Link
             href="/admin/settings"
             className="group block admin-solid-surface p-6 hover:border-forest-900/30"
           >
@@ -125,10 +146,10 @@ export default async function AdminIndexPage() {
               </span>
             </div>
             <h2 className="text-lg font-bold text-forest-900">
-              Pengaturan Website
+              Pengaturan
             </h2>
             <p className="text-sm mt-2 text-text-secondary leading-relaxed">
-              Edit konten global halaman publik
+              Konten global halaman publik
             </p>
           </Link>
         </div>

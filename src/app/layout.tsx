@@ -47,7 +47,14 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [heroContent.image.src.replace("w=2400", "w=1200")],
+  },
 };
+
 
 export default function RootLayout({
   children,

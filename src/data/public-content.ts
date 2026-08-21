@@ -120,7 +120,7 @@ export const siteConfig: SiteConfig = {
     instagram: "https://www.instagram.com/mawmawinterior/",
     pinterest: "",
     behance: "",
-    email: "mailto:[EMAIL_ADDRESS]",
+    email: "mailto:hrizqullah484@gmail.com",
   },
 };
 
