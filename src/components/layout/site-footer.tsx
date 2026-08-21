@@ -190,6 +190,14 @@ export function SiteFooter({ settings }: { settings: SiteSetting }) {
 
         <div className="mt-10 flex flex-col gap-4 border-t border-text-inverse/12 pt-6 text-xs text-text-inverse/54 md:flex-row md:items-center md:justify-between">
           <p>{settings.copyright}</p>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/kebijakan-privasi"
+              className="transition-colors hover:text-gold-300 hover:underline"
+            >
+              Kebijakan Privasi
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
