@@ -9,9 +9,10 @@ out/
 dist/
 build/
 
-# Environment files
+# Environment files (never commit credentials)
 .env
-.env*.local
+.env.*
+!.env.example
 
 # TypeScript
 *.tsbuildinfo
@@ -34,7 +35,10 @@ desktop.ini
 *.swp
 *.swo
 
-# AI Agent tooling (local only, not project code)
+# AI Agent tooling and local design experiments
+CLAUDE.md
+docs/MASTER_PROMPT.md
+docs/superpowers/
 .agents/
 .codex/
 .gemini/

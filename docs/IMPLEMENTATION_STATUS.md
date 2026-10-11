@@ -1,9 +1,21 @@
 # Implementation Status
 
-**Last updated:** 2026-08-21
-**Integrated into:** `main` (commit `10823e2`)
+**Last updated:** 2026-10-12
+**Last verified `main`:** `42145026` (CI [32470301359](https://github.com/rzqllh/Mawmaw-landing/actions/runs/32470301359), 2026-08-21)
 **Authority:** Current source, configuration, Prisma schema, migration ledger, GitHub Actions CI ledger, and live production runtime verification
-**Status:** Production stable. Live at `https://mawmaw-interior.vercel.app`. All verification gates and GitHub Actions CI passing.
+**Status:** Last reported production verification: 2026-08-21. The 2026-10-12 repository hygiene branch is not a verified production release; current live health was not independently rechecked.
+
+## Repository Hygiene Review — 2026-10-12
+
+Changes prepared on `chore/repo-hygiene-20261012` for review (not integrated into `main` at the time of writing):
+
+- Fail-closed npm audit parsing with regression tests for missing, malformed, and error responses.
+- Ignore `.env.*` secrets while retaining `.env.example`.
+- Align setup and deployment docs with checked-in Prisma migrations and development-only seed warnings.
+- Remove the public `/demo` experiment route and its unused hero-variant component.
+- Remove tracked, internally oriented agent instructions and historical experiment plans; keep durable engineering rules in `docs/RULES.md`.
+
+Verification is **pending current-branch CI and owner review**. Previous production, CI, and Lighthouse evidence below remains historical, not a fresh 2026-10-12 result.
 
 ## Decisions
 

@@ -54,8 +54,9 @@ The contact pipeline enables a three-request-per-minute sliding window only when
 ```bash
 npx prisma validate
 npx prisma generate
-npx prisma db push
+npx prisma migrate deploy
+# For an isolated development database only:
 npm run db:seed
 ```
 
-Do not paste connection strings or keys into issues, logs, screenshots, or documentation. When build output reports a database tenant/user failure, rotate or correct credentials in the environment provider rather than changing source to hide the error.
+The seed mutates data and removes six legacy mock slugs; never run it against production without reviewing the exact target and effects. Do not paste connection strings or keys into issues, logs, screenshots, or documentation. When build output reports a database tenant/user failure, rotate or correct credentials in the environment provider rather than changing source to hide the error.
