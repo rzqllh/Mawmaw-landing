@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   checkAuditReport,
+  parseAuditOutput,
   type AuditReport,
 } from "../../scripts/audit-ci.ts";
 
@@ -98,4 +99,34 @@ test("checkAuditReport flags unapproved advisories in prisma chain", () => {
   const unexpected = checkAuditReport(sampleReport);
   assert.equal(unexpected.length, 1);
   assert.match(unexpected[0].reason, /Unexpected advisory/);
+});
+
+test("parseAuditOutput rejects empty, invalid, or failed audit results", () => {
+  assert.throws(() => parseAuditOutput(""), /empty output/);
+  assert.throws(() => parseAuditOutput("not-json"), /invalid JSON/);
+  assert.throws(
+    () => parseAuditOutput(JSON.stringify({ error: { code: "ENOAUDIT" } })),
+    /complete vulnerability report/
+  );
+  assert.throws(
+    () => parseAuditOutput(JSON.stringify({ vulnerabilities: {} })),
+    /complete vulnerability report/
+  );
+});
+
+test("parseAuditOutput accepts a complete clean audit report", () => {
+  const clean: AuditReport = {
+    vulnerabilities: {},
+    metadata: {
+      vulnerabilities: {
+        info: 0,
+        low: 0,
+        moderate: 0,
+        high: 0,
+        critical: 0,
+        total: 0,
+      },
+    },
+  };
+  assert.deepEqual(parseAuditOutput(JSON.stringify(clean)), clean);
 });
