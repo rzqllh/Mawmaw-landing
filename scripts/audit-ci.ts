@@ -46,6 +46,39 @@ export type UnexpectedFinding = {
   reason: string;
 };
 
+export function parseAuditOutput(stdout: string): AuditReport {
+  if (!stdout.trim()) {
+    throw new Error("npm audit returned empty output; security status is unknown");
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(stdout);
+  } catch {
+    throw new Error("npm audit returned invalid JSON; security status is unknown");
+  }
+
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error("npm audit returned an unexpected response");
+  }
+
+  const report = parsed as AuditReport & { error?: unknown };
+  const counts = report.metadata?.vulnerabilities;
+  if (
+    report.error ||
+    !report.vulnerabilities ||
+    typeof report.vulnerabilities !== "object" ||
+    Array.isArray(report.vulnerabilities) ||
+    !counts ||
+    !Number.isFinite(counts.high) ||
+    !Number.isFinite(counts.critical)
+  ) {
+    throw new Error("npm audit did not return a complete vulnerability report");
+  }
+
+  return report;
+}
+
 export function checkAuditReport(report: AuditReport): UnexpectedFinding[] {
   const vulnerabilities = report.vulnerabilities || {};
   const unexpected: UnexpectedFinding[] = [];
@@ -110,16 +143,11 @@ export function runAuditCi(): void {
     stdout = execErr.stdout ? execErr.stdout.toString() : "";
   }
 
-  if (!stdout) {
-    console.log("No audit output received. Audit clean.");
-    return;
-  }
-
   let report: AuditReport;
   try {
-    report = JSON.parse(stdout);
-  } catch (parseErr) {
-    console.error("Failed to parse npm audit JSON output:", parseErr);
+    report = parseAuditOutput(stdout);
+  } catch (error) {
+    console.error("npm audit CI gate FAILED:", error);
     process.exit(1);
   }
 
