@@ -19,16 +19,20 @@ Media saat ini disimpan sebagai URL pada record database. Repository belum memil
 
 ## Setup
 
+Gunakan Node.js 22 dan npm sesuai `package-lock.json`.
+
 ```bash
-npm install
-Copy-Item .env.example .env.local
+npm ci
+cp .env.example .env.local
+# PowerShell: Copy-Item .env.example .env.local
+# Isi .env.local terlebih dahulu
 npx prisma generate
-npx prisma db push
+npx prisma migrate deploy
 npm run db:seed
 npm run dev
 ```
 
-Isi `.env.local` sebelum menjalankan perintah database. `DIRECT_URL` dipakai Prisma CLI; `DATABASE_URL` dipakai aplikasi.
+`DIRECT_URL` dipakai Prisma CLI; `DATABASE_URL` dipakai aplikasi. Pastikan keduanya mengarah ke database pengembangan yang sama. **Jalankan `db:seed` hanya pada database pengembangan yang memang boleh diubah:** seed menulis data awal dan menghapus enam project mock lama berdasarkan allowlist. Untuk production, ikuti [panduan deployment](docs/DEPLOYMENT.md) dan tinjau dampak seed sebelum menjalankannya.
 
 Public site tersedia di `http://localhost:3000`. Admin login tersedia di `http://localhost:3000/admin/login` setelah user dibuat di Supabase Auth.
 
@@ -89,10 +93,8 @@ Public site tersedia di `http://localhost:3000`. Admin login tersedia di `http:/
 
 ## Production verification
 
-Local database seed dan production build berhasil pada 2026-08-19. Seed menghapus enam legacy mock projects, mengisi enam articles, enam services, dan site settings. Build menyelesaikan page-data collection dan menghasilkan 27/27 static pages.
-
-Hasil lokal tersebut belum memverifikasi environment atau deployment Vercel. Sinkronkan database variables ke Vercel, deploy ulang, lalu smoke-test public dan admin routes. Lihat `docs/IMPLEMENTATION_STATUS.md` untuk evidence terbaru.
+Verifikasi terakhir yang tercatat dalam repository adalah GitHub Actions CI sukses pada 21 Agustus 2026 untuk commit `42145026` ([run 32470301359](https://github.com/rzqllh/Mawmaw-landing/actions/runs/32470301359)). Ini **bukan** bukti deployment masih sehat hari ini. Lihat `docs/IMPLEMENTATION_STATUS.md` untuk riwayat pengujian production dan daftar verifikasi yang masih bergantung pada akses owner.
 
 ## License
 
-Private project. All rights reserved.
+Source code is publicly viewable; all rights reserved. No reuse license is granted.
