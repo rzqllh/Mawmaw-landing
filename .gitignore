@@ -9,9 +9,10 @@ out/
 dist/
 build/
 
-# Environment files
+# Environment files (never commit credentials)
 .env
-.env*.local
+.env.*
+!.env.example
 
 # TypeScript
 *.tsbuildinfo
