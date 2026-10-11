@@ -43,7 +43,7 @@ Add Resend and Upstash variables only when those integrations are enabled.
 
 ## Build dependency
 
-Build reads PostgreSQL through public layouts, `generateStaticParams()`, and sitemap generation. Valid credentials and a seeded `SiteSetting` row are required during build. A compile/typecheck pass followed by page-data failure is still a failed deployment.
+Public layouts, `generateStaticParams()`, and sitemap generation request database-backed content. Some reads have explicit safe fallbacks so CI may build with mock credentials; **a passing CI build does not verify production database connectivity, live content, or admin authentication**. Validate these separately after deployment.
 
 ## Release checklist
 
