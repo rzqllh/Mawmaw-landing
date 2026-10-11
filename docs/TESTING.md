@@ -28,6 +28,13 @@ No browser E2E or visual-regression runner is installed.
 - Internal redirect paths remain valid.
 - Absolute and protocol-relative redirects are rejected.
 
+### Dependency audit integrity
+
+- `npm run audit:ci` rejects missing output, malformed JSON, npm audit error objects, and incomplete vulnerability metadata.
+- Unit tests cover failed audit reporting as well as a valid clean report.
+- The known Prisma advisory allowlist is limited to the existing reviewed advisory; other high/critical findings must fail the gate.
+- CI success must be verified on the current PR. Earlier green runs do not prove new changes pass.
+
 ### Content integrity
 
 - Public defaults contain no old unverified project-count value.
